@@ -23,6 +23,7 @@ jobs:
     env:
       SITE_NAME: ${{vars.SITE_NAME}}
       REPO_URL: ${{vars.REPO_URL}}
+      SITE_URL: ${{vars.SITE_URL}}
     defaults:
       run:
         working-directory: mkdocs
