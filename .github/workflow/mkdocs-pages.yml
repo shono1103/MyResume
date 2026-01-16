@@ -18,7 +18,11 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    environment: shonoshonoResume
     container: python:3.12-slim
+    env:
+      SITE_NAME: ${{vars.SITE_NAME}}
+      REPO_URL: ${{vars.REPO_URL}}
     defaults:
       run:
         working-directory: mkdocs
@@ -29,6 +33,10 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r requirements.txt
+
+      - name: copy env file
+        run: |
+          cp env.example env
 
       - name: make mkdocs.yml
         run: |
