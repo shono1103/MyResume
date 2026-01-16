@@ -17,8 +17,7 @@ PLUGINS = os.getenv("PLUGINS", "").split(",")
 
 DOCS_DIR = Path("docs")
 TITLE_OVERRIDES = {
-    "index": "Home",
-    "impl": "Implementation",
+    "index": "Home"
 }
 
 
