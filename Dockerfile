@@ -5,7 +5,7 @@ COPY mkdocs /app/mkdocs
 
 RUN pip install -r ./requirements.txt \
 && python3 makeMkdocs.yml.py \
-&& mkdocs build -f /app/mkdocs/mkdocs.yml -d /site --clean
+&& mkdocs build -f ./mkdocs.yml -d /site --clean
 
 FROM nginx:alpine AS publish
 
