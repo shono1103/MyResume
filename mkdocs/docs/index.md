@@ -52,3 +52,12 @@ Linux / C++ / Web / IoT を横断するフルスタック寄りエンジニア/
 ## 問い合わせ先
 
 メール: saiki.shono.01@gmail.com  
+
+## 各種サイト
+
+* [github](https://github.com/shono1103)
+* [Qiita](https://qiita.com/shonoshono)
+
+## Last Update
+
+* 最終更新日：2026/01/17
