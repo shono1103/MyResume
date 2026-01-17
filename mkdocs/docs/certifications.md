@@ -41,7 +41,7 @@
 本ページは**資格・免許の事実情報のみ**を記載しています
 業務での活用例や技術的なアウトプットについては  
 
-  * [Experiences](./experiences.md)  
+  * [Experiences](./experiences/目次.md)  
   * [Projects](./projects.md)  
 
 を参照してください

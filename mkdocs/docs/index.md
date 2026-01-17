@@ -51,7 +51,7 @@
 
 | セクション                              | 内容                                     |
 | --------------------------------------- | ---------------------------------------- |
-| [Experiences](./experiences/概要.md)    | これまで体験してきた業務内容について記載 |
+| [Experiences](./experiences/目次.md)    | これまで体験してきた業務内容について記載 |
 | [Career Timeline](./career_timeline.md) | これまでの学歴・職歴について記載         |
 | [Projects](./projects.md)               | 個人開発内容記載                         |
 | [Certifications](./certifications.md)   | 資格取得について記載                     |

@@ -3,7 +3,7 @@
 
 本ページでは、ITエンジニア 佐伯 奨乃の**学歴および職歴を時系列で整理**しています。  
 各職歴における具体的な業務内容・プロジェクト詳細については  
-[Experiences](./experiences.md) を参照してください。
+[Experiences](./experiences/目次.md) を参照してください。
 
 ---
 
@@ -70,7 +70,7 @@
  技術的な成果・プロジェクト内容・役割の詳細は  
 
 * [Projects](./projects.md)  
-* [Experiences](./experiences.md)  
+* [Experiences](./experiences/目次.md)  
 
 にて個別に記載しています
 
