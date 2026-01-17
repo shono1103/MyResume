@@ -1,7 +1,14 @@
-ITエンジニア 佐伯奨乃  
-Linux / C++ / Web / IoT を横断するフルスタック寄りエンジニア/  
-設計から実装・運用までを一貫して担えるエンジニアを目指している。
 
+<div style="display: flex; align-items: center; gap: 1rem;">
+	<img src="assets/icon.jpg" alt="icon" style="width: 240px; height: 240px; border-radius: 50%; object-fit: cover;" />
+	<div style="width: 360px">
+	ITエンジニア 佐伯奨乃<br>
+	Linux / C++ / Web / IoT を横断するフルスタック寄りエンジニア<br>
+	設計から実装・運用までを一貫して担えるエンジニアを目指している。<br>
+	SREに興味あり。<br>
+	好きな言葉はKISS(Keep It Simple Stupid)
+	</div>
+</div>
 
 ## サイト全体要約
 
@@ -51,7 +58,7 @@ Linux / C++ / Web / IoT を横断するフルスタック寄りエンジニア/
 
 ## 問い合わせ先
 
-メール: saiki.shono.01@gmail.com  
+メール: [saiki.shono.01@gmail.com](mailto:saiki.shono.01@gmail.com)
 
 ## 各種サイト
 
