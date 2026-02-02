@@ -1,14 +1,45 @@
 
-<div style="display: flex; align-items: center; gap: 1rem;">
-	<img src="assets/icon.jpg" alt="icon" style="width: 240px; height: 240px; border-radius: 50%; object-fit: cover;" />
-	<div style="width: 360px">
-	ITエンジニア 佐伯奨乃<br>
-	Linux / C++ / Web / IoT を横断するフルスタック寄りエンジニア<br>
-	設計から実装・運用までを一貫して担えるエンジニアを目指している。<br>
-	SREに興味あり。<br>
-	好きな言葉はKISS(Keep It Simple Stupid)
+<div class="parent" style="display: grid; grid-template-columns: repeat(7, 1fr); grid-template-rows: repeat(4, 1fr); grid-column-gap: 0px; grid-row-gap: 0px;">
+	<div class="div1">
+		<img src="assets/icon.jpg" alt="icon" style="width: auto; height: auto; border-radius: 50%; object-fit: cover;" />
+	</div>
+	<div class="div2">
+		<img src="assets/certifications/LinuC_lv1_02.png" alt="linuc-l1" style="width: auto; height: auto; object-fit: cover;" />
 	</div>
 </div>
+<style>
+.parent {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: repeat(4, 1fr);
+	grid-column-gap: 0px;
+	grid-row-gap: 0px;
+}
+
+.div1 { grid-area: 1 / 1 / 5 / 5; }
+.div2 { grid-area: 1 / 5 / 2 / 6; }
+.div3 { grid-area: 1 / 6 / 2 / 7; }
+.div4 { grid-area: 1 / 7 / 2 / 8; }
+.div5 { grid-area: 2 / 5 / 3 / 6; }
+.div6 { grid-area: 2 / 6 / 3 / 7; }
+.div7 { grid-area: 2 / 7 / 3 / 8; }
+.div8 { grid-area: 3 / 5 / 4 / 6; }
+.div9 { grid-area: 3 / 6 / 4 / 7; }
+.div10 { grid-area: 3 / 7 / 4 / 8; }
+.div11 { grid-area: 4 / 5 / 5 / 6; }
+.div12 { grid-area: 4 / 6 / 5 / 7; }
+.div13 { grid-area: 4 / 7 / 5 / 8; }
+</style>
+
+
+
+
+## 自己紹介
+* ITエンジニア 佐伯奨乃
+* Linux / C++ / Web / IoT を横断するフルスタック寄りエンジニア
+* 設計から実装・運用までを一貫して担えるエンジニアを目指している。
+* SREに興味あり。
+* 好きな言葉はKISS(Keep It Simple Stupid)
 
 ## サイト全体要約
 
