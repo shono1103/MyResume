@@ -32,7 +32,7 @@
 </style>
 
 
-
+---
 
 ## 自己紹介
 * ITエンジニア 佐伯奨乃
@@ -40,6 +40,8 @@
 * 設計から実装・運用までを一貫して担えるエンジニアを目指している。
 * SREに興味あり。
 * 好きな言葉はKISS(Keep It Simple Stupid)
+
+---
 
 ## サイト全体要約
 
@@ -65,6 +67,8 @@
 
 などを行っている。
 
+---
+
 ## コアスキル
 
 * Linux: 自宅でもXubuntuを使用している。
@@ -73,10 +77,14 @@
 * web: React+FastAPIの構成でポートフォリオサイトを作成中
 * Docker: Dockerfileを位置からかけます。
 
+---
+
 ## 現在の興味関心
 
 現在はIoTの分野に幅広く興味を持ってる。その理由としては、日本においてAIの成長に対して実世界のデータ収集が追いついていないと感じているためである。  
 将来的にはIoTデバイス、インフラ、webバックエンドにまたがって開発に関われるIoTフルスタックエンジニアになりたいと考えている。そのために現在必要なスキルとしてIoTの開発の現場への理解とインフラ・webバックエンドの業務レベルの知識が必要だと考えています。
+
+---
 
 ## サイトナビ
 
@@ -87,14 +95,20 @@
 | [Projects](./projects.md)               | 個人開発内容記載                         |
 | [Certifications](./certifications.md)   | 資格取得について記載                     |
 
+---
+
 ## 問い合わせ先
 
 メール: [saiki.shono.01@gmail.com](mailto:saiki.shono.01@gmail.com)
+
+---
 
 ## 各種サイト
 
 * [github](https://github.com/shono1103)
 * [Qiita](https://qiita.com/shonoshono)
+
+---
 
 ## Last Update
 
