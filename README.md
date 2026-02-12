@@ -1,38 +1,40 @@
 # My Resume
 
-このプロジェクトはmkdocsを使用して履歴書・職務経歴書の代わりになるResumeサイトをgithub pages上に公開するためのものです。
+このリポジトリは、履歴書・職務経歴書サイトを Docusaurus で公開するためのものです。
 
+## これまでの移行内容
 
+- MkDocs 時代のコンテンツを Docusaurus の `docs/` へ移植
+- `docusaurus.config.ts` / `sidebars.ts` を Resume サイト向けに更新
+- Docker 構成を Docusaurus 用に更新
+
+## 現在の構成
+
+- 現行サイト本体: `docs/`, `src/`, `docusaurus.config.ts`
+- 画像などの静的ファイル: `static/`
+- Docker 起動で `docusaurus build` 済み静的サイトを `nginx` で配信
 
 ## ローカル起動手順
 
-ローカルでの起動にはdockerを使用します。  
-リポジトリルートで以下のコマンドを実行してください
+### Node.js で開発サーバー起動
 
 ```sh
-cp .env.example .env
-docker compose up --build -d
-
+npm ci
+npm start
 ```
 
-その後、webブラウザで[http://localhost:8000](http://localhost:8000/)を開くとサイトが起動できます。
+開発サーバー: `http://localhost:3000/MyResume/`
+
+### Docker で確認
+
+```sh
+docker compose up --build -d
+```
+
+公開確認: `http://localhost:8000/`
 
 ## ディレクトリ構成
 
-リポジトリルートには
-
-* `mkdocs`ディレクトリ
-* それ以外(隠しファイル・ディレクトリは除く)
-
-がある。`mkdocs`ディレクトリ以外はdockerでのローカル起動のためのファイルである。  
-`mkdocs`ディレクトリがmkdocsの本体である。  
-その中には以下のものがある。
-
-* docs/
-* makeMkdocs.yml.py
-* .env.example
-* requirements.txt
-
-`docs`ディレクトリには公開されるページになるmarkdownファイルを置く。  
-`makeMkdocs.yml.py`は`.env`や`docs`ディレクトリの内部構造に合わせて`mkdocs.yml`を作成するためのスクリプトである。
-
+- `docs/`: Docusaurus のドキュメント本文（履歴書コンテンツ）
+- `src/`: Docusaurus テーマ
+- `static/`: 画像など静的ファイル
