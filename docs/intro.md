@@ -7,16 +7,9 @@ slug: /
 <div class="parent" style={{display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gridTemplateRows: 'repeat(4, 1fr)', gap: 0}}>
   <div class="div1">
     <img
-      src={require('@site/static/img/resume/icon.jpg').default}
+      src={require('@site/static/img/icon.jpg').default}
       alt="icon"
       style={{width: 'auto', height: 'auto', borderRadius: '50%', objectFit: 'cover'}}
-    />
-  </div>
-  <div class="div2">
-    <img
-      src={require('@site/static/img/resume/LinuC_lv1_02.png').default}
-      alt="linuc-l1"
-      style={{width: 'auto', height: 'auto', objectFit: 'cover'}}
     />
   </div>
 </div>
