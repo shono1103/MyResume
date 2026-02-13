@@ -12,7 +12,7 @@ const config: Config = {
   },
 
   url: 'https://shono1103.github.io',
-  baseUrl: '/MyResume/',
+  baseUrl: process.env.DOCUSAURUS_BASE_URL ?? '/MyResume/',
 
   organizationName: 'shono1103',
   projectName: 'MyResume',

@@ -1,6 +1,9 @@
 version: "3.9"
 services:
   docusaurus:
-    build: .
+    build:
+      context: .
+      args:
+        DOCUSAURUS_BASE_URL: /
     ports:
       - "8000:80"
