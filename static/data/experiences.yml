@@ -1,5 +1,6 @@
 companies:
-  - id: screen-ict
+  - abstract_mdFilePath: /data/experience-details/abstract.md
+    id: screen-ict
     name: 株式会社SCREEN ICTソフトウエア
     slug: screen-ict
     period: 2024-04 to 2025-12
