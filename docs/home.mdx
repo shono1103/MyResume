@@ -1,0 +1,22 @@
+---
+title: Home
+sidebar_position: 1
+slug: /
+---
+
+import React from 'react';
+import IntroFromYaml from '@site/src/components/intro/IntroFromYaml';
+import ProjectsDigest from '@site/src/components/projects/ProjectsDigest';
+import styles from '@site/src/components/intro/intro.module.css';
+
+<IntroFromYaml configPath="/data/intro.yml" />
+
+<div className={styles.homeDigestSection}>
+  <div className={styles.digestGrid}>
+  <ProjectsDigest
+    className={styles.digestCard}
+    buttonClassName={styles.digestButton}
+    headingClassName={styles.digestSectionTitle}
+  />
+</div>
+</div>

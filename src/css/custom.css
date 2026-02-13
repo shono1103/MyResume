@@ -28,3 +28,26 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+.header-icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-surface-color);
+  text-decoration: none;
+}
+
+.header-icon-link:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.header-icon-image {
+  width: 16px;
+  height: 16px;
+  object-fit: contain;
+  display: block;
+}
