@@ -10,20 +10,20 @@
 
 .stack {
   display: grid;
-  gap: 14px;
+  gap: 18px;
 }
 
 .topRow {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 14px;
+  gap: 18px;
   align-items: stretch;
 }
 
 .sideStack {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 18px;
   height: 100%;
 }
 
@@ -41,7 +41,7 @@
 .threeColRow {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  gap: 18px;
   align-items: stretch;
 }
 
@@ -62,7 +62,8 @@
 }
 
 .cardBody {
-  padding: 14px 16px 16px;
+  padding: 18px 20px 20px;
+  line-height: 1.65;
 }
 
 .baseInfoLayout {
@@ -75,7 +76,7 @@
 
 .baseInfoText {
   display: grid;
-  gap: 8px;
+  gap: 10px;
   text-align: left;
   justify-items: start;
 }
@@ -98,10 +99,12 @@
   font-size: 28px;
   font-weight: 800;
   letter-spacing: 0.02em;
+  margin-bottom: 2px;
 }
 
 .baseMeta {
   margin: 0;
+  line-height: 1.6;
 }
 
 .email {
@@ -124,6 +127,7 @@
 .mottoInline {
   margin: 0;
   font-weight: 600;
+  line-height: 1.7;
 }
 
 .twoCol {
@@ -133,10 +137,10 @@
 
 .subBlock {
   display: grid;
-  gap: 10px;
+  gap: 12px;
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 12px;
-  padding: 10px;
+  padding: 14px;
   background: var(--ifm-color-emphasis-100);
 }
 
@@ -150,13 +154,13 @@
 .chipRow {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
-  padding: 8px 10px;
+  padding: 9px 12px;
   border-radius: 999px;
   font-size: 13px;
   background: var(--ifm-color-emphasis-100);
@@ -206,11 +210,11 @@
 .digestCard {
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 12px;
-  padding: 12px;
+  padding: 16px;
   background: var(--ifm-background-surface-color);
   color: var(--ifm-font-color-base);
   display: grid;
-  gap: 8px;
+  gap: 10px;
   align-content: start;
 }
 
@@ -227,7 +231,7 @@
 .digestSummary {
   margin: 0;
   font-size: 13px;
-  line-height: 1.45;
+  line-height: 1.65;
   opacity: 0.95;
 }
 
@@ -258,6 +262,30 @@
 
 .pageLastUpdate {
   margin-top: 28px;
+}
+
+.selfPrMarkdown :global(h1),
+.selfPrMarkdown :global(h2),
+.selfPrMarkdown :global(h3),
+.selfPrMarkdown :global(h4) {
+  margin-top: 0.8rem;
+  margin-bottom: 0.4rem;
+}
+
+.selfPrMarkdown :global(p),
+.selfPrMarkdown :global(ul),
+.selfPrMarkdown :global(ol) {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.selfPrMarkdown {
+  max-width: 72ch;
+  margin: 0 auto 10px;
+  background: var(--ifm-color-emphasis-100);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 10px;
+  padding: 12px 14px;
 }
 
 @media (max-width: 996px) {

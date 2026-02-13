@@ -17,6 +17,7 @@ export type IntroData = {
   hobby: string[];
   skills: IntroSkills[];
   curious_fields: string[];
+  ['self-PR_mdFile_path']?: string;
 };
 
 export type IntroYamlConfig = {
