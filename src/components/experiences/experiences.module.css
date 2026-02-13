@@ -1,0 +1,149 @@
+.grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+}
+
+.gridFocused {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.companyCard {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+  padding: 1rem;
+}
+
+.companyName {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.companyMeta {
+  margin: 0.5rem 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9rem;
+}
+
+.projectCount {
+  margin: 0.4rem 0 0;
+  font-size: 0.9rem;
+}
+
+.projectCard {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+  padding: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.projectCardExpanded {
+  padding: 1.25rem;
+  border-width: 2px;
+}
+
+.projectToggle {
+  display: grid;
+  gap: 0.75rem;
+  width: 100%;
+  border: none;
+  background: transparent;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.projectToggleHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+}
+
+.projectTitle {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.toggleText {
+  color: var(--ifm-color-primary);
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+
+.summary {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.section {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.sectionLabel {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-700);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tags {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.tag {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 9999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
+.techBlock {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.techRow {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.techLabel {
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.actions {
+  margin-top: 0.25rem;
+}
+
+.detailsLink {
+  font-weight: 600;
+}
+
+.detailsPanel {
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  padding-top: 0.75rem;
+}
+
+.markdownBody :global(h1),
+.markdownBody :global(h2),
+.markdownBody :global(h3),
+.markdownBody :global(h4) {
+  margin-top: 0.8rem;
+  margin-bottom: 0.45rem;
+}
+
+.markdownBody :global(p),
+.markdownBody :global(ul),
+.markdownBody :global(ol) {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}

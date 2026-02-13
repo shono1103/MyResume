@@ -1,0 +1,122 @@
+.cloudWrap {
+  position: relative;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(48, 115, 218, 0.12), transparent 55%),
+    radial-gradient(circle at 80% 80%, rgba(44, 185, 138, 0.12), transparent 50%),
+    var(--ifm-background-surface-color);
+  min-height: 520px;
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.cloudStage {
+  position: relative;
+  width: 100%;
+  height: 420px;
+  display: grid;
+  place-items: center;
+}
+
+.cloudStage :global(.cert-tagcloud) {
+  position: relative;
+  width: 360px;
+  height: 360px;
+}
+
+.cloudStage :global(.cert-tagcloud-item) {
+  width: 110px;
+  height: 110px;
+  border-radius: 9999px;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  background: color-mix(in srgb, var(--ifm-background-surface-color) 82%, transparent);
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+}
+
+.cloudStage :global(.cert-tagcloud-item:hover),
+.cloudStage :global(.cert-tagcloud-item:focus-visible) {
+  transform: scale(1.08);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+  border-color: var(--ifm-color-primary);
+  outline: none;
+}
+
+.cloudStage :global(.cert-cloud-token) {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.cloudStage :global(.cert-cloud-token img) {
+  width: 62px;
+  height: 62px;
+  object-fit: contain;
+  user-select: none;
+  pointer-events: none;
+}
+
+.info {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  min-width: 280px;
+  max-width: min(92%, 520px);
+  border-radius: 12px;
+  border: 1px solid color-mix(in srgb, var(--ifm-color-primary) 45%, var(--ifm-color-emphasis-300));
+  background: color-mix(in srgb, var(--ifm-background-surface-color) 74%, transparent);
+  backdrop-filter: blur(8px);
+  padding: 0.75rem 0.95rem;
+}
+
+.infoTitle {
+  margin: 0;
+  font-weight: 700;
+}
+
+.infoDate {
+  margin: 0.35rem 0 0;
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.92rem;
+}
+
+.helper {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+@media (max-width: 768px) {
+  .cloudWrap {
+    min-height: 480px;
+  }
+
+  .cloudStage {
+    height: 360px;
+  }
+
+  .cloudStage :global(.cert-tagcloud) {
+    width: 300px;
+    height: 300px;
+  }
+
+  .cloudStage :global(.cert-tagcloud-item) {
+    width: 90px;
+    height: 90px;
+  }
+
+  .cloudStage :global(.cert-cloud-token img) {
+    width: 52px;
+    height: 52px;
+  }
+
+  .info {
+    min-width: 0;
+  }
+}
