@@ -8,9 +8,11 @@ projects:
       - React
       - MQTT
       - ESP32
+      - Docker
+      - cron
     status: in_progress
-    abstract:
-    repos_url:
+    abstract: マイコンで作成したIoTデバイスのデータをMQTTでWebAPIサーバーに通知し、データベースに管理する。
+    repos_url: https://github.com/shono1103/IoTManageAPI
     thumbnail_img_path:
   - id: 002
     name: MyResume
@@ -20,6 +22,22 @@ projects:
       - markdown
       - node.js
     status: in_progress
-    abstract:
-    repos_url:
+    abstract: レジュメサイトをgithub Pagesで公開するためのプロジェクト。
+    repos_url: https://github.com/shono1103/MyResume
+    thumbnail_img_path:
+  - id: 003
+    name: jp_archer_log_app
+    tech_stack: 
+      - Next.js
+    status: in_progress
+    abstract: 弓道の日誌アプリ。いつかもう一度弓道を始めたときに使用できるように作成中
+    repos_url: https://github.com/shono1103/jp_archer_log_app
+    thumbnail_img_path:
+  - id: 003
+    name: pomodoro-cli
+    tech_stack: 
+      - commander
+    status: in_progress
+    abstract: 前職で工数管理が面倒だった。obsidianでタスクに関する資料作成をする前提でその構造に合わせてpomodoro timerの結果を記録するアプリ。
+    repos_url: https://github.com/shono1103/pomodoro-cli
     thumbnail_img_path:
