@@ -1,7 +1,7 @@
 links:
-  - github: 
-    - link: https://github.com/shono1103
-      icon_path: 
+  - github:
+      - link: https://github.com/shono1103
+        icon_path: /img/header/github.svg
   - qiita:
-    - link: https://qiita.com/shonoshono
-      icon_path: 
+      - link: https://qiita.com/shonoshono
+        icon_path: /img/header/qiita.svg
