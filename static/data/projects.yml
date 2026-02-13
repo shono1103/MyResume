@@ -1,0 +1,25 @@
+projects:
+  - id: 001
+    name: IoTManageAPI
+    tech_stack: 
+      - python
+      - FastAPI
+      - node.js
+      - React
+      - MQTT
+      - ESP32
+    status: in_progress
+    abstract:
+    repos_url:
+    thumbnail_img_path:
+  - id: 002
+    name: MyResume
+    tech_stack: 
+      - React
+      - Docsaurus
+      - markdown
+      - node.js
+    status: in_progress
+    abstract:
+    repos_url:
+    thumbnail_img_path:
