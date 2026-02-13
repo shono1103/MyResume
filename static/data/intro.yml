@@ -1,0 +1,15 @@
+intro:
+  base_info:
+    - profile_img_path: /img/intro.jpg
+      name: 佐伯 奨乃
+      birth: 2001-11-03
+      from: 愛媛県西条市
+  email: shono131103@gmail.com
+  motto: KISS (Keep It Simple Stupid)
+  hobby: [linux, コーヒー, 筋トレ, ビール, 日本酒, ワイン]
+  skills:
+    - practical: [C++, Linux, Docker]
+      hobby: [linux, python, node.js]
+  curious_fields: [SRE, Infra, IoT, Webバックエンド, PM]
+
+last_update: 2026/02/13

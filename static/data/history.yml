@@ -83,6 +83,10 @@ timeline:
   - id: now
     time: 2025.02
     title: now
+    details:
+      - 現在、求職活動中
+        4月を入社を目指している。
+        並行して、これまで蓄えてきたスキルの整理をしている。
     dotColor: "#e53935"
     dotVariant: filled
 
