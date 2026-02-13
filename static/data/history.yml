@@ -31,7 +31,7 @@ timeline:
   - id: part-time-job-join
     time: 2020.05
     title: 株式会社鳥善 アルバイト入社
-    organizationUrl: https://www.torizen.jp/
+    organizationUrl: https://www.torizen.co.jp/
     details:
       - 結婚式場の配膳業務
       - レストランでのウェイター業務
@@ -42,7 +42,7 @@ timeline:
   - id: part-time-job-end
     time: 2024.03
     title: 株式会社鳥善 退職
-    organizationUrl: https://www.torizen.jp/
+    organizationUrl: https://www.torizen.co.jp/
     details:
       - 4年間アルバイト勤務
     dotColor: "#fb8c00"
