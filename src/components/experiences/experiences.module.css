@@ -4,6 +4,34 @@
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
+.abstractCard {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  background: var(--ifm-background-surface-color);
+  padding: 1rem 1.1rem;
+  margin-bottom: 1rem;
+}
+
+.abstractTitle {
+  margin: 0 0 0.5rem;
+  font-size: 1.2rem;
+}
+
+.abstractBody :global(h1),
+.abstractBody :global(h2),
+.abstractBody :global(h3),
+.abstractBody :global(h4) {
+  margin-top: 0.6rem;
+  margin-bottom: 0.35rem;
+}
+
+.abstractBody :global(p),
+.abstractBody :global(ul),
+.abstractBody :global(ol) {
+  margin-top: 0.3rem;
+  margin-bottom: 0.3rem;
+}
+
 .gridFocused {
   grid-template-columns: minmax(0, 1fr);
 }

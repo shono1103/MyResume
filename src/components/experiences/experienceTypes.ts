@@ -15,6 +15,7 @@ export type ExperienceProject = {
 };
 
 export type ExperienceCompany = {
+  abstract_mdFilePath?: string;
   id: string;
   name: string;
   slug: string;
