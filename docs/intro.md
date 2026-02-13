@@ -69,7 +69,7 @@ slug: /
 ## サイトナビ
 
 - [Experiences](./experiences)
-- [Career Timeline](./career-timeline)
+- [Career Timeline](./history)
 - [Projects](./projects)
 - [Certifications](./certifications)
 
