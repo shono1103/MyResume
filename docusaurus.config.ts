@@ -83,6 +83,10 @@ const config: Config = {
     locales: ['ja'],
   },
 
+  clientModules: [
+    require.resolve('./src/client-modules/resume-button.ts'),
+  ],
+
   presets: [
     [
       'classic',

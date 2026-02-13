@@ -1,0 +1,123 @@
+.resumeContainer {
+  width: 100%;
+  background: white;
+  color: black;
+}
+
+.resumePage {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  background: white;
+}
+
+.documentTitle {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #333;
+  padding-bottom: 10px;
+}
+
+.headerSection {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.personalInfo {
+  flex: 1;
+}
+
+.infoRow {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.infoRow label {
+  font-weight: bold;
+  min-width: 140px;
+}
+
+.name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.photoContainer {
+  width: 120px;
+  height: 160px;
+  border: 1px solid #333;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f9f9f9;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.section {
+  margin-bottom: 30px;
+}
+
+.sectionTitle {
+  font-size: 18px;
+  font-weight: bold;
+  background: #f0f0f0;
+  padding: 8px 12px;
+  border-left: 4px solid #333;
+  margin-bottom: 15px;
+}
+
+.historyTable,
+.certificationTable {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+}
+
+.historyTable td,
+.certificationTable td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.dateCell {
+  width: 150px;
+  font-weight: bold;
+  background: #f9f9f9;
+}
+
+.contentCell {
+  background: white;
+}
+
+.hobbyText {
+  padding: 15px;
+  border: 1px solid #ccc;
+  background: white;
+  line-height: 1.6;
+}
+
+@media print {
+  .resumeContainer {
+    width: 100%;
+  }
+  
+  .resumePage {
+    max-width: none;
+    padding: 20px;
+  }
+  
+  .section {
+    page-break-inside: avoid;
+  }
+}
