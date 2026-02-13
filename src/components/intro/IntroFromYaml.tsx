@@ -3,6 +3,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import { load as parseYaml } from 'js-yaml';
 import styles from './intro.module.css';
 import HistoryDigest from '../history/HistoryDigest';
+import SelfPrCard from './SelfPrCard';
 import { BaseInfoCard, Card, CuriousCard, EmailCard, HobbyCard, MottoCard, SkillsCard } from './IntroCards';
 import type { IntroData, IntroYamlConfig } from './introTypes';
 
@@ -88,6 +89,8 @@ export default function IntroFromYaml({ configPath }: Props) {
 							<MottoCard motto={normalizedIntro.motto} />
 						</div>
 					</div>
+
+					<SelfPrCard markdownPath={normalizedIntro['self-PR_mdFile_path']} />
 
 					<div className={styles.threeColRow}>
 						<HobbyCard hobbies={normalizedIntro.hobby} />

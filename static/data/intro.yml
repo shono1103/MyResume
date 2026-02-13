@@ -11,5 +11,6 @@ intro:
     - practical: [C++, Linux, Docker]
       hobby: [linux, python, node.js]
   curious_fields: [SRE, Infra, IoT, Webバックエンド, PM]
+  self-PR_mdFile_path: /data/selfPR.md
 
 last_update: 2026/02/13
