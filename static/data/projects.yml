@@ -1,5 +1,5 @@
 projects:
-  - id: 001
+  - id: iot-manage-api
     name: IoTManageAPI
     tech_stack: 
       - python
@@ -14,7 +14,7 @@ projects:
     abstract: マイコンで作成したIoTデバイスのデータをMQTTでWebAPIサーバーに通知し、データベースに管理する。
     repos_url: https://github.com/shono1103/IoTManageAPI
     thumbnail_img_path:
-  - id: 002
+  - id: my-resume
     name: MyResume
     tech_stack: 
       - React
@@ -25,7 +25,7 @@ projects:
     abstract: レジュメサイトをgithub Pagesで公開するためのプロジェクト。
     repos_url: https://github.com/shono1103/MyResume
     thumbnail_img_path:
-  - id: 003
+  - id: jp_archer_log_app
     name: jp_archer_log_app
     tech_stack: 
       - Next.js
@@ -33,7 +33,7 @@ projects:
     abstract: 弓道の日誌アプリ。いつかもう一度弓道を始めたときに使用できるように作成中
     repos_url: https://github.com/shono1103/jp_archer_log_app
     thumbnail_img_path:
-  - id: 003
+  - id: pomodoro-cli
     name: pomodoro-cli
     tech_stack: 
       - commander
