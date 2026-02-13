@@ -1,38 +1,56 @@
 companies:
-  - name: 株式会社SCREEN ICTソフトウエア
+  - id: screen-ict
+    name: 株式会社SCREEN ICTソフトウエア
+    slug: screen-ict
+    period: 2024-04 to 2025-12
     projects:
-      - title: 半導体製造の洗浄工程装置のカスタム仕様開発
+      - id: custom-feature
+        title: 半導体製造の洗浄工程装置のカスタム仕様開発
+        slug: semiconductor-custom-feature
+        summary: カスタム仕様開発においてシステム設計からリリースまで一気通貫で対応。
+        role: [システム設計, 詳細設計, 実装, 結合テスト, リリース]
         tech:
-          - os: [vxworks,windows,wind liver linux, ubuntu20.04lts]
-            lang: [C++]
-            infra: [gitlab, docker, redmine, subversion]
-        service_area: [システム設計, 詳細設計, 実装, 結合テスト, リリース]
-        service_abstract: カスタム仕様開発においてシステム設計からリリースまで一気通貫で行った。対応内容は企業秘密等がある可能性があるので記載は控えます。
-      - title: Dockerでのビルド環境開発
+          os: [vxworks, windows, wind river linux, ubuntu20.04lts]
+          lang: [C++]
+          infra: [gitlab, docker, redmine, subversion]
+        detail_markdown_path: /data/experience-details/screen-ict/semiconductor-custom-feature.md
+      - id: docker-build-env
+        title: Dockerでのビルド環境開発
+        slug: docker-build-environment
+        summary: Dockerfileでビルド環境をドキュメント化し、VirtualBox依存を削減して軽量化。
+        role: [プロトタイプ開発]
         tech:
-          - os: [ubuntu20.04lts, wsl2]
-            lang: [C++, shell]
-            infra: [gitlab, docker, redmine]
-        service_area: [プロトタイプ開発]
-        service_abstract: この対応前はVirtualBox上のubuntuでビルドを実行していた。そのisoイメージを配布することでプロジェクトメンバー間の環境を統一している状態であった。ビルド環境がドキュメント化されていないことが問題であると感じ、プロジェクト内で問題提起し、Dockerでのビルド環境構築を一人された。結果としてDockerfileによるビルド環境のドキュメント化とビルド環境の軽量化に成功した。
-      - title: 単体プログラムデバッグ環境開発
+          os: [ubuntu20.04lts, wsl2]
+          lang: [C++, shell]
+          infra: [gitlab, docker, redmine]
+        detail_markdown_path: /data/experience-details/screen-ict/docker-build-environment.md
+      - id: debug-env
+        title: 単体プログラムデバッグ環境開発
+        slug: unit-debug-environment
+        summary: 依存が強いモジュール群に対して単体デバッグ可能な最小実行環境を構築。
+        role: [プロトタイプ開発]
         tech:
-          - os: [windows, ubuntu20.04lts, wsl2]
-            lang: [C++, shell, python]
-            infra: [gitlab, docker, redmine]
-        service_area: [プロトタイプ開発]
-        service_abstract: 半導体製造の洗浄工程装置において、プログラム間の依存が強く、単体プログラムでのデバッグが困難であった。その解決策として既存プログラムを利用したwindowsでの設定ファイル読み込み、tcpでのlinux(wsl2)へのデータ転送などを行い、単体プログラムでのデバッグ環境を完成させた。
-      - title: オンプレgitlab runnerによるcicd環境構築
+          os: [windows, ubuntu20.04lts, wsl2]
+          lang: [C++, shell, python]
+          infra: [gitlab, docker, redmine]
+        detail_markdown_path: /data/experience-details/screen-ict/unit-debug-environment.md
+      - id: gitlab-runner-cicd
+        title: オンプレGitLab RunnerによるCI/CD環境構築
+        slug: onprem-gitlab-runner-cicd
+        summary: WSL2 + DockerでGitLab CEとRunnerを構築し、CI/CD導入手順を確立。
+        role: [ドキュメント作成, インフラ構築]
         tech:
-          - os: [wsl2]
-            lang: [C++]
-            infra: [gitlab, docker, redmine]
-        service_area: [ドキュメント作成, インフラ構築]
-        service_abstract: gitlabでのcicdの実施のためのインフラ構築を行った。wsl2上でdockerを稼働させ、ローカルでgitlab-ce+gitlab-runnerを稼働させてcicd環境構築手順の確立を行った。
-      - title: オンプレgitlab pagesの環境構築
+          os: [wsl2]
+          lang: [C++]
+          infra: [gitlab, docker, redmine]
+        detail_markdown_path: /data/experience-details/screen-ict/onprem-gitlab-runner-cicd.md
+      - id: gitlab-pages
+        title: オンプレGitLab Pagesの環境構築
+        slug: onprem-gitlab-pages
+        summary: MkDocsサイトをGit管理し、オンプレGitLab Pagesで公開する運用を整備。
+        role: [ドキュメント作成, インフラ構築]
         tech:
-          - os: [wsl2]
-            lang: [shell, python]
-            infra: [gitlab, docker, redmine, mkdocs]
-        service_area: [ドキュメント作成, インフラ構築]
-        service_abstract: プロジェクトのドキュメントのgit管理に伴い、mkdocsを使用したサイト構築を行った。その際にオンプレのgitlab pagesでサイトを公開した。
+          os: [wsl2]
+          lang: [shell, python]
+          infra: [gitlab, docker, redmine, mkdocs]
+        detail_markdown_path: /data/experience-details/screen-ict/onprem-gitlab-pages.md
