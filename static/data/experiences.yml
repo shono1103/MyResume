@@ -1,0 +1,38 @@
+companies:
+  - name: 株式会社SCREEN ICTソフトウエア
+    projects:
+      - title: 半導体製造の洗浄工程装置のカスタム仕様開発
+        tech:
+          - os: [vxworks,windows,wind liver linux, ubuntu20.04lts]
+            lang: [C++]
+            infra: [gitlab, docker, redmine, subversion]
+        service_area: [システム設計, 詳細設計, 実装, 結合テスト, リリース]
+        service_abstract: カスタム仕様開発においてシステム設計からリリースまで一気通貫で行った。対応内容は企業秘密等がある可能性があるので記載は控えます。
+      - title: Dockerでのビルド環境開発
+        tech:
+          - os: [ubuntu20.04lts, wsl2]
+            lang: [C++, shell]
+            infra: [gitlab, docker, redmine]
+        service_area: [プロトタイプ開発]
+        service_abstract: この対応前はVirtualBox上のubuntuでビルドを実行していた。そのisoイメージを配布することでプロジェクトメンバー間の環境を統一している状態であった。ビルド環境がドキュメント化されていないことが問題であると感じ、プロジェクト内で問題提起し、Dockerでのビルド環境構築を一人された。結果としてDockerfileによるビルド環境のドキュメント化とビルド環境の軽量化に成功した。
+      - title: 単体プログラムデバッグ環境開発
+        tech:
+          - os: [windows, ubuntu20.04lts, wsl2]
+            lang: [C++, shell, python]
+            infra: [gitlab, docker, redmine]
+        service_area: [プロトタイプ開発]
+        service_abstract: 半導体製造の洗浄工程装置において、プログラム間の依存が強く、単体プログラムでのデバッグが困難であった。その解決策として既存プログラムを利用したwindowsでの設定ファイル読み込み、tcpでのlinux(wsl2)へのデータ転送などを行い、単体プログラムでのデバッグ環境を完成させた。
+      - title: オンプレgitlab runnerによるcicd環境構築
+        tech:
+          - os: [wsl2]
+            lang: [C++]
+            infra: [gitlab, docker, redmine]
+        service_area: [ドキュメント作成, インフラ構築]
+        service_abstract: gitlabでのcicdの実施のためのインフラ構築を行った。wsl2上でdockerを稼働させ、ローカルでgitlab-ce+gitlab-runnerを稼働させてcicd環境構築手順の確立を行った。
+      - title: オンプレgitlab pagesの環境構築
+        tech:
+          - os: [wsl2]
+            lang: [shell, python]
+            infra: [gitlab, docker, redmine, mkdocs]
+        service_area: [ドキュメント作成, インフラ構築]
+        service_abstract: プロジェクトのドキュメントのgit管理に伴い、mkdocsを使用したサイト構築を行った。その際にオンプレのgitlab pagesでサイトを公開した。
