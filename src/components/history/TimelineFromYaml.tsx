@@ -7,6 +7,7 @@ type TimelineYamlEntry = {
   id: string;
   time: string;
   title: string;
+  tags?: string[];
   organizationUrl?: string;
   details?: string[];
   dotColor?: string;
@@ -86,7 +87,8 @@ export default function TimelineFromYaml({configPath}: Props) {
               <li key={`${entry.id}-${index}`}>{line}</li>
             ))}
           </ul>
-        ) : undefined,
+      ) : undefined,
+      tags: entry.tags,
       dotColor: entry.dotColor,
       dotVariant: entry.dotVariant,
     }));

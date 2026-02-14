@@ -2,6 +2,7 @@ timeline:
   - id: high-school-enroll
     time: 2017.04
     title: 愛媛県立今治北高等学校 普通科 入学
+    tags: [education]
     organizationUrl: https://imabarikita-h.esnet.ed.jp/
     details:
       - 弓道部に所属
@@ -11,6 +12,7 @@ timeline:
   - id: high-school-graduate
     time: 2020.03
     title: 愛媛県立今治北高等学校 普通科 卒業
+    tags: [education]
     organizationUrl: https://imabarikita-h.esnet.ed.jp/
     details:
       - コロナ直撃で卒業式は卒業生のみになる。
@@ -20,6 +22,7 @@ timeline:
   - id: university-enroll
     time: 2020.04
     title: 静岡大学 工学部 入学
+    tags: [education]
     organizationUrl: https://www.shizuoka.ac.jp/
     details:
       - 工学部機械工学科
@@ -31,6 +34,7 @@ timeline:
   - id: part-time-job-join
     time: 2020.05
     title: 株式会社鳥善 アルバイト入社
+    tags: [work]
     organizationUrl: https://www.torizen.co.jp/
     details:
       - 結婚式場の配膳業務
@@ -42,6 +46,7 @@ timeline:
   - id: part-time-job-end
     time: 2024.03
     title: 株式会社鳥善 退職
+    tags: [work]
     organizationUrl: https://www.torizen.co.jp/
     details:
       - 4年間アルバイト勤務
@@ -51,6 +56,7 @@ timeline:
   - id: university-graduate
     time: 2024.03
     title: 静岡大学 工学部 卒業
+    tags: [education]
     organizationUrl: https://www.shizuoka.ac.jp/
     details:
       - 機械工学科卒業
@@ -63,6 +69,7 @@ timeline:
   - id: first-job-join
     time: 2024.04
     title: 株式会社SCREEN ICTソフトウエア 入社
+    tags: [work]
     organizationUrl: https://www.screen-icts.co.jp/
     details:
       - 洗浄制御システム部に配属
@@ -72,6 +79,7 @@ timeline:
   - id: first-job-leave
     time: 2025.12
     title: 株式会社SCREEN ICTソフトウエア 退職
+    tags: [work]
     organizationUrl: https://www.screen-icts.co.jp/
     details:
       - dockerビルド環境などを率先して作成
@@ -82,10 +90,10 @@ timeline:
 
   - id: now
     time: 2025.02
-    title: now
+    title: 求職活動中
+    tags: [now]
     details:
-      - 現在、求職活動中
-        4月を入社を目指している。
+      - 4月を入社を目指している。
         並行して、これまで蓄えてきたスキルの整理をしている。
     dotColor: "#e53935"
     dotVariant: filled
