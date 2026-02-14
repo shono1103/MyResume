@@ -64,6 +64,7 @@ function TagList({items, compact = false}: {items: string[]; compact?: boolean})
 
 export default function ExperienceProjectCard({project, expanded, onToggle}: Props) {
   const summary = project.result?.trim() || project.summary?.trim() || 'No summary available.';
+  const member = project.member?.trim() ?? '';
   const roles = project.role ?? [];
   const os = project.tech?.os ?? [];
   const languages = project.tech?.lang ?? [];
@@ -79,7 +80,14 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
           <span className={styles.toggleText}>{expanded ? '閉じる' : '詳細を表示'}</span>
         </div>
 
-        {expanded ? <p className={styles.summary}>{summary}</p> : null}
+        {member ? (
+          <section className={styles.section}>
+            <span className={styles.sectionLabel}>Member</span>
+            <div className={styles.tags}>
+              <span className={styles.tag}>{member}</span>
+            </div>
+          </section>
+        ) : null}
 
         <section className={styles.section}>
           <span className={styles.sectionLabel}>Role</span>
@@ -109,57 +117,36 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
 
       {expanded ? (
         <section className={styles.detailsPanel}>
-          <article className={styles.projectDetailCard}>
-            <h4 className={styles.projectDetailTitle}>{project.title}</h4>
+          <div className={styles.projectDetailKv}>
+            <div className={styles.projectDetailK}>成果（定量/定性）</div>
+            <div className={styles.projectDetailV}>{summary}</div>
 
-            <div className={styles.projectDetailKv}>
-              <div className={styles.projectDetailK}>役割</div>
-              <div className={styles.projectDetailV}>{roles.join(' / ') || '-'}</div>
-
-              <div className={styles.projectDetailK}>成果（定量/定性）</div>
-              <div className={styles.projectDetailV}>{summary}</div>
-
-              <div className={styles.projectDetailK}>技術</div>
-              <div className={styles.projectDetailV}>
-                <div className={styles.techBlock}>
-                  <div className={styles.techRow}>
-                    <span className={styles.techLabel}>OS</span>
-                    <TagList items={os} />
-                  </div>
-                  <div className={styles.techRow}>
-                    <span className={styles.techLabel}>Lang</span>
-                    <TagList items={languages} />
-                  </div>
-                  <div className={styles.techRow}>
-                    <span className={styles.techLabel}>Infra</span>
-                    <TagList items={infra} />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {efforts.length > 0 ? (
-              <>
-                <h4 className={styles.detailHeading}>工夫</h4>
+            <div className={styles.projectDetailK}>工夫</div>
+            <div className={styles.projectDetailV}>
+              {efforts.length > 0 ? (
                 <ul className={styles.detailList}>
                   {efforts.map((item) => (
                     <li key={`${project.id}-effort-${item}`}>{item}</li>
                   ))}
                 </ul>
-              </>
-            ) : null}
+              ) : (
+                '-'
+              )}
+            </div>
 
-            {issueSolving.length > 0 ? (
-              <>
-                <h4 className={styles.detailHeading}>課題解決</h4>
+            <div className={styles.projectDetailK}>課題解決</div>
+            <div className={styles.projectDetailV}>
+              {issueSolving.length > 0 ? (
                 <ul className={styles.detailList}>
                   {issueSolving.map((item) => (
                     <li key={`${project.id}-issue-${item}`}>{item}</li>
                   ))}
                 </ul>
-              </>
-            ) : null}
-          </article>
+              ) : (
+                '-'
+              )}
+            </div>
+          </div>
         </section>
       ) : null}
     </article>

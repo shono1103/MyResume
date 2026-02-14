@@ -3,11 +3,11 @@ id: screen-ict
 name: 株式会社SCREEN ICTソフトウエア
 slug: screen-ict
 period: 2024-04 to 2025-12
-member: 30人以上
 projects:
   - id: custom-feature
     title: 半導体製造の洗浄工程装置のカスタム仕様開発
     slug: semiconductor-custom-feature
+    member: 30人以上
     role: [システム設計, 詳細設計, 実装, 結合テスト, リリース]
     tech:
       os: [vxworks, windows, wind river linux, ubuntu20.04lts]
@@ -21,6 +21,7 @@ projects:
   - id: docker-build-env
     title: Dockerでのビルド環境開発
     slug: docker-build-environment
+    member: 1人
     role: [プロトタイプ開発]
     tech:
       os: [ubuntu20.04lts, wsl2]
@@ -37,6 +38,7 @@ projects:
   - id: debug-env
     title: 単体プログラムデバッグ環境開発
     slug: unit-debug-environment
+    member: 1人
     role: [プロトタイプ開発]
     tech:
       os: [windows, ubuntu20.04lts, wsl2]
@@ -53,6 +55,7 @@ projects:
   - id: gitlab-runner-cicd
     title: オンプレGitLab RunnerによるCI/CD環境構築
     slug: onprem-gitlab-runner-cicd
+    member: 1人
     role: [ドキュメント作成, インフラ構築]
     tech:
       os: [wsl2]
@@ -69,6 +72,7 @@ projects:
   - id: gitlab-pages
     title: オンプレGitLab Pagesの環境構築
     slug: onprem-gitlab-pages
+    member: 1人
     role: [ドキュメント作成, インフラ構築]
     tech:
       os: [wsl2]

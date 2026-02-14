@@ -65,29 +65,11 @@
   grid-template-columns: 1fr;
 }
 
-.projectDetailCard {
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 10px;
-  padding: 0.8rem;
-  background: var(--ifm-background-surface-color);
-  break-inside: avoid;
-}
-
-.projectDetailTitle {
-  margin: 0;
-  padding: 0.55rem 0.7rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-radius: 6px 6px 0 0;
-  background: #fff;
-  font-size: 0.95rem;
-}
-
 .projectDetailKv {
   display: grid;
   grid-template-columns: 150px 1fr;
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-top: none;
-  border-radius: 0 0 6px 6px;
+  border-radius: 6px;
   overflow: hidden;
 }
 
@@ -150,11 +132,6 @@
   color: var(--ifm-color-primary);
   font-size: 0.86rem;
   white-space: nowrap;
-}
-
-.summary {
-  margin: 0;
-  line-height: 1.6;
 }
 
 .section {
@@ -226,11 +203,6 @@
 .detailsPanel {
   border-top: 1px solid var(--ifm-color-emphasis-300);
   padding-top: 0.75rem;
-}
-
-.detailHeading {
-  margin: 0.8rem 0 0.45rem;
-  font-size: 0.95rem;
 }
 
 .detailList {

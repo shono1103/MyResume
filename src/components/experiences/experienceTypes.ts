@@ -7,6 +7,7 @@ export type ExperienceProjectTech = {
 export type ExperienceProject = {
   id: string;
   title: string;
+  member?: string;
   slug?: string;
   summary?: string;
   result?: string;
