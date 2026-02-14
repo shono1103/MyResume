@@ -1,17 +1,19 @@
-export type IntroBaseInfo = {
+import type {
+  IntroBaseInfo as UtilIntroBaseInfo,
+  IntroData as UtilIntroData,
+  IntroSkills,
+  IntroYamlConfig as UtilIntroYamlConfig,
+} from '@site/src/util/introTypes';
+
+export type IntroBaseInfo = UtilIntroBaseInfo & {
   profile_img_path: string;
   name: string;
-  birth: string | Date;
+  birth: string;
   from: string;
+  gender: string;
 };
 
-export type IntroSkills = {
-  work_experience: string[];
-  personal_projects: string[];
-  learning_in_progress: string[];
-};
-
-export type IntroData = {
+export type IntroData = UtilIntroData & {
   base_info: IntroBaseInfo[];
   email: string;
   motto: string;
@@ -22,7 +24,7 @@ export type IntroData = {
   ['self-PR_mdFile_path']?: string;
 };
 
-export type IntroYamlConfig = {
+export type IntroYamlConfig = UtilIntroYamlConfig & {
   intro: IntroData;
   last_update?: string;
 };

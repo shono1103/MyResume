@@ -5,15 +5,12 @@ import {load as parseYaml} from 'js-yaml';
 import ProjectCard from './ProjectCard';
 import projectStyles from './projects.module.css';
 import type {ProjectYamlEntry} from './projectTypes';
+import type {ProjectsYaml} from '@site/src/util/projectTypes';
 
 type Props = {
   className: string;
   buttonClassName: string;
   headingClassName: string;
-};
-
-type ProjectsYaml = {
-  projects: ProjectYamlEntry[];
 };
 
 export default function ProjectsDigest({

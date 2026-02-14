@@ -2,21 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import {load as parseYaml} from 'js-yaml';
 import {Timeline, type TimelineItem} from './Timeline';
-
-type TimelineYamlEntry = {
-  id: string;
-  time: string;
-  title: string;
-  tags?: string[];
-  organizationUrl?: string;
-  details?: string[];
-  dotColor?: string;
-  dotVariant?: 'filled' | 'outlined';
-};
-
-type TimelineYamlConfig = {
-  timeline: TimelineYamlEntry[];
-};
+import type {HistoryYaml, TimelineItem as TimelineYamlEntry} from '@site/src/util/historyTypes';
 
 type Props = {
   configPath: string;
@@ -24,7 +10,7 @@ type Props = {
 
 export default function TimelineFromYaml({configPath}: Props) {
   const resolvedConfigPath = useBaseUrl(configPath);
-  const [config, setConfig] = useState<TimelineYamlConfig | null>(null);
+  const [config, setConfig] = useState<HistoryYaml | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,7 +24,7 @@ export default function TimelineFromYaml({configPath}: Props) {
         }
 
         const raw = await response.text();
-        const parsed = parseYaml(raw) as TimelineYamlConfig;
+        const parsed = parseYaml(raw) as HistoryYaml;
 
         if (!parsed || !Array.isArray(parsed.timeline)) {
           throw new Error('Invalid config format: timeline is required');
@@ -65,8 +51,8 @@ export default function TimelineFromYaml({configPath}: Props) {
   const items = useMemo<TimelineItem[]>(() => {
     if (!config) return [];
 
-    return config.timeline.map((entry) => ({
-      id: entry.id,
+    return (config.timeline ?? []).map((entry, index) => ({
+      id: entry.id ?? `${entry.title ?? 'timeline'}-${index}`,
       time: entry.time,
       title: entry.organizationUrl ? (
         <a

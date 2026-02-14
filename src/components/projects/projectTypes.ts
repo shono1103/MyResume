@@ -1,23 +1,12 @@
-export type ProjectTechGroup = {
-  os?: string[];
-  lang?: string[];
-  framework?: string[];
-  infra?: string[];
-};
+import type {ProjectEntry, ProjectTech, ProjectsYamlConfig as UtilProjectsYamlConfig} from '@site/src/util/projectTypes';
 
-export type ProjectYamlEntry = {
+export type ProjectTechGroup = ProjectTech;
+
+export type ProjectYamlEntry = ProjectEntry & {
   id: string;
   name: string;
-  tech?: ProjectTechGroup[];
-  tech_stack?: string[];
-  status?: string;
-  abstract?: string;
-  repos_url?: string;
-  effort?: string[];
-  main_function?: string[];
-  thumbnail_img_path?: string;
 };
 
-export type ProjectsYamlConfig = {
+export type ProjectsYamlConfig = UtilProjectsYamlConfig & {
   projects: ProjectYamlEntry[];
 };

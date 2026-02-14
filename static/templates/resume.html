@@ -114,6 +114,13 @@
 			border-bottom: none;
 		}
 
+		/* 履歴系テーブルはヘッダ行と1行目の境界線を常に表示 */
+		table[aria-label="学歴"] tr:first-child th,
+		table[aria-label="職歴"] tr:first-child th,
+		table[aria-label="免許・資格"] tr:first-child th {
+			border-bottom: var(--thin) solid var(--line);
+		}
+
 		th:last-child,
 		td:last-child {
 			border-right: none;

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { load as parseYaml } from 'js-yaml';
+import type {HistoryYaml, TimelineItem} from '@site/src/util/historyTypes';
 
 type Props = {
 	className: string;
@@ -11,15 +12,9 @@ type Props = {
 	buttonClassName: string;
 };
 
-type HistoryItem = {
+type HistoryItem = TimelineItem & {
 	id: string;
-	time?: string;
 	title: string;
-	details?: string[];
-};
-
-type HistoryYaml = {
-	timeline: HistoryItem[];
 };
 
 export default function HistoryDigest({
@@ -43,7 +38,9 @@ export default function HistoryDigest({
 				}
 
 				const parsed = parseYaml(await response.text()) as HistoryYaml;
-				const timeline = parsed?.timeline ?? [];
+				const timeline = (parsed?.timeline ?? []).filter(
+					(entry): entry is HistoryItem => Boolean(entry?.id && entry?.title),
+				);
 				if (timeline.length === 0) {
 					return;
 				}

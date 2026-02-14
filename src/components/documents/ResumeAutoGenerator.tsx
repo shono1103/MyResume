@@ -2,91 +2,17 @@ import React, {useMemo, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import {load as parseYaml} from 'js-yaml';
 import styles from './ResumeAutoGenerator.module.css';
-
-type TimelineItem = {
-  time?: string;
-  title?: string;
-  tags?: string[];
-};
-
-type Certification = {
-  name?: unknown;
-  DateOfQualification?: unknown;
-};
-
-type ExperienceTech = {
-  os?: string[];
-  lang?: string[];
-  infra?: string[];
-};
-
-type ExperienceProject = {
-  title?: string;
-  role?: string[];
-  tech?: ExperienceTech;
-  result?: string;
-  summary?: string;
-  effort?: string[];
-  issue_solving?: string[];
-};
-
-type ExperienceCompany = {
-  name?: string;
-  period?: string;
-  projects?: ExperienceProject[];
-};
-
-type ProjectTech = {
-  os?: string[];
-  lang?: string[];
-  framework?: string[];
-  infra?: string[];
-};
-
-type ProjectEntry = {
-  name?: string;
-  repos_url?: string;
-  abstract?: string;
-  tech?: ProjectTech[];
-  effort?: string[];
-  main_function?: string[];
-};
-
-type ResumeData = {
-  name: string;
-  pronounce: string;
-  birth: unknown;
-  gender: string;
-  email: string;
-  timeline: TimelineItem[];
-  certifications: Certification[];
-  selfPrMarkdown: string;
-  coreStrengths: string[];
-  curiousFields: string[];
-  skillsWorkExperience: string[];
-  skillsPersonalProjects: string[];
-  skillsLearningInProgress: string[];
-  githubUrl: string;
-  portfolioUrlFromData: string;
-  projects: ProjectEntry[];
-  experiences: ExperienceCompany[];
-  experienceAbstract: string;
-};
-
-type FormState = {
-  postalCode: string;
-  address: string;
-  phone: string;
-  motivation: string;
-  preference: string;
-  photoDataUrl: string;
-};
-
-type Props = {
-  autoOpenOnGenerate?: boolean;
-  showPreview?: boolean;
-  submitLabel?: string;
-};
+import type {
+  FormState,
+  HeaderYaml,
+  Props,
+  ResumeData,
+} from '@site/src/util/documentGeneratorTypes';
+import type {Certification, CertificationsYaml} from '@site/src/util/certificationTypes';
+import type {ExperienceCompany, ExperiencesIndexYaml} from '@site/src/util/experienceTypes';
+import type {TimelineItem, HistoryYaml} from '@site/src/util/historyTypes';
+import type {IntroYaml} from '@site/src/util/introTypes';
+import type {ProjectEntry, ProjectsYaml, ProjectTech} from '@site/src/util/projectTypes';
 
 const INITIAL_FORM: FormState = {
   postalCode: '',
@@ -264,19 +190,144 @@ function replaceTableRows(documentRef: Document, tableSelector: string, rows: Ar
   }
 }
 
-function loadLinkByKey(headerParsed: any, key: string): string {
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isStringArray(value: unknown): value is string[] {
+  return Array.isArray(value) && value.every((item) => typeof item === 'string');
+}
+
+function isIntroBaseInfoArray(value: unknown): boolean {
+  if (!Array.isArray(value)) {
+    return false;
+  }
+  return value.every(
+    (item) =>
+      isRecord(item) &&
+      (item.name === undefined || typeof item.name === 'string') &&
+      (item.pronounce === undefined || typeof item.pronounce === 'string') &&
+      (item.birth === undefined || typeof item.birth === 'string' || item.birth instanceof Date) &&
+      (item.gender === undefined || typeof item.gender === 'string'),
+  );
+}
+
+function isIntroYaml(value: unknown): value is IntroYaml {
+  if (!isRecord(value)) {
+    return false;
+  }
+  if (value.intro === undefined) {
+    return true;
+  }
+  if (!isRecord(value.intro)) {
+    return false;
+  }
+
+  const intro = value.intro;
+  const isBaseInfoValid = intro.base_info === undefined || isIntroBaseInfoArray(intro.base_info);
+  const isEmailValid = intro.email === undefined || typeof intro.email === 'string';
+  const isCoreStrengthsValid = intro.core_strengths === undefined || isStringArray(intro.core_strengths);
+  const isCuriousFieldsValid = intro.curious_fields === undefined || isStringArray(intro.curious_fields);
+  const isSkillsValid =
+    intro.skills === undefined ||
+    (isRecord(intro.skills) &&
+      (intro.skills.work_experience === undefined || isStringArray(intro.skills.work_experience)) &&
+      (intro.skills.personal_projects === undefined || isStringArray(intro.skills.personal_projects)) &&
+      (intro.skills.learning_in_progress === undefined || isStringArray(intro.skills.learning_in_progress)));
+
+  return isBaseInfoValid && isEmailValid && isCoreStrengthsValid && isCuriousFieldsValid && isSkillsValid;
+}
+
+function isHistoryYaml(value: unknown): value is HistoryYaml {
+  if (!isRecord(value)) {
+    return false;
+  }
+  if (value.timeline === undefined) {
+    return true;
+  }
+  return Array.isArray(value.timeline) && value.timeline.every((item) => isRecord(item));
+}
+
+function isCertificationsYaml(value: unknown): value is CertificationsYaml {
+  if (!isRecord(value)) {
+    return false;
+  }
+  if (value.certifications === undefined) {
+    return true;
+  }
+  return (
+    Array.isArray(value.certifications) &&
+    value.certifications.every(
+      (item) =>
+        isRecord(item) &&
+        (item.name === undefined || typeof item.name === 'string') &&
+        (item.DateOfQualification === undefined || typeof item.DateOfQualification === 'string'),
+    )
+  );
+}
+
+function isProjectsYaml(value: unknown): value is ProjectsYaml {
+  if (!isRecord(value)) {
+    return false;
+  }
+  if (value.projects === undefined) {
+    return true;
+  }
+  return Array.isArray(value.projects) && value.projects.every((item) => isRecord(item));
+}
+
+function isHeaderYaml(value: unknown): value is HeaderYaml {
+  if (!isRecord(value)) {
+    return false;
+  }
+  return value.links === undefined || Array.isArray(value.links);
+}
+
+function isExperiencesIndexYaml(value: unknown): value is ExperiencesIndexYaml {
+  if (!isRecord(value)) {
+    return false;
+  }
+  return value.companies === undefined || Array.isArray(value.companies);
+}
+
+function toTimelineItems(value: unknown): TimelineItem[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value.filter((item): item is TimelineItem => isRecord(item));
+}
+
+function toCertifications(value: unknown): Certification[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value.filter((item): item is Certification => isRecord(item));
+}
+
+function toProjects(value: unknown): ProjectEntry[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+  return value.filter((item): item is ProjectEntry => isRecord(item));
+}
+
+function isExperienceCompany(value: unknown): value is ExperienceCompany {
+  return isRecord(value);
+}
+
+function loadLinkByKey(headerParsed: HeaderYaml | null, key: string): string {
   const links = headerParsed?.links;
   if (!Array.isArray(links)) {
     return '';
   }
 
-  const block = links.find((item: any) => item && item[key]);
+  const block = links.find((item) => isRecord(item) && Array.isArray(item[key]));
   const values = block?.[key];
   if (!Array.isArray(values) || values.length === 0) {
     return '';
   }
 
-  return values[0]?.link ?? '';
+  return typeof values[0]?.link === 'string' ? values[0].link : '';
 }
 
 function toStringArray(value: unknown): string[] {
@@ -300,24 +351,32 @@ async function loadResumeData(baseUrl: string): Promise<{data: ResumeData; templ
       fetchText(`${baseUrl}/templates/career-history.html`),
     ]);
 
-  const introParsed = parseYaml(introText) as any;
-  const historyParsed = parseYaml(historyText) as any;
-  const certificationsParsed = parseYaml(certificationsText) as any;
-  const projectsParsed = parseYaml(projectsText) as any;
-  const headerParsed = parseYaml(headerText) as any;
+  const introParsedRaw = parseYaml(introText);
+  const historyParsedRaw = parseYaml(historyText);
+  const certificationsParsedRaw = parseYaml(certificationsText);
+  const projectsParsedRaw = parseYaml(projectsText);
+  const headerParsedRaw = parseYaml(headerText);
+
+  const introParsed = isIntroYaml(introParsedRaw) ? introParsedRaw : null;
+  const historyParsed = isHistoryYaml(historyParsedRaw) ? historyParsedRaw : null;
+  const certificationsParsed = isCertificationsYaml(certificationsParsedRaw) ? certificationsParsedRaw : null;
+  const projectsParsed = isProjectsYaml(projectsParsedRaw) ? projectsParsedRaw : null;
+  const headerParsed = isHeaderYaml(headerParsedRaw) ? headerParsedRaw : null;
 
   const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
-  const experiencesIndexParsed = parseYaml(experiencesIndexText) as any;
+  const experiencesIndexParsedRaw = parseYaml(experiencesIndexText);
+  const experiencesIndexParsed = isExperiencesIndexYaml(experiencesIndexParsedRaw) ? experiencesIndexParsedRaw : null;
   const experienceFiles = Array.isArray(experiencesIndexParsed?.companies)
     ? experiencesIndexParsed.companies
-        .map((item: any) => item?.file)
-        .filter((item: unknown): item is string => typeof item === 'string')
+        .map((item) => item?.file)
+        .filter((item): item is string => typeof item === 'string')
     : [];
 
   const experienceCompanies = await Promise.all(
     experienceFiles.map(async (item) => {
       const raw = await fetchText(`${baseUrl}${item}`);
-      return parseYaml(raw) as ExperienceCompany;
+      const parsed = parseYaml(raw);
+      return isExperienceCompany(parsed) ? parsed : {};
     }),
   );
 
@@ -326,11 +385,11 @@ async function loadResumeData(baseUrl: string): Promise<{data: ResumeData; templ
 
   const baseInfo = introParsed?.intro?.base_info?.[0] ?? {};
   const skillsNode = introParsed?.intro?.skills;
-  const legacySkills = Array.isArray(skillsNode) ? skillsNode[0] : null;
+  const skillsRecord = isRecord(skillsNode) ? skillsNode : null;
 
-  const workExperience = toStringArray(skillsNode?.work_experience ?? legacySkills?.practical);
-  const personalProjects = toStringArray(skillsNode?.personal_projects ?? legacySkills?.hobby);
-  const learningInProgress = toStringArray(skillsNode?.learning_in_progress);
+  const workExperience = toStringArray(skillsRecord?.work_experience);
+  const personalProjects = toStringArray(skillsRecord?.personal_projects);
+  const learningInProgress = toStringArray(skillsRecord?.learning_in_progress);
 
   const portfolioUrl = typeof window !== 'undefined' ? new URL(baseUrl || '/', window.location.origin).toString() : '';
 
@@ -338,20 +397,20 @@ async function loadResumeData(baseUrl: string): Promise<{data: ResumeData; templ
     data: {
       name: normalizeText(baseInfo?.name),
       pronounce: normalizeText(baseInfo?.pronounce),
-      birth: baseInfo?.birth ?? '',
+      birth: normalizeText(baseInfo?.birth),
       gender: normalizeText(baseInfo?.gender),
       email: normalizeText(introParsed?.intro?.email),
-      timeline: Array.isArray(historyParsed?.timeline) ? historyParsed.timeline : [],
-      certifications: Array.isArray(certificationsParsed?.certifications) ? certificationsParsed.certifications : [],
+      timeline: toTimelineItems(historyParsed?.timeline),
+      certifications: toCertifications(certificationsParsed?.certifications),
       selfPrMarkdown: selfPrText,
-      coreStrengths: Array.isArray(introParsed?.intro?.core_strengths) ? introParsed.intro.core_strengths : [],
-      curiousFields: Array.isArray(introParsed?.intro?.curious_fields) ? introParsed.intro.curious_fields : [],
+      coreStrengths: toStringArray(introParsed?.intro?.core_strengths),
+      curiousFields: toStringArray(introParsed?.intro?.curious_fields),
       skillsWorkExperience: workExperience,
       skillsPersonalProjects: personalProjects,
       skillsLearningInProgress: learningInProgress,
       githubUrl: loadLinkByKey(headerParsed, 'github'),
       portfolioUrlFromData: portfolioUrl,
-      projects: Array.isArray(projectsParsed?.projects) ? projectsParsed.projects : [],
+      projects: toProjects(projectsParsed?.projects),
       experiences: experienceCompanies,
       experienceAbstract: abstractMarkdown,
     },
