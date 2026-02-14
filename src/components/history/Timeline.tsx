@@ -10,6 +10,7 @@ export type TimelineItem = {
   id: string;
   title: React.ReactNode;
   body?: React.ReactNode;
+  tags?: string[];
   time?: React.ReactNode;
   icon?: React.ReactNode;
   dotColor?: string;
@@ -47,14 +48,14 @@ export function Timeline({
           isAlternate && !leftSide ? (
             <TimelineOpposite time={it.time} />
           ) : (
-            <TimelineCard title={it.title} body={it.body} />
+            <TimelineCard title={it.title} body={it.body} tags={it.tags} />
           );
 
         const rightCell =
           isAlternate && leftSide ? (
             <TimelineOpposite time={it.time} />
           ) : (
-            <TimelineCard title={it.title} body={it.body} />
+            <TimelineCard title={it.title} body={it.body} tags={it.tags} />
           );
 
         return (
