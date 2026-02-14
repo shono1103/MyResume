@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width,initial-scale=1" />
+	<title>履歴書テンプレート（日本・一般）</title>
+	<style>
+		/* ===== 印刷設定 ===== */
+		@page {
+			size: A4;
+			margin: 10mm;
+		}
+
+		:root {
+			--ink: #111;
+			--line: #111;
+			--thin: 1px;
+			--radius: 3px;
+			/* ほんの少しラウンド */
+			--fs: 12px;
+			--fs-sm: 11px;
+			--pad-y: 2.6mm;
+			--pad-x: 2.2mm;
+		}
+
+		* {
+			box-sizing: border-box;
+		}
+
+		body {
+			margin: 0;
+			background: #eee;
+			font-family: "Noto Sans JP", system-ui, -apple-system, "Segoe UI", sans-serif;
+			color: var(--ink);
+			-webkit-print-color-adjust: exact;
+			print-color-adjust: exact;
+		}
+
+		.sheet {
+			width: 210mm;
+			min-height: 297mm;
+			margin: 0 auto;
+			background: #fff;
+			padding: 10mm;
+		}
+
+		.row {
+			display: flex;
+			gap: 6mm;
+		}
+
+		.basic-photo-row {
+			align-items: flex-end;
+		}
+
+		.col {
+			flex: 1;
+		}
+
+		.mt {
+			margin-top: 4mm;
+		}
+
+		.titlebar {
+			display: flex;
+			align-items: flex-end;
+			justify-content: space-between;
+			margin-bottom: 3mm;
+		}
+
+		.title {
+			font-size: 20px;
+			font-weight: 700;
+			letter-spacing: .08em;
+		}
+
+		.date {
+			font-size: var(--fs);
+		}
+
+		/* ===== テーブル共通（角を少しラウンド） ===== */
+		.tbl-wrap {
+			border: var(--thin) solid var(--line);
+			border-radius: var(--radius);
+			overflow: hidden;
+			/* 角丸を効かせる */
+		}
+
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			table-layout: fixed;
+			font-size: var(--fs);
+		}
+
+		/* 基本情報と住所・連絡先の見出し列幅を揃える */
+		table[aria-label="基本情報"] col:first-child,
+		table[aria-label="住所・連絡先"] col:first-child {
+			width: 27mm !important;
+		}
+
+		th,
+		td {
+			border-right: var(--thin) solid var(--line);
+			border-bottom: var(--thin) solid var(--line);
+			padding: var(--pad-y) var(--pad-x);
+			vertical-align: middle;
+			word-break: break-word;
+		}
+
+		tr:last-child th,
+		tr:last-child td {
+			border-bottom: none;
+		}
+
+		th:last-child,
+		td:last-child {
+			border-right: none;
+		}
+
+		th {
+			font-weight: 700;
+			text-align: left;
+			background: #fafafa;
+		}
+
+		.gender-label,
+		.gender-cell {
+			padding-left: 1mm;
+			padding-right: 1mm;
+		}
+
+		.gender-cell {
+			text-align: center;
+		}
+
+		.gender-label {
+			white-space: nowrap;
+		}
+
+		/* ふりがな行のみ高さを詰める */
+		.compact-row th,
+		.compact-row td {
+			padding-top: 0.6mm;
+			padding-bottom: 0.6mm;
+			line-height: 1.2;
+		}
+
+		/* ===== 見出し ===== */
+		.section-h {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin: 3.5mm 0 2mm;
+		}
+
+		.section-h h2 {
+			margin: 0;
+			font-size: 14px;
+			letter-spacing: .03em;
+		}
+
+		.note {
+			font-size: var(--fs-sm);
+			color: #333;
+		}
+
+		/* ===== 顔写真枠 ===== */
+		.photo {
+			width: 35mm;
+			height: 45mm;
+			border: var(--thin) solid var(--line);
+			border-radius: var(--radius);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			font-size: var(--fs-sm);
+			color: #444;
+			background: #fff;
+			flex: 0 0 auto;
+		}
+
+		/* ===== 小さめセル ===== */
+		.center {
+			text-align: center;
+		}
+
+		.right {
+			text-align: right;
+		}
+
+		.small {
+			font-size: var(--fs-sm);
+		}
+
+		.large-input {
+			font-size: calc(var(--fs) * 1.6);
+			line-height: 1.25;
+		}
+
+		.addr-lines {
+			display: grid;
+			gap: 2mm;
+		}
+
+		.addr-zip,
+		.addr-main {
+			display: block;
+		}
+
+		.current-address-cell {
+			position: relative;
+		}
+
+		.current-address-cell .addr-lines {
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.current-address-cell .addr-zip {
+			flex: 0 0 auto;
+		}
+
+		.current-address-cell .addr-main {
+			margin-top: auto;
+			margin-bottom: auto;
+		}
+
+		/* ===== 入力用の余白感（手書き/入力どちらでも） ===== */
+		.blank {
+			color: transparent;
+		}
+
+		/* 罫線だけ残したい時用 */
+		.fill {
+			color: #111;
+		}
+
+		/* 記入時は class を fill に変える想定 */
+
+		/* ===== 行高の確保 ===== */
+		.h-1 {
+			height: 10mm;
+		}
+
+		.h-0 {
+			height: 3mm;
+		}
+
+		.h-2 {
+			height: 12mm;
+		}
+
+		.h-4 {
+			height: 24mm;
+		}
+
+		.h-3 {
+			height: 16mm;
+		}
+
+		/* 印刷時の背景 */
+		@media print {
+			body {
+				background: #fff;
+			}
+
+			.sheet {
+				margin: 0;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<main class="sheet">
+		<!-- ===== タイトル ===== -->
+		<div class="titlebar">
+			<div class="title">履歴書</div>
+			<div class="date">年&nbsp;&nbsp;月&nbsp;&nbsp;日現在</div>
+		</div>
+
+		<!-- ===== 基本情報 + 写真 ===== -->
+		<div class="row basic-photo-row">
+			<div class="col">
+				<div class="tbl-wrap">
+					<table aria-label="基本情報">
+						<colgroup>
+							<col style="width:27mm">
+							<col style="width:58%">
+							<col style="width:6%">
+							<col style="width:18%">
+						</colgroup>
+						<tr class="compact-row">
+							<th>ふりがな</th>
+							<td colspan="3" class="h-0"></td>
+						</tr>
+						<tr>
+							<th>氏名</th>
+							<td colspan="3" class="h-3 large-input"></td>
+						</tr>
+						<tr>
+							<th>生年月日</th>
+							<td class="h-3 large-input">年&nbsp;&nbsp;月&nbsp;&nbsp;日（満&nbsp;&nbsp;歳）</td>
+							<th class="gender-label">性別</th>
+							<td class="h-3 gender-cell"></td>
+						</tr>
+					</table>
+				</div>
+			</div>
+
+			<div class="photo" aria-label="証明写真枠">
+				証明写真<br />（縦45×横35mm）
+			</div>
+		</div>
+
+		<div class="tbl-wrap mt">
+			<table aria-label="住所・連絡先">
+				<colgroup>
+					<col style="width:27mm">
+					<col style="width:auto">
+				</colgroup>
+				<tr>
+					<th>現住所</th>
+					<td class="h-4 current-address-cell">
+						<div class="addr-lines">
+							<span class="addr-zip small">〒&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							<span class="addr-main large-input">都道府県&nbsp;&nbsp;&nbsp;&nbsp;市区町村&nbsp;&nbsp;&nbsp;&nbsp;番地・建物名</span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<th>電話</th>
+					<td class="h-1"></td>
+				</tr>
+				<tr>
+					<th>E-mail</th>
+					<td class="h-1"></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ===== 学歴（表を分離） ===== -->
+		<div class="section-h">
+			<h2>学歴</h2>
+			<div class="note small">（中学校卒業以降を記入する例）</div>
+		</div>
+		<div class="tbl-wrap">
+			<table aria-label="学歴">
+				<colgroup>
+					<col style="width:28mm">
+					<col style="width:auto">
+				</colgroup>
+				<tr>
+					<th class="center">年月</th>
+					<th class="center">学歴</th>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ===== 職歴（表を分離） ===== -->
+		<div class="section-h">
+			<h2>職歴</h2>
+			<div class="note small">（会社名・部署・職種・雇用形態など）</div>
+		</div>
+		<div class="tbl-wrap">
+			<table aria-label="職歴">
+				<colgroup>
+					<col style="width:28mm">
+					<col style="width:auto">
+				</colgroup>
+				<tr>
+					<th class="center">年月</th>
+					<th class="center">職歴</th>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center"></td>
+					<td class="right">以上</td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ===== 免許・資格 ===== -->
+		<div class="section-h">
+			<h2>免許・資格</h2>
+			<div class="note small">（取得年月順）</div>
+		</div>
+		<div class="tbl-wrap">
+			<table aria-label="免許・資格">
+				<colgroup>
+					<col style="width:28mm">
+					<col style="width:auto">
+				</colgroup>
+				<tr>
+					<th class="center">年月</th>
+					<th class="center">免許・資格</th>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td class="h-1 center">年&nbsp;&nbsp;月</td>
+					<td></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ===== 志望動機 ===== -->
+		<div class="section-h">
+			<h2>志望動機</h2>
+		</div>
+		<div class="tbl-wrap">
+			<table aria-label="志望動機">
+				<tr>
+					<td class="h-3"></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ===== 自己PR ===== -->
+		<div class="section-h">
+			<h2>自己PR</h2>
+		</div>
+		<div class="tbl-wrap">
+			<table aria-label="自己PR">
+				<tr>
+					<td class="h-3"></td>
+				</tr>
+			</table>
+		</div>
+
+		<!-- ===== 本人希望記入欄 ===== -->
+		<div class="section-h">
+			<h2>本人希望記入欄</h2>
+			<div class="note small">（勤務条件・配属希望など）</div>
+		</div>
+		<div class="tbl-wrap">
+			<table aria-label="本人希望記入欄">
+				<tr>
+					<td class="h-3"></td>
+				</tr>
+			</table>
+		</div>
+
+	</main>
+</body>
+
+</html>

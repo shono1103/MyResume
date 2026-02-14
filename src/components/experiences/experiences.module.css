@@ -59,6 +59,56 @@
   font-size: 0.9rem;
 }
 
+.projectDetailList {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: 1fr;
+}
+
+.projectDetailCard {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 10px;
+  padding: 0.8rem;
+  background: var(--ifm-background-surface-color);
+  break-inside: avoid;
+}
+
+.projectDetailTitle {
+  margin: 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 6px 6px 0 0;
+  background: #fff;
+  font-size: 0.95rem;
+}
+
+.projectDetailKv {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  overflow: hidden;
+}
+
+.projectDetailK {
+  padding: 0.6rem 0.7rem;
+  background: var(--ifm-color-emphasis-100);
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+  border-right: 1px solid var(--ifm-color-emphasis-300);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.projectDetailV {
+  padding: 0.6rem 0.7rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.projectDetailKv > *:nth-child(-n + 2) {
+  border-top: none;
+}
+
 .projectCard {
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 12px;
@@ -125,12 +175,29 @@
   flex-wrap: wrap;
 }
 
+.tagsCompact {
+  flex-wrap: nowrap;
+  overflow: hidden;
+  position: relative;
+  align-items: flex-end;
+}
+
 .tag {
   border: 1px solid var(--ifm-color-emphasis-300);
   border-radius: 9999px;
   padding: 0.15rem 0.55rem;
   font-size: 0.8rem;
   line-height: 1.4;
+  flex: 0 0 auto;
+}
+
+.etcText {
+  font-size: 0.8rem;
+  line-height: 1.4;
+  color: var(--ifm-color-emphasis-700);
+  white-space: nowrap;
+  flex: 0 0 auto;
+  align-self: flex-end;
 }
 
 .techBlock {
@@ -159,6 +226,15 @@
 .detailsPanel {
   border-top: 1px solid var(--ifm-color-emphasis-300);
   padding-top: 0.75rem;
+}
+
+.detailHeading {
+  margin: 0.8rem 0 0.45rem;
+  font-size: 0.95rem;
+}
+
+.detailList {
+  margin: 0.35rem 0;
 }
 
 .markdownBody :global(h1),

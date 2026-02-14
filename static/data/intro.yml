@@ -2,14 +2,25 @@ intro:
   base_info:
     - profile_img_path: /img/intro.jpg
       name: 佐伯 奨乃
+      pronounce: さいき しょうの
       birth: 2001-11-03
       from: 愛媛県西条市
+      gender: 男
   email: shono131103@gmail.com
   motto: KISS (Keep It Simple Stupid)
   hobby: [linux, コーヒー, 筋トレ, ビール, 日本酒, ワイン]
   skills:
-    - practical: [C++, Linux, Docker]
-      hobby: [linux, python, node.js]
+    work_experience: [C++, Linux, Docker]
+    personal_projects: [python, TypeScript, JavaScript, React, FastAPI]
+    learning_in_progress: [commander, proxmox, Next.js]
+  
+  core_strengths: 
+    - 低レイヤー
+    - Linux
+    - 開発環境構築
+    - 新規技術の習得
+    - AIに対する言語化能力
+  
   curious_fields: [SRE, Infra, IoT, Webバックエンド, PM]
   self-PR_mdFile_path: /data/selfPR.md
 

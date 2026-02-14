@@ -4,7 +4,7 @@ import { load as parseYaml } from 'js-yaml';
 import styles from './intro.module.css';
 import HistoryDigest from '../history/HistoryDigest';
 import SelfPrCard from './SelfPrCard';
-import { BaseInfoCard, Card, CuriousCard, EmailCard, HobbyCard, MottoCard, SkillsCard } from './IntroCards';
+import { BaseInfoCard, CoreStrengthsCard, CuriousCard, EmailCard, HobbyCard, MottoCard, SkillsCard } from './cards';
 import type { IntroData, IntroYamlConfig } from './introTypes';
 
 type Props = {
@@ -92,10 +92,12 @@ export default function IntroFromYaml({ configPath }: Props) {
 
 					<SelfPrCard markdownPath={normalizedIntro['self-PR_mdFile_path']} />
 
+					<SkillsCard intro={normalizedIntro} />
+
 					<div className={styles.threeColRow}>
 						<HobbyCard hobbies={normalizedIntro.hobby} />
-						<SkillsCard intro={normalizedIntro} />
 						<CuriousCard fields={normalizedIntro.curious_fields} />
+						<CoreStrengthsCard strengths={normalizedIntro.core_strengths ?? []} />
 					</div>
 
 				</div>

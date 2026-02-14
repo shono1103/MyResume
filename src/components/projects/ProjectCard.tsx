@@ -18,6 +18,14 @@ export default function ProjectCard({ project, baseUrl }: Props) {
 	const thumbnailUrl = thumbnailPath ? `${baseUrl.replace(/\/$/, '')}${thumbnailPath}` : null;
 	const abstractText = project.abstract?.trim() || 'No description yet.';
 	const statusText = STATUS_LABEL[project.status ?? ''] ?? project.status ?? 'Unknown';
+	const tagsFromTech =
+		project.tech?.flatMap((group) => [
+			...(group.os ?? []),
+			...(group.lang ?? []),
+			...(group.framework ?? []),
+			...(group.infra ?? []),
+		]) ?? [];
+	const tags = tagsFromTech.length > 0 ? [...new Set(tagsFromTech)] : project.tech_stack ?? [];
 
 	return (
 		<article className={styles.card}>
@@ -39,7 +47,7 @@ export default function ProjectCard({ project, baseUrl }: Props) {
 			<div className={styles.content}>
 				<p className={styles.abstract}>{abstractText}</p>
 				<div className={styles.tags}>
-					{(project.tech_stack ?? []).map((tech) => (
+					{tags.map((tech) => (
 						<span className={styles.tag} key={`${project.id}-${tech}`}>
 							{tech}
 						</span>

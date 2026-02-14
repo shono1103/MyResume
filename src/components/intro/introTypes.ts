@@ -6,8 +6,9 @@ export type IntroBaseInfo = {
 };
 
 export type IntroSkills = {
-  practical: string[];
-  hobby: string[];
+  work_experience: string[];
+  personal_projects: string[];
+  learning_in_progress: string[];
 };
 
 export type IntroData = {
@@ -15,7 +16,8 @@ export type IntroData = {
   email: string;
   motto: string;
   hobby: string[];
-  skills: IntroSkills[];
+  skills: IntroSkills;
+  core_strengths?: string[];
   curious_fields: string[];
   ['self-PR_mdFile_path']?: string;
 };

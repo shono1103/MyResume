@@ -9,8 +9,11 @@ export type ExperienceProject = {
   title: string;
   slug?: string;
   summary?: string;
+  result?: string;
   role?: string[];
   tech?: ExperienceProjectTech;
+  effort?: string[];
+  issue_solving?: string[];
   detail_markdown_path?: string;
 };
 

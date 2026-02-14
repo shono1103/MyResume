@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import {micromark} from 'micromark';
-import {Card} from './IntroCards';
+import {Card} from './cards';
 import styles from './intro.module.css';
 
 type Props = {
