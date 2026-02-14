@@ -110,7 +110,14 @@ const config: Config = {
         alt: 'My Resume Logo',
         src: 'img/shonoshono.svg',
       },
-      items: loadHeaderNavbarItems(siteBaseUrl),
+      items: [
+        {
+          type: 'custom-resumeGenerator',
+          position: 'right',
+          label: '履歴書・職務経歴書生成',
+        },
+        ...loadHeaderNavbarItems(siteBaseUrl),
+      ],
     },
     footer: {
       style: 'dark',

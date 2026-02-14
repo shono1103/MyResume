@@ -82,6 +82,12 @@ type FormState = {
   photoDataUrl: string;
 };
 
+type Props = {
+  autoOpenOnGenerate?: boolean;
+  showPreview?: boolean;
+  submitLabel?: string;
+};
+
 const INITIAL_FORM: FormState = {
   postalCode: '',
   address: '',
@@ -367,6 +373,7 @@ function setCellText(element: Element | null, value: string) {
 function buildResumeHtml(template: string, data: ResumeData, form: FormState): string {
   const parser = new DOMParser();
   const doc = parser.parseFromString(template, 'text/html');
+  doc.title = '履歴書.html';
 
   const infoRows = doc.querySelectorAll('table[aria-label="基本情報"] tr');
   setCellText(infoRows[0]?.querySelector('td'), data.pronounce);
@@ -461,6 +468,7 @@ function appendTagList(documentRef: Document, target: Element, tags: string[]) {
 function buildCareerHtml(template: string, data: ResumeData, form: FormState): string {
   const parser = new DOMParser();
   const doc = parser.parseFromString(template, 'text/html');
+  doc.title = '職務経歴書.html';
 
   const profile = doc.querySelector('.profile');
   if (profile) {
@@ -778,7 +786,11 @@ function buildCareerHtml(template: string, data: ResumeData, form: FormState): s
   return '<!doctype html>\n' + doc.documentElement.outerHTML;
 }
 
-export default function ResumeAutoGenerator() {
+export default function ResumeAutoGenerator({
+  autoOpenOnGenerate = false,
+  showPreview = true,
+  submitLabel = '履歴書・職務経歴書を生成',
+}: Props) {
   const baseUrl = useBaseUrl('/').replace(/\/$/, '');
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [loading, setLoading] = useState(false);
@@ -809,8 +821,8 @@ export default function ResumeAutoGenerator() {
     updateField('photoDataUrl', dataUrl);
   }
 
-  function openPreviewPrint(html: string) {
-    const opened = window.open('', '_blank');
+  function openPreviewPrint(html: string, target?: Window | null) {
+    const opened = target ?? window.open('', '_blank');
     if (!opened) {
       return;
     }
@@ -824,6 +836,8 @@ export default function ResumeAutoGenerator() {
   async function handleGenerate() {
     setLoading(true);
     setError(null);
+    const resumeWindow = autoOpenOnGenerate ? window.open('', '_blank') : null;
+    const careerWindow = autoOpenOnGenerate ? window.open('', '_blank') : null;
 
     try {
       const loaded = await loadResumeData(baseUrl);
@@ -832,8 +846,19 @@ export default function ResumeAutoGenerator() {
 
       setResumeHtml(resume);
       setCareerHtml(career);
+
+      if (autoOpenOnGenerate) {
+        openPreviewPrint(resume, resumeWindow);
+        openPreviewPrint(career, careerWindow);
+      }
     } catch (e) {
       setError(e instanceof Error ? e.message : 'unknown error');
+      if (resumeWindow) {
+        resumeWindow.close();
+      }
+      if (careerWindow) {
+        careerWindow.close();
+      }
     } finally {
       setLoading(false);
     }
@@ -878,48 +903,52 @@ export default function ResumeAutoGenerator() {
 
         <div className={styles.actions}>
           <button type="button" className={styles.button} onClick={handleGenerate} disabled={loading}>
-            {loading ? '生成中...' : '履歴書・職務経歴書を生成'}
+            {loading ? '生成中...' : submitLabel}
           </button>
-          <button
-            type="button"
-            className={styles.buttonSecondary}
-            onClick={() => openPreviewPrint(resumeHtml)}
-            disabled={!canPrint}
-          >
-            履歴書を別タブで開く
-          </button>
-          <button
-            type="button"
-            className={styles.buttonSecondary}
-            onClick={() => openPreviewPrint(careerHtml)}
-            disabled={!canPrint}
-          >
-            職務経歴書を別タブで開く
-          </button>
+          {canPrint ? (
+            <>
+              <button
+                type="button"
+                className={styles.buttonSecondary}
+                onClick={() => openPreviewPrint(resumeHtml)}
+              >
+                履歴書を別タブで開く
+              </button>
+              <button
+                type="button"
+                className={styles.buttonSecondary}
+                onClick={() => openPreviewPrint(careerHtml)}
+              >
+                職務経歴書を別タブで開く
+              </button>
+            </>
+          ) : null}
         </div>
 
         {error ? <p>生成に失敗しました: {error}</p> : null}
       </div>
 
-      <div className={styles.previewGrid}>
-        <section className={styles.previewCard}>
-          <div className={styles.previewHead}>
-            <h3 className={styles.previewTitle}>履歴書プレビュー</h3>
-          </div>
-          <div className={styles.previewViewport}>
-            <iframe className={styles.iframe} srcDoc={resumeHtml} title="履歴書プレビュー" />
-          </div>
-        </section>
+      {showPreview ? (
+        <div className={styles.previewGrid}>
+          <section className={styles.previewCard}>
+            <div className={styles.previewHead}>
+              <h3 className={styles.previewTitle}>履歴書プレビュー</h3>
+            </div>
+            <div className={styles.previewViewport}>
+              <iframe className={styles.iframe} srcDoc={resumeHtml} title="履歴書プレビュー" />
+            </div>
+          </section>
 
-        <section className={styles.previewCard}>
-          <div className={styles.previewHead}>
-            <h3 className={styles.previewTitle}>職務経歴書プレビュー</h3>
-          </div>
-          <div className={styles.previewViewport}>
-            <iframe className={styles.iframe} srcDoc={careerHtml} title="職務経歴書プレビュー" />
-          </div>
-        </section>
-      </div>
+          <section className={styles.previewCard}>
+            <div className={styles.previewHead}>
+              <h3 className={styles.previewTitle}>職務経歴書プレビュー</h3>
+            </div>
+            <div className={styles.previewViewport}>
+              <iframe className={styles.iframe} srcDoc={careerHtml} title="職務経歴書プレビュー" />
+            </div>
+          </section>
+        </div>
+      ) : null}
     </div>
   );
 }

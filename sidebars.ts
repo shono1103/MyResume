@@ -6,7 +6,6 @@ const sidebars: SidebarsConfig = {
     'history',
     'certifications',
     'projects',
-    'auto-generate',
     {
       type: 'category',
       label: 'Experiences',
