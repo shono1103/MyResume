@@ -8,6 +8,61 @@ type Props = {
   onToggle: () => void;
 };
 
+function calculateCompactVisibleCount(container: HTMLDivElement, items: string[]): number {
+  if (items.length === 0) {
+    return 0;
+  }
+
+  const availableWidth = container.clientWidth;
+  if (availableWidth <= 0) {
+    return items.length;
+  }
+
+  const measure = document.createElement('div');
+  measure.className = `${styles.tags} ${styles.tagsCompact}`;
+  measure.style.position = 'absolute';
+  measure.style.visibility = 'hidden';
+  measure.style.pointerEvents = 'none';
+  measure.style.left = '-9999px';
+  measure.style.top = '0';
+  measure.style.width = `${availableWidth}px`;
+
+  const createTag = (text: string) => {
+    const span = document.createElement('span');
+    span.className = styles.tag;
+    span.textContent = text;
+    return span;
+  };
+
+  const fits = (count: number): boolean => {
+    const nodes = items.slice(0, count).map((item) => createTag(item));
+    if (count < items.length) {
+      const etc = document.createElement('span');
+      etc.className = styles.etcText;
+      etc.textContent = 'etc...';
+      nodes.push(etc);
+    }
+    measure.replaceChildren(...nodes);
+    return measure.scrollWidth <= measure.clientWidth;
+  };
+
+  document.body.appendChild(measure);
+  let low = 0;
+  let high = items.length;
+  let answer = 0;
+  while (low <= high) {
+    const mid = Math.floor((low + high) / 2);
+    if (fits(mid)) {
+      answer = mid;
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  measure.remove();
+  return answer;
+}
+
 function TagList({items, compact = false}: {items: string[]; compact?: boolean}) {
   const containerRef = React.useRef<HTMLDivElement | null>(null);
   const [visibleCount, setVisibleCount] = React.useState<number | null>(null);
@@ -18,30 +73,45 @@ function TagList({items, compact = false}: {items: string[]; compact?: boolean})
       return;
     }
 
-    setVisibleCount(items.length);
-  }, [compact, items]);
-
-  React.useLayoutEffect(() => {
-    if (!compact || visibleCount === null) {
-      return;
-    }
-
     const container = containerRef.current;
     if (!container) {
       return;
     }
 
-    if (container.scrollWidth > container.clientWidth) {
-      setVisibleCount((current) => {
-        if (current === null) {
-          return current;
-        }
-
-        // 1件でも収まらない場合はタグを出さず etc のみにする
-        return Math.max(0, current - 1);
+    let frameId = 0;
+    const recalculate = () => {
+      cancelAnimationFrame(frameId);
+      frameId = requestAnimationFrame(() => {
+        setVisibleCount(calculateCompactVisibleCount(container, items));
       });
+    };
+
+    recalculate();
+
+    if (typeof ResizeObserver === 'undefined') {
+      window.addEventListener('resize', recalculate);
+      return () => {
+        cancelAnimationFrame(frameId);
+        window.removeEventListener('resize', recalculate);
+      };
     }
-  }, [compact, visibleCount, items.length]);
+
+    const observer = new ResizeObserver(recalculate);
+    observer.observe(container);
+    return () => {
+      cancelAnimationFrame(frameId);
+      observer.disconnect();
+    };
+  }, [compact, items]);
+
+  React.useEffect(() => {
+    if (!compact) {
+      return;
+    }
+    if (visibleCount !== null && visibleCount > items.length) {
+      setVisibleCount(items.length);
+    }
+  }, [compact, items.length, visibleCount]);
 
   if (items.length === 0) {
     return <span className={styles.tag}>N/A</span>;
