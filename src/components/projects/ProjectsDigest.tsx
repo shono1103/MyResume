@@ -4,8 +4,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import {load as parseYaml} from 'js-yaml';
 import ProjectCard from './ProjectCard';
 import projectStyles from './projects.module.css';
-import type {ProjectYamlEntry} from './projectTypes';
-import type {ProjectsYaml} from '@site/src/util/projectTypes';
+import type {ProjectEntry} from '@site/src/util/projectTypes';
+import {parseProjectsYaml} from '@site/src/util/projectSchema';
 
 type Props = {
   className: string;
@@ -20,7 +20,7 @@ export default function ProjectsDigest({
 }: Props) {
   const baseUrl = useBaseUrl('/');
   const configPath = useBaseUrl('/data/projects.yml');
-  const [items, setItems] = useState<ProjectYamlEntry[]>([]);
+  const [items, setItems] = useState<ProjectEntry[]>([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -32,8 +32,8 @@ export default function ProjectsDigest({
           return;
         }
 
-        const parsed = parseYaml(await response.text()) as ProjectsYaml;
-        const projects = parsed?.projects ?? [];
+        const parsed = parseProjectsYaml(parseYaml(await response.text()), {source: configPath});
+        const projects = parsed.projects;
         if (projects.length === 0) {
           return;
         }

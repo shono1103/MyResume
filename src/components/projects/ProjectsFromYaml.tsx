@@ -3,7 +3,8 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import {load as parseYaml} from 'js-yaml';
 import styles from './projects.module.css';
 import ProjectCard from './ProjectCard';
-import type {ProjectsYamlConfig} from './projectTypes';
+import type {ProjectsYamlConfig} from '@site/src/util/projectTypes';
+import {parseProjectsYaml} from '@site/src/util/projectSchema';
 
 type Props = {
   configPath: string;
@@ -26,11 +27,7 @@ export default function ProjectsFromYaml({configPath}: Props) {
         }
 
         const raw = await response.text();
-        const parsed = parseYaml(raw) as ProjectsYamlConfig;
-
-        if (!parsed || !Array.isArray(parsed.projects)) {
-          throw new Error('Invalid config format: projects is required');
-        }
+        const parsed = parseProjectsYaml(parseYaml(raw), {source: resolvedConfigPath});
 
         if (isMounted) {
           setConfig(parsed);

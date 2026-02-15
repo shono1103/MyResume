@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './projects.module.css';
-import type { ProjectYamlEntry } from './projectTypes';
+import type {ProjectEntry} from '@site/src/util/projectTypes';
 
 type Props = {
-	project: ProjectYamlEntry;
+	project: ProjectEntry;
 	baseUrl: string;
 };
 

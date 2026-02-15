@@ -4,7 +4,7 @@ import type {Certification, CertificationsYaml} from '@site/src/util/certificati
 import type {ExperienceCompany, ExperiencesIndexYaml} from '@site/src/util/experienceTypes';
 import type {TimelineItem, HistoryYaml} from '@site/src/util/historyTypes';
 import type {IntroYaml} from '@site/src/util/introTypes';
-import type {ProjectEntry, ProjectsYaml} from '@site/src/util/projectTypes';
+import {parseProjectsYaml} from '@site/src/util/projectSchema';
 import {parseExperienceCompany, parseExperienceCompaniesRoot} from '@site/src/util/experienceSchema';
 
 function normalizeText(value: unknown): string {
@@ -106,16 +106,6 @@ function isCertificationsYaml(value: unknown): value is CertificationsYaml {
   );
 }
 
-function isProjectsYaml(value: unknown): value is ProjectsYaml {
-  if (!isRecord(value)) {
-    return false;
-  }
-  if (value.projects === undefined) {
-    return true;
-  }
-  return Array.isArray(value.projects) && value.projects.every((item) => isRecord(item));
-}
-
 function isHeaderYaml(value: unknown): value is HeaderYaml {
   if (!isRecord(value)) {
     return false;
@@ -144,13 +134,6 @@ function toCertifications(value: unknown): Certification[] {
     return [];
   }
   return value.filter((item): item is Certification => isRecord(item));
-}
-
-function toProjects(value: unknown): ProjectEntry[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-  return value.filter((item): item is ProjectEntry => isRecord(item));
 }
 
 function loadLinkByKey(headerParsed: HeaderYaml | null, key: string): string {
@@ -198,7 +181,7 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
   const introParsed = isIntroYaml(introParsedRaw) ? introParsedRaw : null;
   const historyParsed = isHistoryYaml(historyParsedRaw) ? historyParsedRaw : null;
   const certificationsParsed = isCertificationsYaml(certificationsParsedRaw) ? certificationsParsedRaw : null;
-  const projectsParsed = isProjectsYaml(projectsParsedRaw) ? projectsParsedRaw : null;
+  const projectsParsed = parseProjectsYaml(projectsParsedRaw, {source: '/data/projects.yml'});
   const headerParsed = isHeaderYaml(headerParsedRaw) ? headerParsedRaw : null;
 
   const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
@@ -246,7 +229,7 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
       skillsLearningInProgress: learningInProgress,
       githubUrl: loadLinkByKey(headerParsed, 'github'),
       portfolioUrlFromData: portfolioUrl,
-      projects: toProjects(projectsParsed?.projects),
+      projects: projectsParsed.projects,
       experiences: experienceCompanies,
       experienceAbstract: abstractMarkdown,
     },
