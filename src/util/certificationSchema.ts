@@ -29,6 +29,8 @@ function parseCertification(value: unknown, path: string): Certification {
   return {
     id: optionalString(value.id, `${path}.id`),
     name: optionalString(value.name, `${path}.name`),
+    org_name: optionalString(value.org_name, `${path}.org_name`),
+    result_label: optionalString(value.result_label, `${path}.result_label`),
     svg_path: optionalString(value.svg_path, `${path}.svg_path`),
     DateOfQualification: optionalString(value.DateOfQualification, `${path}.DateOfQualification`),
   };
