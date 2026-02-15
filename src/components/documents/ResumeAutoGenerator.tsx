@@ -6,6 +6,9 @@ import {loadResumeData} from './resumeDataLoader';
 import {buildResumeHtml} from './resumeHtmlBuilder';
 import {buildCareerHtml} from './careerHtmlBuilder';
 
+const PHOTO_MAX_SIZE_BYTES = 8 * 1024 * 1024;
+const PHOTO_ALLOWED_MIME_TYPES = new Set(['image/jpeg', 'image/png']);
+
 const INITIAL_FORM: FormState = {
   postalCode: '',
   address: '',
@@ -24,6 +27,7 @@ export default function ResumeAutoGenerator({
   const [form, setForm] = useState<FormState>(INITIAL_FORM);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [photoError, setPhotoError] = useState<string | null>(null);
   const [resumeHtml, setResumeHtml] = useState('');
   const [careerHtml, setCareerHtml] = useState('');
 
@@ -34,20 +38,41 @@ export default function ResumeAutoGenerator({
   }
 
   async function handlePhotoChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setPhotoError(null);
     const file = event.target.files?.[0];
     if (!file) {
       updateField('photoDataUrl', '');
       return;
     }
 
-    const dataUrl = await new Promise<string>((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result ?? ''));
-      reader.onerror = () => reject(reader.error ?? new Error('failed to read image'));
-      reader.readAsDataURL(file);
-    });
+    if (!PHOTO_ALLOWED_MIME_TYPES.has(file.type)) {
+      setPhotoError('証明写真は JPEG または PNG を選択してください。');
+      updateField('photoDataUrl', '');
+      event.target.value = '';
+      return;
+    }
 
-    updateField('photoDataUrl', dataUrl);
+    if (file.size > PHOTO_MAX_SIZE_BYTES) {
+      setPhotoError('証明写真は 8MB 以下の画像を選択してください。');
+      updateField('photoDataUrl', '');
+      event.target.value = '';
+      return;
+    }
+
+    try {
+      const dataUrl = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(String(reader.result ?? ''));
+        reader.onerror = () => reject(reader.error ?? new Error('failed to read image'));
+        reader.readAsDataURL(file);
+      });
+
+      updateField('photoDataUrl', dataUrl);
+    } catch {
+      setPhotoError('証明写真の読み込みに失敗しました。画像を選び直してください。');
+      updateField('photoDataUrl', '');
+      event.target.value = '';
+    }
   }
 
   function openPreviewPrint(html: string, target?: Window | null) {
@@ -101,7 +126,8 @@ export default function ResumeAutoGenerator({
         <div className={styles.formGrid}>
           <label className={styles.field}>
             <span className={styles.label}>証明写真</span>
-            <input className={styles.input} type="file" accept="image/*" onChange={handlePhotoChange} />
+            <input className={styles.input} type="file" accept="image/jpeg,image/png" onChange={handlePhotoChange} />
+            {photoError ? <p>{photoError}</p> : null}
           </label>
 
           <label className={styles.field}>
