@@ -32,6 +32,9 @@ function toUserFriendlyErrorMessage(error: unknown): string {
     if (error.code === 'DATA_SCHEMA') {
       return 'dataファイルの形式に問題があります。設定内容を確認してください。';
     }
+    if (error.code === 'UNKNOWN') {
+      return '不明なエラーが発生しました。時間をおいて再試行してください。';
+    }
   }
   return '予期しないエラーが発生しました。時間をおいて再試行してください。';
 }

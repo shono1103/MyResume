@@ -102,96 +102,104 @@ function toStringArray(value: unknown): string[] {
 }
 
 export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData; templates: {resume: string; career: string}}> {
-  const [introText, historyText, certificationsText, projectsText, headerText, selfPrText, resumeTemplate, careerTemplate] =
-    await Promise.all([
-      fetchText(`${baseUrl}/data/intro.yml`),
-      fetchText(`${baseUrl}/data/history.yml`),
-      fetchText(`${baseUrl}/data/certifications.yml`),
-      fetchText(`${baseUrl}/data/projects.yml`),
-      fetchText(`${baseUrl}/data/header.yml`),
-      fetchText(`${baseUrl}/data/selfPR.md`),
-      fetchText(`${baseUrl}/templates/resume.html`),
-      fetchText(`${baseUrl}/templates/career-history.html`),
-    ]);
-
-  let introParsed;
-  let historyParsed;
-  let certificationsParsed;
-  let projectsParsed;
-  let headerParsed: HeaderYaml;
   try {
-    const introParsedRaw = parseYaml(introText);
-    const historyParsedRaw = parseYaml(historyText);
-    const certificationsParsedRaw = parseYaml(certificationsText);
-    const projectsParsedRaw = parseYaml(projectsText);
-    const headerParsedRaw = parseYaml(headerText);
+    const [introText, historyText, certificationsText, projectsText, headerText, selfPrText, resumeTemplate, careerTemplate] =
+      await Promise.all([
+        fetchText(`${baseUrl}/data/intro.yml`),
+        fetchText(`${baseUrl}/data/history.yml`),
+        fetchText(`${baseUrl}/data/certifications.yml`),
+        fetchText(`${baseUrl}/data/projects.yml`),
+        fetchText(`${baseUrl}/data/header.yml`),
+        fetchText(`${baseUrl}/data/selfPR.md`),
+        fetchText(`${baseUrl}/templates/resume.html`),
+        fetchText(`${baseUrl}/templates/career-history.html`),
+      ]);
 
-    introParsed = parseIntroYaml(introParsedRaw, {source: '/data/intro.yml'});
-    historyParsed = parseHistoryYaml(historyParsedRaw, {source: '/data/history.yml'});
-    certificationsParsed = parseCertificationsYaml(certificationsParsedRaw, {source: '/data/certifications.yml'});
-    projectsParsed = parseProjectsYaml(projectsParsedRaw, {source: '/data/projects.yml'});
-    headerParsed = parseHeaderYaml(headerParsedRaw, {source: '/data/header.yml'});
+    let introParsed;
+    let historyParsed;
+    let certificationsParsed;
+    let projectsParsed;
+    let headerParsed: HeaderYaml;
+
+    try {
+      const introParsedRaw = parseYaml(introText);
+      const historyParsedRaw = parseYaml(historyText);
+      const certificationsParsedRaw = parseYaml(certificationsText);
+      const projectsParsedRaw = parseYaml(projectsText);
+      const headerParsedRaw = parseYaml(headerText);
+
+      introParsed = parseIntroYaml(introParsedRaw, {source: '/data/intro.yml'});
+      historyParsed = parseHistoryYaml(historyParsedRaw, {source: '/data/history.yml'});
+      certificationsParsed = parseCertificationsYaml(certificationsParsedRaw, {source: '/data/certifications.yml'});
+      projectsParsed = parseProjectsYaml(projectsParsedRaw, {source: '/data/projects.yml'});
+      headerParsed = parseHeaderYaml(headerParsedRaw, {source: '/data/header.yml'});
+    } catch (error) {
+      throw new ResumeDataLoadError('DATA_SCHEMA', 'Invalid YAML schema in data files', error);
+    }
+
+    const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
+    let experienceCompanies: ExperienceCompany[] = [];
+    try {
+      const experiencesIndexParsedRaw = parseYaml(experiencesIndexText);
+      const experiencesIndexParsed = isExperiencesIndexYaml(experiencesIndexParsedRaw) ? experiencesIndexParsedRaw : null;
+      const parsedRoot = parseExperienceCompaniesRoot(experiencesIndexParsed, {source: '/data/experiences/index.yml'});
+      experienceCompanies =
+        parsedRoot.kind === 'inline'
+          ? parsedRoot.companies
+          : await Promise.all(
+              parsedRoot.refs.map(async (ref) => {
+                const raw = await fetchText(`${baseUrl}${ref.file}`);
+                const parsed = parseYaml(raw);
+                return parseExperienceCompany(parsed, {source: ref.file});
+              }),
+            );
+    } catch (error) {
+      throw new ResumeDataLoadError('DATA_SCHEMA', 'Invalid YAML schema in experiences files', error);
+    }
+
+    const abstractPath = experienceCompanies.find((company) => company?.name)?.abstract_mdFilePath;
+    const abstractMarkdown = abstractPath ? await fetchText(`${baseUrl}${abstractPath}`) : '';
+
+    const baseInfo = introParsed.intro.base_info?.[0] ?? {};
+    const skillsNode = introParsed.intro.skills;
+    const skillsRecord = isRecord(skillsNode) ? skillsNode : null;
+
+    const workExperience = toStringArray(skillsRecord?.work_experience);
+    const personalProjects = toStringArray(skillsRecord?.personal_projects);
+    const learningInProgress = toStringArray(skillsRecord?.learning_in_progress);
+
+    const portfolioUrl = typeof window !== 'undefined' ? new URL(baseUrl || '/', window.location.origin).toString() : '';
+
+    return {
+      data: {
+        name: normalizeText(baseInfo?.name),
+        pronounce: normalizeText(baseInfo?.pronounce),
+        birth: normalizeText(baseInfo?.birth),
+        gender: normalizeText(baseInfo?.gender),
+        email: normalizeText(introParsed.intro.email),
+        timeline: toTimelineItems(historyParsed.timeline),
+        certifications: certificationsParsed.certifications,
+        selfPrMarkdown: selfPrText,
+        coreStrengths: toStringArray(introParsed.intro.core_strengths),
+        curiousFields: toStringArray(introParsed.intro.curious_fields),
+        skillsWorkExperience: workExperience,
+        skillsPersonalProjects: personalProjects,
+        skillsLearningInProgress: learningInProgress,
+        githubUrl: loadLinkByKey(headerParsed, 'github'),
+        portfolioUrlFromData: portfolioUrl,
+        projects: projectsParsed.projects,
+        experiences: experienceCompanies,
+        experienceAbstract: abstractMarkdown,
+      },
+      templates: {
+        resume: resumeTemplate,
+        career: careerTemplate,
+      },
+    };
   } catch (error) {
-    throw new ResumeDataLoadError('DATA_SCHEMA', 'Invalid YAML schema in data files', error);
+    if (error instanceof ResumeDataLoadError) {
+      throw error;
+    }
+    throw new ResumeDataLoadError('UNKNOWN', 'Unexpected error while loading resume data', error);
   }
-
-  const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
-  let experienceCompanies: ExperienceCompany[] = [];
-  try {
-    const experiencesIndexParsedRaw = parseYaml(experiencesIndexText);
-    const experiencesIndexParsed = isExperiencesIndexYaml(experiencesIndexParsedRaw) ? experiencesIndexParsedRaw : null;
-    const parsedRoot = parseExperienceCompaniesRoot(experiencesIndexParsed, {source: '/data/experiences/index.yml'});
-    experienceCompanies =
-      parsedRoot.kind === 'inline'
-        ? parsedRoot.companies
-        : await Promise.all(
-            parsedRoot.refs.map(async (ref) => {
-              const raw = await fetchText(`${baseUrl}${ref.file}`);
-              const parsed = parseYaml(raw);
-              return parseExperienceCompany(parsed, {source: ref.file});
-            }),
-          );
-  } catch (error) {
-    throw new ResumeDataLoadError('DATA_SCHEMA', 'Invalid YAML schema in experiences files', error);
-  }
-
-  const abstractPath = experienceCompanies.find((company) => company?.name)?.abstract_mdFilePath;
-  const abstractMarkdown = abstractPath ? await fetchText(`${baseUrl}${abstractPath}`) : '';
-
-  const baseInfo = introParsed.intro.base_info?.[0] ?? {};
-  const skillsNode = introParsed.intro.skills;
-  const skillsRecord = isRecord(skillsNode) ? skillsNode : null;
-
-  const workExperience = toStringArray(skillsRecord?.work_experience);
-  const personalProjects = toStringArray(skillsRecord?.personal_projects);
-  const learningInProgress = toStringArray(skillsRecord?.learning_in_progress);
-
-  const portfolioUrl = typeof window !== 'undefined' ? new URL(baseUrl || '/', window.location.origin).toString() : '';
-
-  return {
-    data: {
-      name: normalizeText(baseInfo?.name),
-      pronounce: normalizeText(baseInfo?.pronounce),
-      birth: normalizeText(baseInfo?.birth),
-      gender: normalizeText(baseInfo?.gender),
-      email: normalizeText(introParsed.intro.email),
-      timeline: toTimelineItems(historyParsed.timeline),
-      certifications: certificationsParsed.certifications,
-      selfPrMarkdown: selfPrText,
-      coreStrengths: toStringArray(introParsed.intro.core_strengths),
-      curiousFields: toStringArray(introParsed.intro.curious_fields),
-      skillsWorkExperience: workExperience,
-      skillsPersonalProjects: personalProjects,
-      skillsLearningInProgress: learningInProgress,
-      githubUrl: loadLinkByKey(headerParsed, 'github'),
-      portfolioUrlFromData: portfolioUrl,
-      projects: projectsParsed.projects,
-      experiences: experienceCompanies,
-      experienceAbstract: abstractMarkdown,
-    },
-    templates: {
-      resume: resumeTemplate,
-      career: careerTemplate,
-    },
-  };
 }
