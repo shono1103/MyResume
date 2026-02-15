@@ -64,7 +64,7 @@ const siteBaseUrl = process.env.DOCUSAURUS_BASE_URL ?? '/MyResume/';
 const config: Config = {
   title: 'My Resume',
   tagline: 'IT Engineer Saiki Shono',
-  favicon: 'img/shonoshono-favicon.svg',
+  favicon: 'img/shonoshono.svg',
 
   future: {
     v4: true,
