@@ -4,6 +4,7 @@ import {load as parseYaml} from 'js-yaml';
 import styles from './certifications.module.css';
 import CertificationTagCloud from './CertificationTagCloud';
 import type {CertificationEntry, CertificationsYamlConfig} from './certificationTypes';
+import {parseCertificationsYaml} from '@site/src/util/certificationSchema';
 
 type Props = {
   configPath: string;
@@ -36,14 +37,23 @@ export default function TagCloudFromYaml({configPath}: Props) {
         }
 
         const raw = await response.text();
-        const parsed = parseYaml(raw) as CertificationsYamlConfig;
-
-        if (!parsed || !Array.isArray(parsed.certifications)) {
-          throw new Error('Invalid config format: certifications is required');
-        }
+        const parsed = parseCertificationsYaml(parseYaml(raw), {source: resolvedConfigPath}) as CertificationsYamlConfig;
+        const normalized = parsed.certifications.map((item, index) => {
+          if (!item.id || !item.name || !item.svg_path || !item.DateOfQualification) {
+            throw new Error(
+              `[${resolvedConfigPath}] certifications[${index}] requires id/name/svg_path/DateOfQualification`,
+            );
+          }
+          return {
+            id: item.id,
+            name: item.name,
+            svg_path: item.svg_path,
+            DateOfQualification: item.DateOfQualification,
+          };
+        });
 
         if (isMounted) {
-          setItems(parsed.certifications);
+          setItems(normalized);
           setError(null);
         }
       } catch (e) {

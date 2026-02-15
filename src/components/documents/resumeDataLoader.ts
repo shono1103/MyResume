@@ -1,9 +1,11 @@
 import {load as parseYaml} from 'js-yaml';
 import type {HeaderYaml, ResumeData} from '@site/src/util/documentGeneratorTypes';
-import type {Certification, CertificationsYaml} from '@site/src/util/certificationTypes';
 import type {ExperienceCompany, ExperiencesIndexYaml} from '@site/src/util/experienceTypes';
-import type {TimelineItem, HistoryYaml} from '@site/src/util/historyTypes';
-import type {IntroYaml} from '@site/src/util/introTypes';
+import type {TimelineItem} from '@site/src/util/historyTypes';
+import {parseCertificationsYaml} from '@site/src/util/certificationSchema';
+import {parseHeaderYaml} from '@site/src/util/headerSchema';
+import {parseHistoryYaml} from '@site/src/util/historySchema';
+import {parseIntroYaml} from '@site/src/util/introSchema';
 import {parseProjectsYaml} from '@site/src/util/projectSchema';
 import {parseExperienceCompany, parseExperienceCompaniesRoot} from '@site/src/util/experienceSchema';
 
@@ -32,87 +34,6 @@ function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
 
-function isStringArray(value: unknown): value is string[] {
-  return Array.isArray(value) && value.every((item) => typeof item === 'string');
-}
-
-function isIntroBaseInfoArray(value: unknown): boolean {
-  if (!Array.isArray(value)) {
-    return false;
-  }
-
-  return value.every(
-    (item) =>
-      isRecord(item) &&
-      (item.name === undefined || typeof item.name === 'string') &&
-      (item.pronounce === undefined || typeof item.pronounce === 'string') &&
-      (item.birth === undefined || typeof item.birth === 'string' || item.birth instanceof Date) &&
-      (item.gender === undefined || typeof item.gender === 'string'),
-  );
-}
-
-function isIntroYaml(value: unknown): value is IntroYaml {
-  if (!isRecord(value)) {
-    return false;
-  }
-  if (value.intro === undefined) {
-    return true;
-  }
-  if (!isRecord(value.intro)) {
-    return false;
-  }
-
-  const intro = value.intro;
-  const isBaseInfoValid = intro.base_info === undefined || isIntroBaseInfoArray(intro.base_info);
-  const isEmailValid = intro.email === undefined || typeof intro.email === 'string';
-  const isCoreStrengthsValid = intro.core_strengths === undefined || isStringArray(intro.core_strengths);
-  const isCuriousFieldsValid = intro.curious_fields === undefined || isStringArray(intro.curious_fields);
-  const isSkillsValid =
-    intro.skills === undefined ||
-    (isRecord(intro.skills) &&
-      (intro.skills.work_experience === undefined || isStringArray(intro.skills.work_experience)) &&
-      (intro.skills.personal_projects === undefined || isStringArray(intro.skills.personal_projects)) &&
-      (intro.skills.learning_in_progress === undefined || isStringArray(intro.skills.learning_in_progress)));
-
-  return isBaseInfoValid && isEmailValid && isCoreStrengthsValid && isCuriousFieldsValid && isSkillsValid;
-}
-
-function isHistoryYaml(value: unknown): value is HistoryYaml {
-  if (!isRecord(value)) {
-    return false;
-  }
-  if (value.timeline === undefined) {
-    return true;
-  }
-  return Array.isArray(value.timeline) && value.timeline.every((item) => isRecord(item));
-}
-
-function isCertificationsYaml(value: unknown): value is CertificationsYaml {
-  if (!isRecord(value)) {
-    return false;
-  }
-  if (value.certifications === undefined) {
-    return true;
-  }
-
-  return (
-    Array.isArray(value.certifications) &&
-    value.certifications.every(
-      (item) =>
-        isRecord(item) &&
-        (item.name === undefined || typeof item.name === 'string') &&
-        (item.DateOfQualification === undefined || typeof item.DateOfQualification === 'string'),
-    )
-  );
-}
-
-function isHeaderYaml(value: unknown): value is HeaderYaml {
-  if (!isRecord(value)) {
-    return false;
-  }
-  return value.links === undefined || Array.isArray(value.links);
-}
-
 function isExperiencesIndexYaml(value: unknown): value is ExperiencesIndexYaml {
   try {
     parseExperienceCompaniesRoot(value, {source: '/data/experiences/index.yml'});
@@ -127,13 +48,6 @@ function toTimelineItems(value: unknown): TimelineItem[] {
     return [];
   }
   return value.filter((item): item is TimelineItem => isRecord(item));
-}
-
-function toCertifications(value: unknown): Certification[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-  return value.filter((item): item is Certification => isRecord(item));
 }
 
 function loadLinkByKey(headerParsed: HeaderYaml | null, key: string): string {
@@ -178,11 +92,11 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
   const projectsParsedRaw = parseYaml(projectsText);
   const headerParsedRaw = parseYaml(headerText);
 
-  const introParsed = isIntroYaml(introParsedRaw) ? introParsedRaw : null;
-  const historyParsed = isHistoryYaml(historyParsedRaw) ? historyParsedRaw : null;
-  const certificationsParsed = isCertificationsYaml(certificationsParsedRaw) ? certificationsParsedRaw : null;
+  const introParsed = parseIntroYaml(introParsedRaw, {source: '/data/intro.yml'});
+  const historyParsed = parseHistoryYaml(historyParsedRaw, {source: '/data/history.yml'});
+  const certificationsParsed = parseCertificationsYaml(certificationsParsedRaw, {source: '/data/certifications.yml'});
   const projectsParsed = parseProjectsYaml(projectsParsedRaw, {source: '/data/projects.yml'});
-  const headerParsed = isHeaderYaml(headerParsedRaw) ? headerParsedRaw : null;
+  const headerParsed: HeaderYaml = parseHeaderYaml(headerParsedRaw, {source: '/data/header.yml'});
 
   const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
   const experiencesIndexParsedRaw = parseYaml(experiencesIndexText);
@@ -202,8 +116,8 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
   const abstractPath = experienceCompanies.find((company) => company?.name)?.abstract_mdFilePath;
   const abstractMarkdown = abstractPath ? await fetchText(`${baseUrl}${abstractPath}`) : '';
 
-  const baseInfo = introParsed?.intro?.base_info?.[0] ?? {};
-  const skillsNode = introParsed?.intro?.skills;
+  const baseInfo = introParsed.intro.base_info?.[0] ?? {};
+  const skillsNode = introParsed.intro.skills;
   const skillsRecord = isRecord(skillsNode) ? skillsNode : null;
 
   const workExperience = toStringArray(skillsRecord?.work_experience);
@@ -218,12 +132,12 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
       pronounce: normalizeText(baseInfo?.pronounce),
       birth: normalizeText(baseInfo?.birth),
       gender: normalizeText(baseInfo?.gender),
-      email: normalizeText(introParsed?.intro?.email),
-      timeline: toTimelineItems(historyParsed?.timeline),
-      certifications: toCertifications(certificationsParsed?.certifications),
+      email: normalizeText(introParsed.intro.email),
+      timeline: toTimelineItems(historyParsed.timeline),
+      certifications: certificationsParsed.certifications,
       selfPrMarkdown: selfPrText,
-      coreStrengths: toStringArray(introParsed?.intro?.core_strengths),
-      curiousFields: toStringArray(introParsed?.intro?.curious_fields),
+      coreStrengths: toStringArray(introParsed.intro.core_strengths),
+      curiousFields: toStringArray(introParsed.intro.curious_fields),
       skillsWorkExperience: workExperience,
       skillsPersonalProjects: personalProjects,
       skillsLearningInProgress: learningInProgress,

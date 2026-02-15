@@ -3,6 +3,7 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 import {load as parseYaml} from 'js-yaml';
 import {Timeline, type TimelineItem} from './Timeline';
 import type {HistoryYaml, TimelineItem as TimelineYamlEntry} from '@site/src/util/historyTypes';
+import {parseHistoryYaml} from '@site/src/util/historySchema';
 
 type Props = {
   configPath: string;
@@ -24,11 +25,7 @@ export default function TimelineFromYaml({configPath}: Props) {
         }
 
         const raw = await response.text();
-        const parsed = parseYaml(raw) as HistoryYaml;
-
-        if (!parsed || !Array.isArray(parsed.timeline)) {
-          throw new Error('Invalid config format: timeline is required');
-        }
+        const parsed = parseHistoryYaml(parseYaml(raw), {source: resolvedConfigPath}) as HistoryYaml;
 
         if (isMounted) {
           setConfig(parsed);

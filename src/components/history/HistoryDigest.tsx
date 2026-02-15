@@ -3,6 +3,7 @@ import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import { load as parseYaml } from 'js-yaml';
 import type {HistoryYaml, TimelineItem} from '@site/src/util/historyTypes';
+import {parseHistoryYaml} from '@site/src/util/historySchema';
 
 type Props = {
 	className: string;
@@ -37,10 +38,10 @@ export default function HistoryDigest({
 					return;
 				}
 
-				const parsed = parseYaml(await response.text()) as HistoryYaml;
-				const timeline = (parsed?.timeline ?? []).filter(
-					(entry): entry is HistoryItem => Boolean(entry?.id && entry?.title),
-				);
+					const parsed = parseHistoryYaml(parseYaml(await response.text()), {source: configPath}) as HistoryYaml;
+					const timeline = (parsed?.timeline ?? []).filter(
+						(entry): entry is HistoryItem => Boolean(entry?.id && entry?.title),
+					);
 				if (timeline.length === 0) {
 					return;
 				}
