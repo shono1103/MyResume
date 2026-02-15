@@ -1,0 +1,18 @@
+id: jp_archer_log_app
+name: jp_archer_log_app
+tech:
+  - os: [Linux]
+    lang: [TypeScript]
+    framework: [Next.js]
+    infra: [node.js]
+status: developing
+abstract: 弓道の日誌アプリ。いつかもう一度弓道を始めたときに使用できるように作成中
+repos_url: https://github.com/shono1103/jp_archer_log_app
+effort:
+  - 日々の記録を継続しやすい入力フローを意識したUI設計
+  - 将来的な分析機能追加を見据えたデータ項目の整理
+main_function:
+  - 練習日誌の登録・一覧表示
+  - 記録データの検索/振り返り
+  - 将来拡張用のデータ構造設計
+thumbnail_img_path:

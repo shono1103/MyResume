@@ -8,8 +8,9 @@ type Props = {
 };
 
 const STATUS_LABEL: Record<string, string> = {
-	in_progress: 'In Progress',
-	done: 'Done',
+	planning: 'Planning',
+	developing: 'Developing',
+	maintenance: 'Maintenance',
 	archived: 'Archived',
 };
 

@@ -1,0 +1,18 @@
+id: iot-manage-api
+name: IoTManageAPI
+tech:
+  - os: [Linux]
+    lang: [python, JavaScript]
+    framework: [FastAPI, React]
+    infra: [Docker, cron, ESP32, MQTT, node.js]
+status: developing
+abstract: マイコンで作成したIoTデバイスのデータをMQTTでWebAPIサーバーに通知し、データベースに管理する。
+repos_url: https://github.com/shono1103/IoTManageAPI
+effort:
+  - MQTTのトピック名の自動生成
+  - MQTTにより発生するタスクとhttpにより発生するタスクの分割
+main_function:
+  - IoTデバイスの登録
+  - MQTT pub/sub動作
+  - cronによるDBアーカイブ処理
+thumbnail_img_path:

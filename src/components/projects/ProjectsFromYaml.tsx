@@ -1,10 +1,9 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import {load as parseYaml} from 'js-yaml';
 import styles from './projects.module.css';
 import ProjectCard from './ProjectCard';
 import type {ProjectsYamlConfig} from '@site/src/util/projectTypes';
-import {parseProjectsYaml} from '@site/src/util/projectSchema';
+import {loadProjectsConfig} from './loadProjectsConfig';
 
 type Props = {
   configPath: string;
@@ -12,7 +11,6 @@ type Props = {
 
 export default function ProjectsFromYaml({configPath}: Props) {
   const baseUrl = useBaseUrl('/');
-  const resolvedConfigPath = useBaseUrl(configPath);
   const [config, setConfig] = useState<ProjectsYamlConfig | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,13 +19,7 @@ export default function ProjectsFromYaml({configPath}: Props) {
 
     async function loadConfig() {
       try {
-        const response = await fetch(resolvedConfigPath);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch config: ${response.status}`);
-        }
-
-        const raw = await response.text();
-        const parsed = parseProjectsYaml(parseYaml(raw), {source: resolvedConfigPath});
+        const parsed = await loadProjectsConfig(configPath, baseUrl);
 
         if (isMounted) {
           setConfig(parsed);
@@ -45,7 +37,7 @@ export default function ProjectsFromYaml({configPath}: Props) {
     return () => {
       isMounted = false;
     };
-  }, [resolvedConfigPath]);
+  }, [baseUrl, configPath]);
 
   const projects = useMemo(() => config?.projects ?? [], [config]);
 

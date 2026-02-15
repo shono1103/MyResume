@@ -1,0 +1,18 @@
+id: pomodoro-cli
+name: pomodoro-cli
+tech:
+  - os: [Linux, macOS]
+    lang: [TypeScript, JavaScript]
+    framework: [commander]
+    infra: [npm, node.js]
+status: developing
+abstract: 前職で工数管理が面倒だった。obsidianでタスクに関する資料作成をする前提でその構造に合わせてpomodoro timerの結果を記録するアプリ。
+repos_url: https://github.com/shono1103/pomodoro-cli
+effort:
+  - Obsidianの運用に合わせたログ形式の定義
+  - CLIでの最小操作で開始/停止/記録が完結するUX設計
+main_function:
+  - ポモドーロタイマーの開始/停止
+  - 作業ログの自動記録
+  - タスク単位での実績トラッキング
+thumbnail_img_path:

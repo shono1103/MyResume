@@ -1,0 +1,18 @@
+id: my-resume
+name: MyResume
+tech:
+  - os: [Linux]
+    lang: [TypeScript, JavaScript, markdown]
+    framework: [React, Docusaurus]
+    infra: [GitHub Pages, GitHub Actions, node.js]
+status: maintenance
+abstract: レジュメサイトをgithub Pagesで公開するためのプロジェクト。
+repos_url: https://github.com/shono1103/MyResume
+effort:
+  - YAML/Markdownデータを元にしたコンテンツ自動生成の仕組み化
+  - 採用担当が読みやすいように情報設計と見出し構成を標準化
+main_function:
+  - 職務経歴・学歴・資格の一元管理
+  - Docusaurusによる静的サイト公開
+  - 履歴書/職務経歴書テンプレートへの自動反映
+thumbnail_img_path: /data/projects/thumbnail/MyResume.png

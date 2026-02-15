@@ -1,4 +1,4 @@
-import type {ProjectEntry, ProjectTech, ProjectsYamlConfig} from './projectTypes';
+import type {IndexedProjectRef, ProjectEntry, ProjectTech, ProjectsYamlConfig} from './projectTypes';
 
 type ValidationContext = {
   source: string;
@@ -41,6 +41,30 @@ function optionalStringArray(value: unknown, path: string): string[] {
     throw new Error(`${path} must be string[]`);
   }
   return value;
+}
+
+function validateProjectRefFile(value: string, path: string): string {
+  const file = value.trim();
+  if (file === '') {
+    throw new Error(`${path} must be a non-empty string`);
+  }
+  // "/" is treated as the static root (web root), not filesystem absolute path.
+  if (!file.startsWith('/')) {
+    throw new Error(`${path} must start with "/" (static root-relative path)`);
+  }
+  if (!file.endsWith('.yml') && !file.endsWith('.yaml')) {
+    throw new Error(`${path} must end with .yml or .yaml`);
+  }
+  if (file.includes('..')) {
+    throw new Error(`${path} must not contain ".."`);
+  }
+  if (file.includes('//')) {
+    throw new Error(`${path} must not contain "//"`);
+  }
+  if (file.includes('\\')) {
+    throw new Error(`${path} must not contain "\\"`);
+  }
+  return file;
 }
 
 function parseProjectTech(value: unknown, path: string): ProjectTech {
@@ -88,7 +112,10 @@ export function parseProjectEntry(value: unknown, context: ValidationContext): P
   };
 }
 
-export function parseProjectsYaml(value: unknown, context: ValidationContext): ProjectsYamlConfig {
+export function parseProjectEntriesRoot(
+  value: unknown,
+  context: ValidationContext,
+): {kind: 'inline'; projects: ProjectEntry[]} | {kind: 'refs'; refs: IndexedProjectRef[]} {
   if (!isRecord(value)) {
     throw new Error(`[${context.source}] root must be an object`);
   }
@@ -96,9 +123,41 @@ export function parseProjectsYaml(value: unknown, context: ValidationContext): P
     throw new Error(`[${context.source}] projects is required and must be an array`);
   }
 
-  const projects = value.projects.map((item, index) =>
+  const projectsRaw = value.projects;
+  if (projectsRaw.length === 0) {
+    return {kind: 'inline', projects: []};
+  }
+
+  const fileRefFlags = projectsRaw.map((item) => isRecord(item) && isString(item.file));
+  const hasFileRef = fileRefFlags.some(Boolean);
+  const hasInlineEntry = fileRefFlags.some((flag) => !flag);
+
+  if (hasFileRef && hasInlineEntry) {
+    throw new Error(
+      `[${context.source}] projects must be either all file refs or all inline entries; mixed format is not allowed`,
+    );
+  }
+
+  if (hasFileRef) {
+    const refs = projectsRaw.map((item, index) => {
+      if (!isRecord(item) || !isString(item.file)) {
+        throw new Error(`[${context.source}] projects[${index}].file must be a string`);
+      }
+      return {file: validateProjectRefFile(item.file, `[${context.source}] projects[${index}].file`)};
+    });
+    return {kind: 'refs', refs};
+  }
+
+  const projects = projectsRaw.map((item, index) =>
     parseProjectEntry(item, {source: `${context.source} projects[${index}]`}),
   );
+  return {kind: 'inline', projects};
+}
 
-  return {projects};
+export function parseProjectsYaml(value: unknown, context: ValidationContext): ProjectsYamlConfig {
+  const parsedRoot = parseProjectEntriesRoot(value, context);
+  if (parsedRoot.kind === 'refs') {
+    throw new Error(`[${context.source}] projects file refs are not supported in parseProjectsYaml`);
+  }
+  return {projects: parsedRoot.projects};
 }
