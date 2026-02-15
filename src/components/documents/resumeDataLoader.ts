@@ -114,18 +114,18 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
       fetchText(`${baseUrl}/templates/career-history.html`),
     ]);
 
-  const introParsedRaw = parseYaml(introText);
-  const historyParsedRaw = parseYaml(historyText);
-  const certificationsParsedRaw = parseYaml(certificationsText);
-  const projectsParsedRaw = parseYaml(projectsText);
-  const headerParsedRaw = parseYaml(headerText);
-
   let introParsed;
   let historyParsed;
   let certificationsParsed;
   let projectsParsed;
   let headerParsed: HeaderYaml;
   try {
+    const introParsedRaw = parseYaml(introText);
+    const historyParsedRaw = parseYaml(historyText);
+    const certificationsParsedRaw = parseYaml(certificationsText);
+    const projectsParsedRaw = parseYaml(projectsText);
+    const headerParsedRaw = parseYaml(headerText);
+
     introParsed = parseIntroYaml(introParsedRaw, {source: '/data/intro.yml'});
     historyParsed = parseHistoryYaml(historyParsedRaw, {source: '/data/history.yml'});
     certificationsParsed = parseCertificationsYaml(certificationsParsedRaw, {source: '/data/certifications.yml'});
@@ -136,9 +136,9 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
   }
 
   const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
-  const experiencesIndexParsedRaw = parseYaml(experiencesIndexText);
   let experienceCompanies: ExperienceCompany[] = [];
   try {
+    const experiencesIndexParsedRaw = parseYaml(experiencesIndexText);
     const experiencesIndexParsed = isExperiencesIndexYaml(experiencesIndexParsedRaw) ? experiencesIndexParsedRaw : null;
     const parsedRoot = parseExperienceCompaniesRoot(experiencesIndexParsed, {source: '/data/experiences/index.yml'});
     experienceCompanies =
