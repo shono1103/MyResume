@@ -128,7 +128,16 @@ export function parseProjectEntriesRoot(
     return {kind: 'inline', projects: []};
   }
 
-  const hasFileRef = projectsRaw.some((item) => isRecord(item) && isString(item.file));
+  const fileRefFlags = projectsRaw.map((item) => isRecord(item) && isString(item.file));
+  const hasFileRef = fileRefFlags.some(Boolean);
+  const hasInlineEntry = fileRefFlags.some((flag) => !flag);
+
+  if (hasFileRef && hasInlineEntry) {
+    throw new Error(
+      `[${context.source}] projects must be either all file refs or all inline entries; mixed format is not allowed`,
+    );
+  }
+
   if (hasFileRef) {
     const refs = projectsRaw.map((item, index) => {
       if (!isRecord(item) || !isString(item.file)) {
