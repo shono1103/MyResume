@@ -43,6 +43,30 @@ function optionalStringArray(value: unknown, path: string): string[] {
   return value;
 }
 
+function validateProjectRefFile(value: string, path: string): string {
+  const file = value.trim();
+  if (file === '') {
+    throw new Error(`${path} must be a non-empty string`);
+  }
+  // "/" is treated as the static root (web root), not filesystem absolute path.
+  if (!file.startsWith('/')) {
+    throw new Error(`${path} must start with "/" (static root-relative path)`);
+  }
+  if (!file.endsWith('.yml') && !file.endsWith('.yaml')) {
+    throw new Error(`${path} must end with .yml or .yaml`);
+  }
+  if (file.includes('..')) {
+    throw new Error(`${path} must not contain ".."`);
+  }
+  if (file.includes('//')) {
+    throw new Error(`${path} must not contain "//"`);
+  }
+  if (file.includes('\\')) {
+    throw new Error(`${path} must not contain "\\"`);
+  }
+  return file;
+}
+
 function parseProjectTech(value: unknown, path: string): ProjectTech {
   if (value === undefined || value === null) {
     return {os: [], lang: [], framework: [], infra: []};
@@ -107,10 +131,10 @@ export function parseProjectEntriesRoot(
   const hasFileRef = projectsRaw.some((item) => isRecord(item) && isString(item.file));
   if (hasFileRef) {
     const refs = projectsRaw.map((item, index) => {
-      if (!isRecord(item) || !isString(item.file) || item.file.trim() === '') {
-        throw new Error(`[${context.source}] projects[${index}].file must be a non-empty string`);
+      if (!isRecord(item) || !isString(item.file)) {
+        throw new Error(`[${context.source}] projects[${index}].file must be a string`);
       }
-      return {file: item.file};
+      return {file: validateProjectRefFile(item.file, `[${context.source}] projects[${index}].file`)};
     });
     return {kind: 'refs', refs};
   }
