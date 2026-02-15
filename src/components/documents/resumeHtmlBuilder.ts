@@ -1,5 +1,7 @@
 import type {FormState, ResumeData} from '@site/src/util/documentGeneratorTypes';
 
+type CertificationRowSource = ResumeData['certifications'][number];
+
 function normalizeText(value: unknown): string {
   if (value === null || value === undefined) {
     return '';
@@ -133,6 +135,19 @@ function setCellText(element: Element | null, value: string) {
   element.textContent = value;
 }
 
+function buildCertificationContent(item: CertificationRowSource): string {
+  const name = normalizeText(item.name).trim();
+  const resultLabel = normalizeText(item.result_label).trim();
+  const orgName = normalizeText(item.org_name).trim();
+  const body = [name, resultLabel].filter(Boolean).join(' ');
+
+  if (!body) {
+    return '';
+  }
+
+  return orgName ? `${body}（${orgName}）` : body;
+}
+
 export function buildResumeHtml(template: string, data: ResumeData, form: FormState): string {
   const parser = new DOMParser();
   const doc = parser.parseFromString(template, 'text/html');
@@ -183,7 +198,7 @@ export function buildResumeHtml(template: string, data: ResumeData, form: FormSt
 
   const certRows = [...data.certifications]
     .sort((a, b) => normalizeText(a.DateOfQualification).localeCompare(normalizeText(b.DateOfQualification)))
-    .map((item) => ({yearMonth: formatYearMonth(item.DateOfQualification), content: normalizeText(item.name).trim()}))
+    .map((item) => ({yearMonth: formatYearMonth(item.DateOfQualification), content: buildCertificationContent(item)}))
     .filter((item) => item.content);
 
   replaceTableRows(doc, 'table[aria-label="免許・資格"]', certRows);

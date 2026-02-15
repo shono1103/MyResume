@@ -1,17 +1,25 @@
 certifications:
   - id: ipa-fe
-    name: 基本情報技術者
+    name: 基本情報技術者試験
+    org_name: 情報処理推進機構
+    result_label: 合格
     svg_path: /img/certifications/IPA_FE.svg
     DateOfQualification: 2024-08
   - id: lpi-jp-linuc-l1
-    name: LinuCレベル1
+    name: Linux技術者認定 LinuC レベル1
+    org_name: LPI-Japan
+    result_label: 取得
     svg_path: /img/certifications/linuc_l1.svg
     DateOfQualification: 2026-01
   - id: normal-bike-license
-    name: 普通自動二輪免許
+    name: 普通自動二輪車免許
+    org_name: 静岡県公安委員会
+    result_label: 取得
     svg_path: /img/certifications/normal_bike_license.svg
     DateOfQualification: 2024-02
   - id: normal-car-license
-    name: 普通自動車免許
+    name: 普通自動車第一種運転免許
+    org_name: 静岡県公安委員会
+    result_label: 取得
     svg_path: /img/certifications/normal_car_license.svg
     DateOfQualification: 2020-12
