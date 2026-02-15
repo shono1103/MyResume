@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import ResumeAutoGenerator from '@site/src/components/documents/ResumeAutoGenerator';
-import styles from './ResumeGeneratorNavbarItem.module.css';
+import styles from './ResumeAutoGeneratorButton.module.css';
 
 type Props = {
   label?: string;
   mobile?: boolean;
 };
 
-export default function ResumeGeneratorNavbarItem({label = '書類生成', mobile}: Props) {
+export default function ResumeAutoGeneratorButton({label = '書類生成', mobile}: Props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
