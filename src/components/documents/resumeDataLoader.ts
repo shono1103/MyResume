@@ -5,6 +5,7 @@ import type {ExperienceCompany, ExperiencesIndexYaml} from '@site/src/util/exper
 import type {TimelineItem, HistoryYaml} from '@site/src/util/historyTypes';
 import type {IntroYaml} from '@site/src/util/introTypes';
 import type {ProjectEntry, ProjectsYaml} from '@site/src/util/projectTypes';
+import {parseExperienceCompany, parseExperienceCompaniesRoot} from '@site/src/util/experienceSchema';
 
 function normalizeText(value: unknown): string {
   if (value === null || value === undefined) {
@@ -123,10 +124,12 @@ function isHeaderYaml(value: unknown): value is HeaderYaml {
 }
 
 function isExperiencesIndexYaml(value: unknown): value is ExperiencesIndexYaml {
-  if (!isRecord(value)) {
+  try {
+    parseExperienceCompaniesRoot(value, {source: '/data/experiences/index.yml'});
+    return true;
+  } catch {
     return false;
   }
-  return value.companies === undefined || Array.isArray(value.companies);
 }
 
 function toTimelineItems(value: unknown): TimelineItem[] {
@@ -148,10 +151,6 @@ function toProjects(value: unknown): ProjectEntry[] {
     return [];
   }
   return value.filter((item): item is ProjectEntry => isRecord(item));
-}
-
-function isExperienceCompany(value: unknown): value is ExperienceCompany {
-  return isRecord(value);
 }
 
 function loadLinkByKey(headerParsed: HeaderYaml | null, key: string): string {
@@ -205,19 +204,17 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
   const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
   const experiencesIndexParsedRaw = parseYaml(experiencesIndexText);
   const experiencesIndexParsed = isExperiencesIndexYaml(experiencesIndexParsedRaw) ? experiencesIndexParsedRaw : null;
-  const experienceFiles = Array.isArray(experiencesIndexParsed?.companies)
-    ? experiencesIndexParsed.companies
-        .map((item) => item?.file)
-        .filter((item): item is string => typeof item === 'string')
-    : [];
-
-  const experienceCompanies = await Promise.all(
-    experienceFiles.map(async (item) => {
-      const raw = await fetchText(`${baseUrl}${item}`);
-      const parsed = parseYaml(raw);
-      return isExperienceCompany(parsed) ? parsed : {};
-    }),
-  );
+  const parsedRoot = parseExperienceCompaniesRoot(experiencesIndexParsed, {source: '/data/experiences/index.yml'});
+  const experienceCompanies: ExperienceCompany[] =
+    parsedRoot.kind === 'inline'
+      ? parsedRoot.companies
+      : await Promise.all(
+          parsedRoot.refs.map(async (ref) => {
+            const raw = await fetchText(`${baseUrl}${ref.file}`);
+            const parsed = parseYaml(raw);
+            return parseExperienceCompany(parsed, {source: ref.file});
+          }),
+        );
 
   const abstractPath = experienceCompanies.find((company) => company?.name)?.abstract_mdFilePath;
   const abstractMarkdown = abstractPath ? await fetchText(`${baseUrl}${abstractPath}`) : '';

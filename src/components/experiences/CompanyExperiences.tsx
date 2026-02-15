@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import ExperienceProjectCard from './ExperienceProjectCard';
 import styles from './experiences.module.css';
-import type {ExperienceCompany, ExperiencesYamlConfig} from './experienceTypes';
+import type {ExperienceCompany, ExperiencesYamlConfig} from '@site/src/util/experienceTypes';
 import {loadExperiencesConfig} from './loadExperiencesConfig';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 

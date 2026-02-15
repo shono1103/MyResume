@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './experiences.module.css';
-import type {ExperienceProject} from './experienceTypes';
+import type {ExperienceProject} from '@site/src/util/experienceTypes';
 
 type Props = {
   project: ExperienceProject;

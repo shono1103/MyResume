@@ -2,7 +2,7 @@ import React, {useEffect, useMemo, useState} from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './experiences.module.css';
-import type {ExperiencesYamlConfig} from './experienceTypes';
+import type {ExperiencesYamlConfig} from '@site/src/util/experienceTypes';
 import {loadExperiencesConfig} from './loadExperiencesConfig';
 
 type Props = {
