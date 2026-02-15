@@ -1,0 +1,5 @@
+projects:
+  - file: /data/projects/iot-manage-api.yml
+  - file: /data/projects/my-resume.yml
+  - file: /data/projects/jp_archer_log_app.yml
+  - file: /data/projects/pomodoro-cli.yml

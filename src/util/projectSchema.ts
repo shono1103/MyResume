@@ -4,6 +4,10 @@ type ValidationContext = {
   source: string;
 };
 
+type IndexedProjectRef = {
+  file: string;
+};
+
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === 'object' && value !== null;
 }
@@ -88,7 +92,10 @@ export function parseProjectEntry(value: unknown, context: ValidationContext): P
   };
 }
 
-export function parseProjectsYaml(value: unknown, context: ValidationContext): ProjectsYamlConfig {
+export function parseProjectEntriesRoot(
+  value: unknown,
+  context: ValidationContext,
+): {kind: 'inline'; projects: ProjectEntry[]} | {kind: 'refs'; refs: IndexedProjectRef[]} {
   if (!isRecord(value)) {
     throw new Error(`[${context.source}] root must be an object`);
   }
@@ -96,9 +103,32 @@ export function parseProjectsYaml(value: unknown, context: ValidationContext): P
     throw new Error(`[${context.source}] projects is required and must be an array`);
   }
 
-  const projects = value.projects.map((item, index) =>
+  const projectsRaw = value.projects;
+  if (projectsRaw.length === 0) {
+    return {kind: 'inline', projects: []};
+  }
+
+  const hasFileRef = projectsRaw.some((item) => isRecord(item) && isString(item.file));
+  if (hasFileRef) {
+    const refs = projectsRaw.map((item, index) => {
+      if (!isRecord(item) || !isString(item.file) || item.file.trim() === '') {
+        throw new Error(`[${context.source}] projects[${index}].file must be a non-empty string`);
+      }
+      return {file: item.file};
+    });
+    return {kind: 'refs', refs};
+  }
+
+  const projects = projectsRaw.map((item, index) =>
     parseProjectEntry(item, {source: `${context.source} projects[${index}]`}),
   );
+  return {kind: 'inline', projects};
+}
 
-  return {projects};
+export function parseProjectsYaml(value: unknown, context: ValidationContext): ProjectsYamlConfig {
+  const parsedRoot = parseProjectEntriesRoot(value, context);
+  if (parsedRoot.kind === 'refs') {
+    throw new Error(`[${context.source}] projects file refs are not supported in parseProjectsYaml`);
+  }
+  return {projects: parsedRoot.projects};
 }

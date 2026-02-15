@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import Link from '@docusaurus/Link';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import {load as parseYaml} from 'js-yaml';
 import ProjectCard from './ProjectCard';
 import projectStyles from './projects.module.css';
 import type {ProjectEntry} from '@site/src/util/projectTypes';
-import {parseProjectsYaml} from '@site/src/util/projectSchema';
+import {loadProjectsConfig} from './loadProjectsConfig';
 
 type Props = {
   className: string;
@@ -19,7 +18,7 @@ export default function ProjectsDigest({
   headingClassName,
 }: Props) {
   const baseUrl = useBaseUrl('/');
-  const configPath = useBaseUrl('/data/projects.yml');
+  const configPath = '/data/projects/index.yml';
   const [items, setItems] = useState<ProjectEntry[]>([]);
 
   useEffect(() => {
@@ -27,12 +26,7 @@ export default function ProjectsDigest({
 
     async function load() {
       try {
-        const response = await fetch(configPath);
-        if (!response.ok) {
-          return;
-        }
-
-        const parsed = parseProjectsYaml(parseYaml(await response.text()), {source: configPath});
+        const parsed = await loadProjectsConfig(configPath, baseUrl);
         const projects = parsed.projects;
         if (projects.length === 0) {
           return;
@@ -52,7 +46,7 @@ export default function ProjectsDigest({
     return () => {
       isMounted = false;
     };
-  }, [configPath]);
+  }, [baseUrl, configPath]);
 
   return (
     <section className={className}>

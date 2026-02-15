@@ -6,7 +6,7 @@ import {parseCertificationsYaml} from '@site/src/util/certificationSchema';
 import {parseHeaderYaml} from '@site/src/util/headerSchema';
 import {parseHistoryYaml} from '@site/src/util/historySchema';
 import {parseIntroYaml} from '@site/src/util/introSchema';
-import {parseProjectsYaml} from '@site/src/util/projectSchema';
+import {parseProjectEntriesRoot, parseProjectEntry} from '@site/src/util/projectSchema';
 import {parseExperienceCompany, parseExperienceCompaniesRoot} from '@site/src/util/experienceSchema';
 
 export type ResumeDataLoadErrorCode = 'NETWORK' | 'DATA_LOAD' | 'TEMPLATE_LOAD' | 'DATA_SCHEMA' | 'UNKNOWN';
@@ -103,12 +103,11 @@ function toStringArray(value: unknown): string[] {
 
 export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData; templates: {resume: string; career: string}}> {
   try {
-    const [introText, historyText, certificationsText, projectsText, headerText, selfPrText, resumeTemplate, careerTemplate] =
+    const [introText, historyText, certificationsText, headerText, selfPrText, resumeTemplate, careerTemplate] =
       await Promise.all([
         fetchText(`${baseUrl}/data/intro.yml`),
         fetchText(`${baseUrl}/data/history.yml`),
         fetchText(`${baseUrl}/data/certifications.yml`),
-        fetchText(`${baseUrl}/data/projects.yml`),
         fetchText(`${baseUrl}/data/header.yml`),
         fetchText(`${baseUrl}/data/selfPR.md`),
         fetchText(`${baseUrl}/templates/resume.html`),
@@ -125,16 +124,37 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
       const introParsedRaw = parseYaml(introText);
       const historyParsedRaw = parseYaml(historyText);
       const certificationsParsedRaw = parseYaml(certificationsText);
-      const projectsParsedRaw = parseYaml(projectsText);
       const headerParsedRaw = parseYaml(headerText);
 
       introParsed = parseIntroYaml(introParsedRaw, {source: '/data/intro.yml'});
       historyParsed = parseHistoryYaml(historyParsedRaw, {source: '/data/history.yml'});
       certificationsParsed = parseCertificationsYaml(certificationsParsedRaw, {source: '/data/certifications.yml'});
-      projectsParsed = parseProjectsYaml(projectsParsedRaw, {source: '/data/projects.yml'});
       headerParsed = parseHeaderYaml(headerParsedRaw, {source: '/data/header.yml'});
     } catch (error) {
       throw new ResumeDataLoadError('DATA_SCHEMA', 'Invalid YAML schema in data files', error);
+    }
+
+    try {
+      const projectsIndexText = await fetchText(`${baseUrl}/data/projects/index.yml`);
+      const projectsIndexParsedRaw = parseYaml(projectsIndexText);
+      const parsedRoot = parseProjectEntriesRoot(projectsIndexParsedRaw, {source: '/data/projects/index.yml'});
+      projectsParsed =
+        parsedRoot.kind === 'inline'
+          ? {projects: parsedRoot.projects}
+          : {
+              projects: await Promise.all(
+                parsedRoot.refs.map(async (ref) => {
+                  const raw = await fetchText(`${baseUrl}${ref.file}`);
+                  const parsed = parseYaml(raw);
+                  return parseProjectEntry(parsed, {source: ref.file});
+                }),
+              ),
+            };
+    } catch (error) {
+      if (error instanceof ResumeDataLoadError) {
+        throw error;
+      }
+      throw new ResumeDataLoadError('DATA_SCHEMA', 'Invalid YAML schema in projects files', error);
     }
 
     const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
