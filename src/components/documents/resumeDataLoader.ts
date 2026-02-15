@@ -9,6 +9,20 @@ import {parseIntroYaml} from '@site/src/util/introSchema';
 import {parseProjectsYaml} from '@site/src/util/projectSchema';
 import {parseExperienceCompany, parseExperienceCompaniesRoot} from '@site/src/util/experienceSchema';
 
+export type ResumeDataLoadErrorCode = 'NETWORK' | 'DATA_LOAD' | 'TEMPLATE_LOAD' | 'DATA_SCHEMA' | 'UNKNOWN';
+
+export class ResumeDataLoadError extends Error {
+  code: ResumeDataLoadErrorCode;
+  cause?: unknown;
+
+  constructor(code: ResumeDataLoadErrorCode, message: string, cause?: unknown) {
+    super(message);
+    this.name = 'ResumeDataLoadError';
+    this.code = code;
+    this.cause = cause;
+  }
+}
+
 function normalizeText(value: unknown): string {
   if (value === null || value === undefined) {
     return '';
@@ -21,13 +35,27 @@ function normalizeText(value: unknown): string {
   return String(value);
 }
 
-async function fetchText(path: string): Promise<string> {
-  const response = await fetch(path);
-  if (!response.ok) {
-    throw new Error(`Failed to fetch: ${path} (${response.status})`);
-  }
+function isTemplatePath(path: string): boolean {
+  return path.includes('/templates/');
+}
 
-  return response.text();
+async function fetchText(path: string): Promise<string> {
+  try {
+    const response = await fetch(path);
+    if (!response.ok) {
+      throw new ResumeDataLoadError(
+        isTemplatePath(path) ? 'TEMPLATE_LOAD' : 'DATA_LOAD',
+        `Failed to fetch: ${path} (${response.status})`,
+      );
+    }
+
+    return response.text();
+  } catch (error) {
+    if (error instanceof ResumeDataLoadError) {
+      throw error;
+    }
+    throw new ResumeDataLoadError('NETWORK', `Network error while fetching: ${path}`, error);
+  }
 }
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -92,26 +120,40 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
   const projectsParsedRaw = parseYaml(projectsText);
   const headerParsedRaw = parseYaml(headerText);
 
-  const introParsed = parseIntroYaml(introParsedRaw, {source: '/data/intro.yml'});
-  const historyParsed = parseHistoryYaml(historyParsedRaw, {source: '/data/history.yml'});
-  const certificationsParsed = parseCertificationsYaml(certificationsParsedRaw, {source: '/data/certifications.yml'});
-  const projectsParsed = parseProjectsYaml(projectsParsedRaw, {source: '/data/projects.yml'});
-  const headerParsed: HeaderYaml = parseHeaderYaml(headerParsedRaw, {source: '/data/header.yml'});
+  let introParsed;
+  let historyParsed;
+  let certificationsParsed;
+  let projectsParsed;
+  let headerParsed: HeaderYaml;
+  try {
+    introParsed = parseIntroYaml(introParsedRaw, {source: '/data/intro.yml'});
+    historyParsed = parseHistoryYaml(historyParsedRaw, {source: '/data/history.yml'});
+    certificationsParsed = parseCertificationsYaml(certificationsParsedRaw, {source: '/data/certifications.yml'});
+    projectsParsed = parseProjectsYaml(projectsParsedRaw, {source: '/data/projects.yml'});
+    headerParsed = parseHeaderYaml(headerParsedRaw, {source: '/data/header.yml'});
+  } catch (error) {
+    throw new ResumeDataLoadError('DATA_SCHEMA', 'Invalid YAML schema in data files', error);
+  }
 
   const experiencesIndexText = await fetchText(`${baseUrl}/data/experiences/index.yml`);
   const experiencesIndexParsedRaw = parseYaml(experiencesIndexText);
-  const experiencesIndexParsed = isExperiencesIndexYaml(experiencesIndexParsedRaw) ? experiencesIndexParsedRaw : null;
-  const parsedRoot = parseExperienceCompaniesRoot(experiencesIndexParsed, {source: '/data/experiences/index.yml'});
-  const experienceCompanies: ExperienceCompany[] =
-    parsedRoot.kind === 'inline'
-      ? parsedRoot.companies
-      : await Promise.all(
-          parsedRoot.refs.map(async (ref) => {
-            const raw = await fetchText(`${baseUrl}${ref.file}`);
-            const parsed = parseYaml(raw);
-            return parseExperienceCompany(parsed, {source: ref.file});
-          }),
-        );
+  let experienceCompanies: ExperienceCompany[] = [];
+  try {
+    const experiencesIndexParsed = isExperiencesIndexYaml(experiencesIndexParsedRaw) ? experiencesIndexParsedRaw : null;
+    const parsedRoot = parseExperienceCompaniesRoot(experiencesIndexParsed, {source: '/data/experiences/index.yml'});
+    experienceCompanies =
+      parsedRoot.kind === 'inline'
+        ? parsedRoot.companies
+        : await Promise.all(
+            parsedRoot.refs.map(async (ref) => {
+              const raw = await fetchText(`${baseUrl}${ref.file}`);
+              const parsed = parseYaml(raw);
+              return parseExperienceCompany(parsed, {source: ref.file});
+            }),
+          );
+  } catch (error) {
+    throw new ResumeDataLoadError('DATA_SCHEMA', 'Invalid YAML schema in experiences files', error);
+  }
 
   const abstractPath = experienceCompanies.find((company) => company?.name)?.abstract_mdFilePath;
   const abstractMarkdown = abstractPath ? await fetchText(`${baseUrl}${abstractPath}`) : '';

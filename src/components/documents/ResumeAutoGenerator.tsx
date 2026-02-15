@@ -2,7 +2,7 @@ import React, {useMemo, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './ResumeAutoGenerator.module.css';
 import type {FormState, Props} from '@site/src/util/documentGeneratorTypes';
-import {loadResumeData} from './resumeDataLoader';
+import {loadResumeData, ResumeDataLoadError} from './resumeDataLoader';
 import {buildResumeHtml} from './resumeHtmlBuilder';
 import {buildCareerHtml} from './careerHtmlBuilder';
 
@@ -17,6 +17,24 @@ const INITIAL_FORM: FormState = {
   preference: '',
   photoDataUrl: '',
 };
+
+function toUserFriendlyErrorMessage(error: unknown): string {
+  if (error instanceof ResumeDataLoadError) {
+    if (error.code === 'NETWORK') {
+      return '通信に失敗しました。ネットワーク接続を確認して再試行してください。';
+    }
+    if (error.code === 'TEMPLATE_LOAD') {
+      return 'テンプレートの読み込みに失敗しました。しばらくしてから再試行してください。';
+    }
+    if (error.code === 'DATA_LOAD') {
+      return 'dataファイルの読み込みに失敗しました。ファイル配置を確認して再試行してください。';
+    }
+    if (error.code === 'DATA_SCHEMA') {
+      return 'dataファイルの形式に問題があります。設定内容を確認してください。';
+    }
+  }
+  return '予期しないエラーが発生しました。時間をおいて再試行してください。';
+}
 
 export default function ResumeAutoGenerator({
   autoOpenOnGenerate = false,
@@ -106,7 +124,8 @@ export default function ResumeAutoGenerator({
         openPreviewPrint(career, careerWindow);
       }
     } catch (e) {
-      setError(e instanceof Error ? e.message : 'unknown error');
+      console.error('Failed to generate resume documents', e);
+      setError(toUserFriendlyErrorMessage(e));
       if (resumeWindow) {
         resumeWindow.close();
       }
