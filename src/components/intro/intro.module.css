@@ -45,6 +45,7 @@
   align-items: stretch;
 }
 
+
 .card {
   background: var(--ifm-background-surface-color);
   border: 1px solid var(--ifm-color-emphasis-300);
@@ -132,6 +133,7 @@
 
 .twoCol {
   display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 14px;
 }
 
@@ -302,6 +304,10 @@
   }
 
   .threeColRow {
+    grid-template-columns: 1fr;
+  }
+
+  .twoCol {
     grid-template-columns: 1fr;
   }
 

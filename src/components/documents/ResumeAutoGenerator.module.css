@@ -1,0 +1,120 @@
+.page {
+  display: grid;
+  gap: 1rem;
+}
+
+.formCard {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  padding: 1rem;
+  background: var(--ifm-background-surface-color);
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+.field {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.fieldWide {
+  grid-column: 1 / -1;
+}
+
+.label {
+  font-size: 0.85rem;
+  color: var(--ifm-color-emphasis-700);
+}
+
+.input,
+.textarea {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.95rem;
+  background: var(--ifm-background-color);
+}
+
+.textarea {
+  min-height: 92px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.actions {
+  margin-top: 0.85rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.button {
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 8px;
+  background: var(--ifm-color-primary);
+  color: #fff;
+  padding: 0.5rem 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.buttonSecondary {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--ifm-font-color-base);
+  padding: 0.5rem 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.previewGrid {
+  display: grid;
+  gap: 1rem;
+}
+
+.previewCard {
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ifm-background-surface-color);
+}
+
+.previewHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 0.9rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.previewTitle {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.previewViewport {
+  overflow-x: auto;
+  background: #e8e8e8;
+  padding: 0.75rem;
+}
+
+.iframe {
+  width: 860px;
+  min-height: 1080px;
+  border: none;
+  background: #fff;
+  display: block;
+  margin: 0 auto;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ifm-color-emphasis-700);
+}

@@ -1,43 +1,73 @@
 projects:
   - id: iot-manage-api
     name: IoTManageAPI
-    tech_stack: 
-      - python
-      - FastAPI
-      - node.js
-      - React
-      - MQTT
-      - ESP32
-      - Docker
-      - cron
+    tech:
+      - os: [Linux]
+        lang: [python, JavaScript]
+        framework: [FastAPI, React]
+        infra: [Docker, cron, ESP32, MQTT, node.js]
     status: in_progress
     abstract: マイコンで作成したIoTデバイスのデータをMQTTでWebAPIサーバーに通知し、データベースに管理する。
     repos_url: https://github.com/shono1103/IoTManageAPI
+    effort:
+      - MQTTのトピック名の自動生成
+      - MQTTにより発生するタスクとhttpにより発生するタスクの分割
+    main_function:
+      - IoTデバイスの登録
+      - MQTT pub/sub動作
+      - cronによるDBアーカイブ処理
     thumbnail_img_path:
   - id: my-resume
     name: MyResume
-    tech_stack: 
-      - React
-      - Docsaurus
-      - markdown
-      - node.js
+    tech:
+      - os: [Linux]
+        lang: [TypeScript, JavaScript, markdown]
+        framework: [React, Docusaurus]
+        infra: [GitHub Pages, GitHub Actions, node.js]
     status: in_progress
     abstract: レジュメサイトをgithub Pagesで公開するためのプロジェクト。
     repos_url: https://github.com/shono1103/MyResume
+    effort:
+      - YAML/Markdownデータを元にしたコンテンツ自動生成の仕組み化
+      - 採用担当が読みやすいように情報設計と見出し構成を標準化
+    main_function:
+      - 職務経歴・学歴・資格の一元管理
+      - Docusaurusによる静的サイト公開
+      - 履歴書/職務経歴書テンプレートへの自動反映
     thumbnail_img_path:
   - id: jp_archer_log_app
     name: jp_archer_log_app
-    tech_stack: 
-      - Next.js
+    tech:
+      - os: [Linux]
+        lang: [TypeScript]
+        framework: [Next.js]
+        infra: [node.js]
     status: in_progress
     abstract: 弓道の日誌アプリ。いつかもう一度弓道を始めたときに使用できるように作成中
     repos_url: https://github.com/shono1103/jp_archer_log_app
+    effort:
+      - 日々の記録を継続しやすい入力フローを意識したUI設計
+      - 将来的な分析機能追加を見据えたデータ項目の整理
+    main_function:
+      - 練習日誌の登録・一覧表示
+      - 記録データの検索/振り返り
+      - 将来拡張用のデータ構造設計
     thumbnail_img_path:
   - id: pomodoro-cli
     name: pomodoro-cli
-    tech_stack: 
-      - commander
+    tech:
+      - os: [Linux, macOS]
+        lang: [TypeScript, JavaScript]
+        framework: [commander]
+        infra: [npm, node.js]
     status: in_progress
     abstract: 前職で工数管理が面倒だった。obsidianでタスクに関する資料作成をする前提でその構造に合わせてpomodoro timerの結果を記録するアプリ。
     repos_url: https://github.com/shono1103/pomodoro-cli
+    effort:
+      - Obsidianの運用に合わせたログ形式の定義
+      - CLIでの最小操作で開始/停止/記録が完結するUX設計
+    main_function:
+      - ポモドーロタイマーの開始/停止
+      - 作業ログの自動記録
+      - タスク単位での実績トラッキング
     thumbnail_img_path:

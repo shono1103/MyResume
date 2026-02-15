@@ -1,16 +1,20 @@
-export type ExperienceProjectTech = {
-  os?: string[];
-  lang?: string[];
-  infra?: string[];
+export type ExperienceTech = {
+  os: string[];
+  lang: string[];
+  infra: string[];
 };
 
 export type ExperienceProject = {
   id: string;
   title: string;
+  member?: string;
   slug?: string;
+  role: string[];
+  tech: ExperienceTech;
+  result?: string;
   summary?: string;
-  role?: string[];
-  tech?: ExperienceProjectTech;
+  effort: string[];
+  issue_solving: string[];
   detail_markdown_path?: string;
 };
 
@@ -21,6 +25,10 @@ export type ExperienceCompany = {
   slug: string;
   period?: string;
   projects: ExperienceProject[];
+};
+
+export type ExperiencesIndexYaml = {
+  companies: Array<{file: string}>;
 };
 
 export type ExperiencesYamlConfig = {

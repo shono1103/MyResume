@@ -4,8 +4,9 @@ import { load as parseYaml } from 'js-yaml';
 import styles from './intro.module.css';
 import HistoryDigest from '../history/HistoryDigest';
 import SelfPrCard from './SelfPrCard';
-import { BaseInfoCard, Card, CuriousCard, EmailCard, HobbyCard, MottoCard, SkillsCard } from './IntroCards';
+import { BaseInfoCard, CoreStrengthsCard, CuriousCard, EmailCard, HobbyCard, MottoCard, SkillsCard } from './cards';
 import type { IntroData, IntroYamlConfig } from './introTypes';
+import {parseIntroYaml} from '@site/src/util/introSchema';
 
 type Props = {
 	configPath: string;
@@ -29,17 +30,34 @@ export default function IntroFromYaml({ configPath }: Props) {
 				}
 
 				const raw = await response.text();
-				const parsed = parseYaml(raw) as IntroYamlConfig;
+					const parsed = parseIntroYaml(parseYaml(raw), {source: resolvedConfigPath}) as IntroYamlConfig;
+					const baseInfo = parsed.intro.base_info?.[0];
+					if (!baseInfo) {
+						throw new Error(`[${resolvedConfigPath}] intro.base_info[0] is required`);
+					}
 
-				if (!parsed?.intro) {
-					throw new Error('Invalid config format: intro is required');
-				}
-
-				if (isMounted) {
-					setIntro(parsed.intro);
-					setLastUpdate(parsed.last_update ?? '');
-					setError(null);
-				}
+					if (isMounted) {
+						setIntro({
+							...parsed.intro,
+							base_info: [
+								{
+									profile_img_path: baseInfo.profile_img_path ?? '',
+									name: baseInfo.name ?? '',
+									pronounce: baseInfo.pronounce ?? '',
+									birth: baseInfo.birth ?? '',
+									from: baseInfo.from ?? '',
+									gender: baseInfo.gender ?? '',
+								},
+							],
+							email: parsed.intro.email ?? '',
+							motto: parsed.intro.motto ?? '',
+							hobby: parsed.intro.hobby ?? [],
+							skills: parsed.intro.skills ?? {work_experience: [], personal_projects: [], learning_in_progress: []},
+							curious_fields: parsed.intro.curious_fields ?? [],
+						});
+						setLastUpdate(parsed.last_update ?? '');
+						setError(null);
+					}
 			} catch (e) {
 				if (isMounted) {
 					setError(e instanceof Error ? e.message : 'Unknown error');
@@ -65,8 +83,12 @@ export default function IntroFromYaml({ configPath }: Props) {
 	const normalizedIntro: IntroData = {
 		...intro,
 		base_info: intro.base_info.map((item) => ({
-			...item,
 			profile_img_path: `${baseUrl.replace(/\/$/, '')}${item.profile_img_path}`,
+			name: item.name,
+			pronounce: item.pronounce,
+			birth: item.birth,
+			from: item.from,
+			gender: item.gender,
 		})),
 	};
 
@@ -92,10 +114,12 @@ export default function IntroFromYaml({ configPath }: Props) {
 
 					<SelfPrCard markdownPath={normalizedIntro['self-PR_mdFile_path']} />
 
+					<SkillsCard intro={normalizedIntro} />
+
 					<div className={styles.threeColRow}>
 						<HobbyCard hobbies={normalizedIntro.hobby} />
-						<SkillsCard intro={normalizedIntro} />
 						<CuriousCard fields={normalizedIntro.curious_fields} />
+						<CoreStrengthsCard strengths={normalizedIntro.core_strengths ?? []} />
 					</div>
 
 				</div>

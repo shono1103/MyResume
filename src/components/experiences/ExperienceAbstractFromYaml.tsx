@@ -1,9 +1,8 @@
 import React, {useEffect, useMemo, useState} from 'react';
 import useBaseUrl from '@docusaurus/useBaseUrl';
-import {load as parseYaml} from 'js-yaml';
 import {micromark} from 'micromark';
 import styles from './experiences.module.css';
-import type {ExperiencesYamlConfig} from './experienceTypes';
+import {loadExperiencesConfig} from './loadExperiencesConfig';
 
 type Props = {
   configPath: string;
@@ -11,7 +10,6 @@ type Props = {
 
 export default function ExperienceAbstractFromYaml({configPath}: Props) {
   const baseUrl = useBaseUrl('/');
-  const resolvedConfigPath = useBaseUrl(configPath);
   const [markdownPath, setMarkdownPath] = useState<string | null>(null);
   const [markdown, setMarkdown] = useState<string>('');
   const [error, setError] = useState<string | null>(null);
@@ -21,17 +19,7 @@ export default function ExperienceAbstractFromYaml({configPath}: Props) {
 
     async function loadConfig() {
       try {
-        const response = await fetch(resolvedConfigPath);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch config: ${response.status}`);
-        }
-
-        const raw = await response.text();
-        const parsed = parseYaml(raw) as ExperiencesYamlConfig;
-
-        if (!parsed || !Array.isArray(parsed.companies)) {
-          throw new Error('Invalid config format: companies is required');
-        }
+        const parsed = await loadExperiencesConfig(configPath, baseUrl);
 
         const pathFromYaml = parsed.companies.find((company) => company.abstract_mdFilePath)?.abstract_mdFilePath;
         if (!pathFromYaml?.trim()) {
@@ -54,7 +42,7 @@ export default function ExperienceAbstractFromYaml({configPath}: Props) {
     return () => {
       isMounted = false;
     };
-  }, [resolvedConfigPath]);
+  }, [baseUrl, configPath]);
 
   useEffect(() => {
     let isMounted = true;

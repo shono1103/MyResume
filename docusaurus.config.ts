@@ -64,7 +64,7 @@ const siteBaseUrl = process.env.DOCUSAURUS_BASE_URL ?? '/MyResume/';
 const config: Config = {
   title: 'My Resume',
   tagline: 'IT Engineer Saiki Shono',
-  favicon: 'img/shonoshono-favicon.svg',
+  favicon: 'img/shonoshono.svg',
 
   future: {
     v4: true,
@@ -110,7 +110,14 @@ const config: Config = {
         alt: 'My Resume Logo',
         src: 'img/shonoshono.svg',
       },
-      items: loadHeaderNavbarItems(siteBaseUrl),
+      items: [
+        {
+          type: 'custom-resumeGenerator',
+          position: 'right',
+          label: '履歴書・職務経歴書生成',
+        },
+        ...loadHeaderNavbarItems(siteBaseUrl),
+      ],
     },
     footer: {
       style: 'dark',

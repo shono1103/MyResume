@@ -1,0 +1,4 @@
+companies:
+  - file: /data/experiences/screen-ict.yml
+    abstract: static/data/experiences/abstract.md
+    

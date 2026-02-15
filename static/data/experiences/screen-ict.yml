@@ -1,0 +1,88 @@
+abstract_mdFilePath: /data/experiences/abstract.md
+id: screen-ict
+name: 株式会社SCREEN ICTソフトウエア
+slug: screen-ict
+period: 2024-04 to 2025-12
+projects:
+  - id: custom-feature
+    title: 半導体製造の洗浄工程装置のカスタム仕様開発
+    slug: semiconductor-custom-feature
+    member: 30人以上
+    role: [システム設計, 詳細設計, 実装, 結合テスト, リリース]
+    tech:
+      os: [vxworks, windows, wind river linux, ubuntu20.04lts]
+      lang: [C++]
+      infra: [gitlab, docker, redmine, subversion]
+    result: 1年間で6案件を対応。うち、3案件でシステム設計から担当。
+    effort:
+      - 詳細設計から参入
+      - システム設計において、現状のソースコードを正確に読み取り対応
+    issue_solving:
+  - id: docker-build-env
+    title: Dockerでのビルド環境開発
+    slug: docker-build-environment
+    member: 1人
+    role: [プロトタイプ開発]
+    tech:
+      os: [ubuntu20.04lts, wsl2]
+      lang: [C++, shell]
+      infra: [gitlab, docker, redmine]
+    result: ビルド環境の再現性を高め、セットアップ時間短縮と環境変更の追跡容易化を実現。
+    effort:
+      - Dockerfileでビルド環境をコード化し、環境定義を明文化
+      - WSL2 + Dockerでローカルビルド環境を再構築
+      - 既存開発手順を整理してチーム展開
+    issue_solving:
+      - VirtualBox配布運用の重さと更新コストを削減
+      - 環境構築の属人化を抑制
+  - id: debug-env
+    title: 単体プログラムデバッグ環境開発
+    slug: unit-debug-environment
+    member: 1人
+    role: [プロトタイプ開発]
+    tech:
+      os: [windows, ubuntu20.04lts, wsl2]
+      lang: [C++, shell, python]
+      infra: [gitlab, docker, redmine]
+    result: 問題切り分け速度を向上し、実機投入前の検証可能範囲を拡大。
+    effort:
+      - 設定ファイル読み込みフローを整理
+      - WindowsからWSL2 LinuxへのTCP連携を構築
+      - 依存を最小化した単体実行用検証環境を作成
+    issue_solving:
+      - モジュール依存の強さで単体デバッグしづらい課題を緩和
+      - 実機・結合環境に入る前段での検証を可能化
+  - id: gitlab-runner-cicd
+    title: オンプレGitLab RunnerによるCI/CD環境構築
+    slug: onprem-gitlab-runner-cicd
+    member: 1人
+    role: [ドキュメント作成, インフラ構築]
+    tech:
+      os: [wsl2]
+      lang: [C++]
+      infra: [gitlab, docker, redmine]
+    result: CI/CD導入前の検証コストを低減し、標準手順化で属人化を抑制。
+    effort:
+      - WSL2 + DockerでGitLab CEとGitLab Runnerを構築
+      - CI/CD実行基盤の検証と手順書化
+      - 再利用可能な運用フローを整理
+    issue_solving:
+      - 導入時の検証負荷と試行錯誤コストを圧縮
+      - 手順の標準化で運用の再現性を向上
+  - id: gitlab-pages
+    title: オンプレGitLab Pagesの環境構築
+    slug: onprem-gitlab-pages
+    member: 1人
+    role: [ドキュメント作成, インフラ構築]
+    tech:
+      os: [wsl2]
+      lang: [shell, python]
+      infra: [gitlab, docker, redmine, mkdocs]
+    result: GitLab Pages公開の前例を構築し、ドキュメント運用の統制を強化。
+    effort:
+      - 参画初期メンバー向けにGitLab Pagesサイトを公開
+      - プロジェクトドキュメントのGit管理と自動デプロイを実現
+      - ローカル立ち上げ手順をドキュメント化
+    issue_solving:
+      - 未管理ドキュメントの増殖を抑制
+      - 参画時の情報キャッチアップコストを削減
