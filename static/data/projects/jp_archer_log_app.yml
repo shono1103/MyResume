@@ -5,7 +5,7 @@ tech:
     lang: [TypeScript]
     framework: [Next.js]
     infra: [node.js]
-status: in_progress
+status: developing
 abstract: 弓道の日誌アプリ。いつかもう一度弓道を始めたときに使用できるように作成中
 repos_url: https://github.com/shono1103/jp_archer_log_app
 effort:

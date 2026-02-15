@@ -5,7 +5,7 @@ tech:
     lang: [TypeScript, JavaScript]
     framework: [commander]
     infra: [npm, node.js]
-status: in_progress
+status: developing
 abstract: 前職で工数管理が面倒だった。obsidianでタスクに関する資料作成をする前提でその構造に合わせてpomodoro timerの結果を記録するアプリ。
 repos_url: https://github.com/shono1103/pomodoro-cli
 effort:

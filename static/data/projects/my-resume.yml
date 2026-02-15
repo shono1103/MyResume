@@ -5,7 +5,7 @@ tech:
     lang: [TypeScript, JavaScript, markdown]
     framework: [React, Docusaurus]
     infra: [GitHub Pages, GitHub Actions, node.js]
-status:
+status: maintenance
 abstract: レジュメサイトをgithub Pagesで公開するためのプロジェクト。
 repos_url: https://github.com/shono1103/MyResume
 effort:

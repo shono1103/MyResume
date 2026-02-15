@@ -5,7 +5,7 @@ tech:
     lang: [python, JavaScript]
     framework: [FastAPI, React]
     infra: [Docker, cron, ESP32, MQTT, node.js]
-status: pending
+status: developing
 abstract: マイコンで作成したIoTデバイスのデータをMQTTでWebAPIサーバーに通知し、データベースに管理する。
 repos_url: https://github.com/shono1103/IoTManageAPI
 effort:
