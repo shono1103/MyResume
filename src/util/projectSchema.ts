@@ -1,11 +1,7 @@
-import type {ProjectEntry, ProjectTech, ProjectsYamlConfig} from './projectTypes';
+import type {IndexedProjectRef, ProjectEntry, ProjectTech, ProjectsYamlConfig} from './projectTypes';
 
 type ValidationContext = {
   source: string;
-};
-
-type IndexedProjectRef = {
-  file: string;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {

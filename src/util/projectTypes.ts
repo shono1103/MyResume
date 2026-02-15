@@ -25,3 +25,7 @@ export type ProjectsYaml = {
 export type ProjectsYamlConfig = {
   projects: ProjectEntry[];
 };
+
+export type IndexedProjectRef = {
+  file: string;
+};

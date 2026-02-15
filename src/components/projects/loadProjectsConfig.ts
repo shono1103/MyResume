@@ -1,10 +1,6 @@
 import {load as parseYaml} from 'js-yaml';
-import type {ProjectEntry, ProjectsYamlConfig} from '@site/src/util/projectTypes';
+import type {IndexedProjectRef, ProjectEntry, ProjectsYamlConfig} from '@site/src/util/projectTypes';
 import {parseProjectEntriesRoot, parseProjectEntry} from '@site/src/util/projectSchema';
-
-type IndexedProjectRef = {
-  file: string;
-};
 
 function resolveUrl(baseUrl: string, path: string): string {
   const normalizedBase = baseUrl.replace(/\/$/, '');
