@@ -116,7 +116,6 @@ export function parseExperienceProject(value: unknown, context: ValidationContex
     role: optionalStringArray(value.role, `${path}.role`),
     tech: parseExperienceTech(value.tech, `${path}.tech`),
     effort: optionalStringArray(value.effort, `${path}.effort`),
-    issue_solving: optionalStringArray(value.issue_solving, `${path}.issue_solving`),
     detail_markdown_path: optionalString(value.detail_markdown_path, `${path}.detail_markdown_path`),
   };
 }
