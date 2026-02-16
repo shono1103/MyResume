@@ -8,6 +8,7 @@ import {parseHistoryYaml} from '@site/src/util/historySchema';
 import {parseIntroYaml} from '@site/src/util/introSchema';
 import {parseProjectEntriesRoot, parseProjectEntry} from '@site/src/util/projectSchema';
 import {parseExperienceCompany, parseExperienceCompaniesRoot} from '@site/src/util/experienceSchema';
+import {normalizeText} from './utils/text';
 
 export type ResumeDataLoadErrorCode = 'NETWORK' | 'DATA_LOAD' | 'TEMPLATE_LOAD' | 'DATA_SCHEMA' | 'UNKNOWN';
 
@@ -21,18 +22,6 @@ export class ResumeDataLoadError extends Error {
     this.code = code;
     this.cause = cause;
   }
-}
-
-function normalizeText(value: unknown): string {
-  if (value === null || value === undefined) {
-    return '';
-  }
-
-  if (value instanceof Date) {
-    return value.toISOString().slice(0, 10);
-  }
-
-  return String(value);
 }
 
 function isTemplatePath(path: string): boolean {

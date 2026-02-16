@@ -1,18 +1,8 @@
 import type {FormState, ResumeData} from '@site/src/util/documentGeneratorTypes';
+import {createGenerationNoteElement} from './partials/generationNote';
+import {normalizeText} from './utils/text';
 
 type CertificationRowSource = ResumeData['certifications'][number];
-
-function normalizeText(value: unknown): string {
-  if (value === null || value === undefined) {
-    return '';
-  }
-
-  if (value instanceof Date) {
-    return value.toISOString().slice(0, 10);
-  }
-
-  return String(value);
-}
 
 function parseYearMonth(value?: unknown): {year: number; month: number} | null {
   const text = normalizeText(value).trim();
@@ -141,22 +131,8 @@ function appendGenerationNote(doc: Document, data: ResumeData) {
   if (!sheet || !titleBar) {
     return;
   }
-  const sourceUrl = data.portfolioUrlFromData || data.githubUrl || '-';
-
-  const note = doc.createElement('div');
+  const note = createGenerationNoteElement(doc, data, '履歴書');
   note.className = 'generation-note';
-  note.append('この履歴書は佐伯奨乃によって作成された');
-  if (sourceUrl.startsWith('http')) {
-    const link = doc.createElement('a');
-    link.href = sourceUrl;
-    link.target = '_blank';
-    link.rel = 'noreferrer';
-    link.textContent = 'MyResume';
-    note.appendChild(link);
-  } else {
-    note.append('MyResume');
-  }
-  note.append('で生成されました。');
   (note as HTMLElement).style.margin = '3mm 0 0';
   (note as HTMLElement).style.fontSize = '10px';
   (note as HTMLElement).style.color = '#666';

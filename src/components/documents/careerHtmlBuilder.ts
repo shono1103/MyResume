@@ -1,36 +1,9 @@
 import type {FormState, ResumeData} from '@site/src/util/documentGeneratorTypes';
 import type {ExperienceCompany, ExperienceProject} from '@site/src/util/experienceTypes';
 import type {ProjectEntry, ProjectTech} from '@site/src/util/projectTypes';
-
-function normalizeText(value: unknown): string {
-  if (value === null || value === undefined) {
-    return '';
-  }
-
-  if (value instanceof Date) {
-    return value.toISOString().slice(0, 10);
-  }
-
-  return String(value);
-}
-
-function markdownToText(markdown: string): string {
-  return markdown
-    .replace(/```[\s\S]*?```/g, '')
-    .replace(/^#{1,6}\s*/gm, '')
-    .replace(/^\s*[-*+]\s+/gm, '・')
-    .replace(/\[(.*?)\]\(.*?\)/g, '$1')
-    .replace(/`/g, '')
-    .replace(/\n{3,}/g, '\n\n')
-    .trim();
-}
-
-function splitParagraphs(markdown: string): string[] {
-  return markdownToText(markdown)
-    .split(/\n\s*\n/)
-    .map((item) => item.trim())
-    .filter(Boolean);
-}
+import {createGenerationNoteElement} from './partials/generationNote';
+import {appendLinkOrText} from './utils/dom';
+import {markdownToText, normalizeText, splitParagraphs} from './utils/text';
 
 function flattenTech(tech?: ProjectTech[]): string[] {
   if (!tech || tech.length === 0) {
@@ -112,23 +85,10 @@ function createCareerDocument(template: string): Document {
 }
 
 function fillHeaderSection(doc: Document, data: ResumeData) {
-  const sourceUrl = data.portfolioUrlFromData || data.githubUrl || '-';
   const header = doc.querySelector('header');
   if (header) {
-    const generationNote = doc.createElement('div');
+    const generationNote = createGenerationNoteElement(doc, data, '職務経歴書');
     generationNote.className = 'row small';
-    generationNote.append('この職務経歴書は佐伯奨乃によって作成された');
-    if (sourceUrl.startsWith('http')) {
-      const link = doc.createElement('a');
-      link.href = sourceUrl;
-      link.target = '_blank';
-      link.rel = 'noreferrer';
-      link.textContent = 'MyResume';
-      generationNote.appendChild(link);
-    } else {
-      generationNote.append('MyResume');
-    }
-    generationNote.append('で生成されました。');
     header.insertAdjacentElement('afterend', generationNote);
   }
 
@@ -149,16 +109,7 @@ function fillHeaderSection(doc: Document, data: ResumeData) {
       row.appendChild(strong);
       row.append(' ');
 
-      if (value.startsWith('http')) {
-        const link = doc.createElement('a');
-        link.href = value;
-        link.target = '_blank';
-        link.rel = 'noreferrer';
-        link.textContent = value;
-        row.appendChild(link);
-      } else {
-        row.append(value || '-');
-      }
+      appendLinkOrText(doc, row, value, {fallbackText: value || '-'});
 
       return row;
     });
