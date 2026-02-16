@@ -8,11 +8,12 @@ tech:
   lang: [shell, python]
   infra: [gitlab, docker, redmine, mkdocs]
 result:
-  - GitLab Pages公開の前例を構築し、ドキュメント運用の統制を強化。
+  - 納期1週間
+  - プロジェクト新規参入者用ドキュメントの自動デプロイ構築
+  - 社内ネットワークでのGitlab Pagesでのサイト公開
+  - 再現ドキュメント作成
+  - 未管理ドキュメント増殖の抑制
 effort:
-  - 参画初期メンバー向けにGitLab Pagesサイトを公開
-  - プロジェクトドキュメントのGit管理と自動デプロイを実現
-  - ローカル立ち上げ手順をドキュメント化
-issue_solving:
-  - 未管理ドキュメントの増殖を抑制
-  - 参画時の情報キャッチアップコストを削減
+  - mkdocs.ymlの自動生成スクリプト作成
+  - 若手社員へのドキュメント作成の呼びかけ
+  - ビルドジョブでのplantumlのpng画像生成

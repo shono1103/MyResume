@@ -141,7 +141,6 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
   const languages = project.tech?.lang ?? [];
   const infra = project.tech?.infra ?? [];
   const efforts = project.effort ?? [];
-  const issueSolving = project.issue_solving ?? [];
 
   return (
     <article className={`${styles.projectCard} ${expanded ? styles.projectCardExpanded : ''}`}>
@@ -208,19 +207,6 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
                 <ul className={styles.detailList}>
                   {efforts.map((item, index) => (
                     <li key={`${project.id}-effort-${index}`}>{item}</li>
-                  ))}
-                </ul>
-              ) : (
-                '-'
-              )}
-            </div>
-
-            <div className={styles.projectDetailK}>課題解決</div>
-            <div className={styles.projectDetailV}>
-              {issueSolving.length > 0 ? (
-                <ul className={styles.detailList}>
-                  {issueSolving.map((item, index) => (
-                    <li key={`${project.id}-issue-${index}`}>{item}</li>
                   ))}
                 </ul>
               ) : (

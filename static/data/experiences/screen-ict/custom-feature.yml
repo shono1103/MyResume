@@ -8,8 +8,8 @@ tech:
   lang: [C++]
   infra: [gitlab, docker, redmine, subversion]
 result:
-  - 1年間で6案件を対応。うち、3案件でシステム設計から担当。
+  - 1年間で6案件を対応。
+  - うち、3案件でシステム設計から担当。
 effort:
   - 詳細設計から参入
   - システム設計において、現状のソースコードを正確に読み取り対応
-issue_solving: []

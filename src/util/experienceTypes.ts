@@ -14,7 +14,6 @@ export type ExperienceProject = {
   result: string[];
   summary?: string;
   effort: string[];
-  issue_solving: string[];
   detail_markdown_path?: string;
 };
 

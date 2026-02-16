@@ -230,7 +230,6 @@ function createExperienceProjectItem(documentRef: Document, project: ExperienceP
     project.result?.length ? project.result : [normalizeText(project.summary).trim() || '-'],
   );
   appendListSection(documentRef, item, '工夫', project.effort ?? []);
-  appendListSection(documentRef, item, '課題解決', project.issue_solving ?? []);
 
   return item;
 }
