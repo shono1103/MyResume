@@ -28,9 +28,17 @@ export type ExperienceCompany = {
 };
 
 export type ExperiencesIndexYaml = {
-  companies: Array<{file: string}>;
+  companies: IndexedExperienceCompanyRef[];
 };
 
 export type ExperiencesYamlConfig = {
   companies: ExperienceCompany[];
+};
+
+export type IndexedExperienceCompanyRef = {
+  file: string;
+};
+
+export type IndexedExperienceProjectRef = {
+  file: string;
 };

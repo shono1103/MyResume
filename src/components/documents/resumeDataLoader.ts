@@ -7,7 +7,11 @@ import {parseHeaderYaml} from '@site/src/util/headerSchema';
 import {parseHistoryYaml} from '@site/src/util/historySchema';
 import {parseIntroYaml} from '@site/src/util/introSchema';
 import {parseProjectEntriesRoot, parseProjectEntry} from '@site/src/util/projectSchema';
-import {parseExperienceCompany, parseExperienceCompaniesRoot} from '@site/src/util/experienceSchema';
+import {
+  parseExperienceCompaniesRoot,
+  parseExperienceCompanyRoot,
+  parseExperienceProject,
+} from '@site/src/util/experienceSchema';
 import {normalizeText} from './utils/text';
 
 export type ResumeDataLoadErrorCode = 'NETWORK' | 'DATA_LOAD' | 'TEMPLATE_LOAD' | 'DATA_SCHEMA' | 'UNKNOWN';
@@ -159,7 +163,23 @@ export async function loadResumeData(baseUrl: string): Promise<{data: ResumeData
               parsedRoot.refs.map(async (ref) => {
                 const raw = await fetchText(`${baseUrl}${ref.file}`);
                 const parsed = parseYaml(raw);
-                return parseExperienceCompany(parsed, {source: ref.file});
+                const parsedCompany = parseExperienceCompanyRoot(parsed, {source: ref.file});
+                if (parsedCompany.kind === 'inline') {
+                  return parsedCompany.company;
+                }
+
+                const projects = await Promise.all(
+                  parsedCompany.refs.map(async (projectRef) => {
+                    const projectRaw = await fetchText(`${baseUrl}${projectRef.file}`);
+                    const projectParsed = parseYaml(projectRaw);
+                    return parseExperienceProject(projectParsed, {source: projectRef.file});
+                  }),
+                );
+
+                return {
+                  ...parsedCompany.company,
+                  projects,
+                };
               }),
             );
     } catch (error) {

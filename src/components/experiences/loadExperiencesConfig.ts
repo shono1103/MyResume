@@ -1,10 +1,10 @@
 import {load as parseYaml} from 'js-yaml';
 import type {ExperienceCompany, ExperiencesYamlConfig} from '@site/src/util/experienceTypes';
-import {parseExperienceCompaniesRoot, parseExperienceCompany} from '@site/src/util/experienceSchema';
-
-type IndexedCompanyRef = {
-  file: string;
-};
+import {
+  parseExperienceCompaniesRoot,
+  parseExperienceCompanyRoot,
+  parseExperienceProject,
+} from '@site/src/util/experienceSchema';
 
 function resolveUrl(baseUrl: string, path: string): string {
   const normalizedBase = baseUrl.replace(/\/$/, '');
@@ -30,10 +30,26 @@ export async function loadExperiencesConfig(configPath: string, baseUrl: string)
   }
 
   const loaded = await Promise.all(
-    parsedRoot.refs.map(async (ref: IndexedCompanyRef) => {
+    parsedRoot.refs.map(async (ref) => {
       const companyRaw = await fetchText(resolveUrl(baseUrl, ref.file));
       const companyParsed = parseYaml(companyRaw);
-      return parseExperienceCompany(companyParsed, {source: ref.file});
+      const parsedCompany = parseExperienceCompanyRoot(companyParsed, {source: ref.file});
+      if (parsedCompany.kind === 'inline') {
+        return parsedCompany.company;
+      }
+
+      const projects = await Promise.all(
+        parsedCompany.refs.map(async (projectRef) => {
+          const projectRaw = await fetchText(resolveUrl(baseUrl, projectRef.file));
+          const projectParsed = parseYaml(projectRaw);
+          return parseExperienceProject(projectParsed, {source: projectRef.file});
+        }),
+      );
+
+      return {
+        ...parsedCompany.company,
+        projects,
+      };
     }),
   );
 

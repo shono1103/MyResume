@@ -1,0 +1,17 @@
+id: docker-build-env
+title: Dockerでのビルド環境開発
+slug: docker-build-environment
+member: 1人
+role: [プロトタイプ開発]
+tech:
+  os: [ubuntu20.04lts, wsl2]
+  lang: [C++, shell]
+  infra: [gitlab, docker, redmine]
+result: ビルド環境の再現性を高め、セットアップ時間短縮と環境変更の追跡容易化を実現。
+effort:
+  - Dockerfileでビルド環境をコード化し、環境定義を明文化
+  - WSL2 + Dockerでローカルビルド環境を再構築
+  - 既存開発手順を整理してチーム展開
+issue_solving:
+  - VirtualBox配布運用の重さと更新コストを削減
+  - 環境構築の属人化を抑制

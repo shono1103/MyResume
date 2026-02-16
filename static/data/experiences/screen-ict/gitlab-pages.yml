@@ -1,0 +1,17 @@
+id: gitlab-pages
+title: オンプレGitLab Pagesの環境構築
+slug: onprem-gitlab-pages
+member: 1人
+role: [ドキュメント作成, インフラ構築]
+tech:
+  os: [wsl2]
+  lang: [shell, python]
+  infra: [gitlab, docker, redmine, mkdocs]
+result: GitLab Pages公開の前例を構築し、ドキュメント運用の統制を強化。
+effort:
+  - 参画初期メンバー向けにGitLab Pagesサイトを公開
+  - プロジェクトドキュメントのGit管理と自動デプロイを実現
+  - ローカル立ち上げ手順をドキュメント化
+issue_solving:
+  - 未管理ドキュメントの増殖を抑制
+  - 参画時の情報キャッチアップコストを削減
