@@ -207,7 +207,6 @@ function createExperienceProjectItem(documentRef: Document, project: ExperienceP
 
   const pairs: Array<[string, string]> = [
     ['役割', (project.role ?? []).join(' / ') || '-'],
-    ['成果（定量/定性）', normalizeText(project.result).trim() || normalizeText(project.summary).trim() || '-'],
   ];
   appendKeyValueRows(documentRef, kv, pairs);
 
@@ -224,6 +223,12 @@ function createExperienceProjectItem(documentRef: Document, project: ExperienceP
   item.appendChild(title);
   item.appendChild(kv);
 
+  appendListSection(
+    documentRef,
+    item,
+    '成果（定量/定性）',
+    project.result?.length ? project.result : [normalizeText(project.summary).trim() || '-'],
+  );
   appendListSection(documentRef, item, '工夫', project.effort ?? []);
   appendListSection(documentRef, item, '課題解決', project.issue_solving ?? []);
 

@@ -7,7 +7,8 @@ tech:
   os: [windows, ubuntu20.04lts, wsl2]
   lang: [C++, shell, python]
   infra: [gitlab, docker, redmine]
-result: 問題切り分け速度を向上し、実機投入前の検証可能範囲を拡大。
+result:
+  - 問題切り分け速度を向上し、実機投入前の検証可能範囲を拡大。
 effort:
   - 設定ファイル読み込みフローを整理
   - WindowsからWSL2 LinuxへのTCP連携を構築

@@ -133,7 +133,8 @@ function TagList({items, compact = false}: {items: string[]; compact?: boolean})
 }
 
 export default function ExperienceProjectCard({project, expanded, onToggle}: Props) {
-  const summary = project.result?.trim() || project.summary?.trim() || 'No summary available.';
+  const results = project.result ?? [];
+  const summary = results[0]?.trim() || project.summary?.trim() || 'No summary available.';
   const member = project.member?.trim() ?? '';
   const roles = project.role ?? [];
   const os = project.tech?.os ?? [];
@@ -189,7 +190,17 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
         <section className={styles.detailsPanel}>
           <div className={styles.projectDetailKv}>
             <div className={styles.projectDetailK}>成果（定量/定性）</div>
-            <div className={styles.projectDetailV}>{summary}</div>
+            <div className={styles.projectDetailV}>
+              {results.length > 0 ? (
+                <ul className={styles.detailList}>
+                  {results.map((item) => (
+                    <li key={`${project.id}-result-${item}`}>{item}</li>
+                  ))}
+                </ul>
+              ) : (
+                summary
+              )}
+            </div>
 
             <div className={styles.projectDetailK}>工夫</div>
             <div className={styles.projectDetailV}>

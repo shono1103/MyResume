@@ -49,6 +49,19 @@ function optionalStringArray(value: unknown, path: string): string[] {
   return value;
 }
 
+function optionalStringList(value: unknown, path: string): string[] {
+  if (value === undefined || value === null) {
+    return [];
+  }
+  if (isString(value)) {
+    return value.trim() === '' ? [] : [value];
+  }
+  if (isStringArray(value)) {
+    return value;
+  }
+  throw new Error(`${path} must be string or string[]`);
+}
+
 function validateRefFile(value: string, path: string): string {
   const file = value.trim();
   if (file === '') {
@@ -99,7 +112,7 @@ export function parseExperienceProject(value: unknown, context: ValidationContex
     member: optionalString(value.member, `${path}.member`),
     slug: optionalString(value.slug, `${path}.slug`),
     summary: optionalString(value.summary, `${path}.summary`),
-    result: optionalString(value.result, `${path}.result`),
+    result: optionalStringList(value.result, `${path}.result`),
     role: optionalStringArray(value.role, `${path}.role`),
     tech: parseExperienceTech(value.tech, `${path}.tech`),
     effort: optionalStringArray(value.effort, `${path}.effort`),

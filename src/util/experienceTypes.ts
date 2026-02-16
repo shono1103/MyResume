@@ -11,7 +11,7 @@ export type ExperienceProject = {
   slug?: string;
   role: string[];
   tech: ExperienceTech;
-  result?: string;
+  result: string[];
   summary?: string;
   effort: string[];
   issue_solving: string[];

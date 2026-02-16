@@ -7,7 +7,8 @@ tech:
   os: [wsl2]
   lang: [C++]
   infra: [gitlab, docker, redmine]
-result: CI/CD導入前の検証コストを低減し、標準手順化で属人化を抑制。
+result:
+  - CI/CD導入前の検証コストを低減し、標準手順化で属人化を抑制。
 effort:
   - WSL2 + DockerでGitLab CEとGitLab Runnerを構築
   - CI/CD実行基盤の検証と手順書化
