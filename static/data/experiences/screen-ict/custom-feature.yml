@@ -1,0 +1,15 @@
+id: custom-feature
+title: 半導体製造の洗浄工程装置のカスタム仕様開発
+slug: semiconductor-custom-feature
+member: 30人以上
+role: [システム設計, 詳細設計, 実装, 結合テスト, リリース]
+tech:
+  os: [vxworks, windows, wind river linux, ubuntu20.04lts]
+  lang: [C++]
+  infra: [gitlab, docker, redmine, subversion]
+result:
+  - 1年間で6案件を対応。うち、3案件でシステム設計から担当。
+effort:
+  - 詳細設計から参入
+  - システム設計において、現状のソースコードを正確に読み取り対応
+issue_solving: []

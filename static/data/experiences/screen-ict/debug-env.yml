@@ -1,0 +1,18 @@
+id: debug-env
+title: 単体プログラムデバッグ環境開発
+slug: unit-debug-environment
+member: 1人
+role: [プロトタイプ開発]
+tech:
+  os: [windows, ubuntu20.04lts, wsl2]
+  lang: [C++, shell, python]
+  infra: [gitlab, docker, redmine]
+result:
+  - 問題切り分け速度を向上し、実機投入前の検証可能範囲を拡大。
+effort:
+  - 設定ファイル読み込みフローを整理
+  - WindowsからWSL2 LinuxへのTCP連携を構築
+  - 依存を最小化した単体実行用検証環境を作成
+issue_solving:
+  - モジュール依存の強さで単体デバッグしづらい課題を緩和
+  - 実機・結合環境に入る前段での検証を可能化

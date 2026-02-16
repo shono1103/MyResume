@@ -11,7 +11,7 @@ export type ExperienceProject = {
   slug?: string;
   role: string[];
   tech: ExperienceTech;
-  result?: string;
+  result: string[];
   summary?: string;
   effort: string[];
   issue_solving: string[];
@@ -28,9 +28,17 @@ export type ExperienceCompany = {
 };
 
 export type ExperiencesIndexYaml = {
-  companies: Array<{file: string}>;
+  companies: IndexedExperienceCompanyRef[];
 };
 
 export type ExperiencesYamlConfig = {
   companies: ExperienceCompany[];
+};
+
+export type IndexedExperienceCompanyRef = {
+  file: string;
+};
+
+export type IndexedExperienceProjectRef = {
+  file: string;
 };
