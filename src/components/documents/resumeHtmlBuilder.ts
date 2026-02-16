@@ -135,6 +135,36 @@ function setCellText(element: Element | null, value: string) {
   element.textContent = value;
 }
 
+function appendGenerationNote(doc: Document, data: ResumeData) {
+  const sheet = doc.querySelector('.sheet');
+  const titleBar = doc.querySelector('.titlebar');
+  if (!sheet || !titleBar) {
+    return;
+  }
+  const sourceUrl = data.portfolioUrlFromData || data.githubUrl || '-';
+
+  const note = doc.createElement('div');
+  note.className = 'generation-note';
+  note.append('この履歴書は佐伯奨乃によって作成された');
+  if (sourceUrl.startsWith('http')) {
+    const link = doc.createElement('a');
+    link.href = sourceUrl;
+    link.target = '_blank';
+    link.rel = 'noreferrer';
+    link.textContent = 'MyResume';
+    note.appendChild(link);
+  } else {
+    note.append('MyResume');
+  }
+  note.append('で生成されました。');
+  (note as HTMLElement).style.margin = '3mm 0 0';
+  (note as HTMLElement).style.fontSize = '10px';
+  (note as HTMLElement).style.color = '#666';
+  (note as HTMLElement).style.lineHeight = '1.4';
+
+  titleBar.insertAdjacentElement('afterend', note);
+}
+
 function buildCertificationContent(item: CertificationRowSource): string {
   const name = normalizeText(item.name).trim();
   const resultLabel = normalizeText(item.result_label).trim();
@@ -152,6 +182,7 @@ export function buildResumeHtml(template: string, data: ResumeData, form: FormSt
   const parser = new DOMParser();
   const doc = parser.parseFromString(template, 'text/html');
   doc.title = '履歴書.html';
+  appendGenerationNote(doc, data);
 
   const infoRows = doc.querySelectorAll('table[aria-label="基本情報"] tr');
   setCellText(infoRows[0]?.querySelector('td'), data.pronounce);

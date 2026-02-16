@@ -112,6 +112,26 @@ function createCareerDocument(template: string): Document {
 }
 
 function fillHeaderSection(doc: Document, data: ResumeData) {
+  const sourceUrl = data.portfolioUrlFromData || data.githubUrl || '-';
+  const header = doc.querySelector('header');
+  if (header) {
+    const generationNote = doc.createElement('div');
+    generationNote.className = 'row small';
+    generationNote.append('この職務経歴書は佐伯奨乃によって作成された');
+    if (sourceUrl.startsWith('http')) {
+      const link = doc.createElement('a');
+      link.href = sourceUrl;
+      link.target = '_blank';
+      link.rel = 'noreferrer';
+      link.textContent = 'MyResume';
+      generationNote.appendChild(link);
+    } else {
+      generationNote.append('MyResume');
+    }
+    generationNote.append('で生成されました。');
+    header.insertAdjacentElement('afterend', generationNote);
+  }
+
   const profile = doc.querySelector('.profile');
   if (profile) {
     const rows: Array<[string, string]> = [
