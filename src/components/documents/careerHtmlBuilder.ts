@@ -206,6 +206,7 @@ function createExperienceProjectItem(documentRef: Document, project: ExperienceP
   kv.className = 'kv';
 
   const pairs: Array<[string, string]> = [
+    ['チーム規模', project.member?.trim() || '-'],
     ['役割', (project.role ?? []).join(' / ') || '-'],
   ];
   appendKeyValueRows(documentRef, kv, pairs);
