@@ -193,8 +193,8 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
             <div className={styles.projectDetailV}>
               {results.length > 0 ? (
                 <ul className={styles.detailList}>
-                  {results.map((item) => (
-                    <li key={`${project.id}-result-${item}`}>{item}</li>
+                  {results.map((item, index) => (
+                    <li key={`${project.id}-result-${index}`}>{item}</li>
                   ))}
                 </ul>
               ) : (
@@ -206,8 +206,8 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
             <div className={styles.projectDetailV}>
               {efforts.length > 0 ? (
                 <ul className={styles.detailList}>
-                  {efforts.map((item) => (
-                    <li key={`${project.id}-effort-${item}`}>{item}</li>
+                  {efforts.map((item, index) => (
+                    <li key={`${project.id}-effort-${index}`}>{item}</li>
                   ))}
                 </ul>
               ) : (
@@ -219,8 +219,8 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
             <div className={styles.projectDetailV}>
               {issueSolving.length > 0 ? (
                 <ul className={styles.detailList}>
-                  {issueSolving.map((item) => (
-                    <li key={`${project.id}-issue-${item}`}>{item}</li>
+                  {issueSolving.map((item, index) => (
+                    <li key={`${project.id}-issue-${index}`}>{item}</li>
                   ))}
                 </ul>
               ) : (
