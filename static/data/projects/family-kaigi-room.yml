@@ -1,0 +1,15 @@
+id: family-kaigi-room
+name: FamilyKaigiRoom
+tech:
+  - os: [Linux]
+    lang: [TypeScript]
+    framework: [React, Next.js]
+    infra: [vercel, Oracle Cloud]
+status: maintenance
+abstract: symbolを使用して家族の意思決定のための通貨？を運用するためのアプリ。NEMTUSのハッカソンのために作成。
+repos_url: https://family-kaigi-room.vercel.app/
+effort:
+  - symbolを基盤として薄く使用する部分
+main_function:
+  - 構想段階
+thumbnail_img_path: /data/projects/thumbnail/familyKaigiRoom.png
