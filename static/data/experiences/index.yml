@@ -1,4 +1,5 @@
 companies:
+  - file: /data/experiences/asial.yml
   - file: /data/experiences/screen-ict.yml
     abstract: static/data/experiences/abstract.md
     

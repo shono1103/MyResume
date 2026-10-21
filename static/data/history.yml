@@ -88,14 +88,23 @@ timeline:
     dotColor: "#8e24aa"
     dotVariant: outlined
 
+  - id: asial-join
+    time: "2026.06"
+    title: アシアル株式会社 入社
+    tags: [work]
+    details:
+      - フルスタックエンジニアとして業務用Webアプリケーションの開発・保守運用を担当
+    dotColor: "#00897b"
+    dotVariant: filled
+
   - id: now
-    time: 2025.02
-    title: 求職活動中
+    time: "2026.10"
+    title: アシアル株式会社に在籍中
     tags: [now]
     details:
-      - 4月を入社を目指している。
-        並行して、これまで蓄えてきたスキルの整理をしている。
+      - 業務用Webアプリケーションの開発・保守運用および顧客折衝
+      - GROWIの情報探索を目的としたRAGシステムのPoC
     dotColor: "#e53935"
     dotVariant: filled
 
-lastUpdate: 2026/02/13
+lastUpdate: 2026/10/21

@@ -1,5 +1,5 @@
 import type {FormState, ResumeData} from '@site/src/util/documentGeneratorTypes';
-import type {ExperienceCompany, ExperienceProject} from '@site/src/util/experienceTypes';
+import type {ExperienceCompany, ExperienceProject, ExperienceTech} from '@site/src/util/experienceTypes';
 import type {ProjectEntry, ProjectTech} from '@site/src/util/projectTypes';
 import {createGenerationNoteElement} from './partials/generationNote';
 import {appendLinkOrText} from './utils/dom';
@@ -164,17 +164,21 @@ function fillSummarySection(doc: Document, data: ResumeData) {
   appendTagList(doc, skillGroups[2]?.querySelector('.tags'), learnings);
 }
 
-function createTechGroups(documentRef: Document, os: string[], lang: string[], infra: string[]): HTMLDivElement {
+function createTechGroups(documentRef: Document, tech?: ExperienceTech): HTMLDivElement {
   const techGroups = documentRef.createElement('div');
   techGroups.className = 'tech-groups';
 
   const entries: Array<[string, string[]]> = [
-    ['OS', os],
-    ['Lang', lang],
-    ['Infra', infra],
+    ['OS', tech?.os ?? []],
+    ['Lang', tech?.lang ?? []],
+    ['Framework', tech?.framework ?? []],
+    ['ORM', tech?.orm ?? []],
+    ['Database', tech?.db ?? []],
+    ['Tools', tech?.tools ?? []],
+    ['Infra', tech?.infra ?? []],
   ];
 
-  entries.forEach(([label, tags]) => {
+  entries.filter(([label, tags]) => ['OS', 'Lang', 'Infra'].includes(label) || tags.length > 0).forEach(([label, tags]) => {
     const row = documentRef.createElement('div');
     row.className = 'tech-row';
 
@@ -216,7 +220,7 @@ function createExperienceProjectItem(documentRef: Document, project: ExperienceP
   techKey.textContent = '技術';
   const techValue = documentRef.createElement('div');
   techValue.className = 'v';
-  techValue.appendChild(createTechGroups(documentRef, project.tech?.os ?? [], project.tech?.lang ?? [], project.tech?.infra ?? []));
+  techValue.appendChild(createTechGroups(documentRef, project.tech));
 
   kv.appendChild(techKey);
   kv.appendChild(techValue);
@@ -224,12 +228,15 @@ function createExperienceProjectItem(documentRef: Document, project: ExperienceP
   item.appendChild(title);
   item.appendChild(kv);
 
-  appendListSection(
-    documentRef,
-    item,
-    '成果（定量/定性）',
-    project.result?.length ? project.result : [normalizeText(project.summary).trim() || '-'],
-  );
+  const summary = normalizeText(project.summary).trim();
+  if (summary) {
+    const heading = documentRef.createElement('h3');
+    heading.textContent = '業務概要';
+    const paragraph = documentRef.createElement('p');
+    paragraph.textContent = summary;
+    item.append(heading, paragraph);
+  }
+  appendListSection(documentRef, item, '成果（定量/定性）', project.result ?? []);
   appendListSection(documentRef, item, '工夫', project.effort ?? []);
 
   return item;

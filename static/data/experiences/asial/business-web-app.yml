@@ -1,0 +1,10 @@
+id: business-web-app
+title: 業務用Webアプリケーションの開発・保守運用
+slug: business-web-app
+summary: Reactを用いたフロントエンドと、NestJS・Prisma・PostgreSQLを用いたバックエンドの開発を担当。既存アプリケーションの保守運用および顧客折衝にも携わっています。AWS上ではCloudFront・S3・ECSを使用し、Lambdaによるバッチ処理を組み合わせた構成のアプリケーションを扱っています。
+role: [フルスタック開発, 保守運用, 顧客折衝]
+tech:
+  framework: [React, NestJS]
+  orm: [Prisma]
+  db: [PostgreSQL]
+  infra: [AWS CloudFront, Amazon S3, Amazon ECS, AWS Lambda]

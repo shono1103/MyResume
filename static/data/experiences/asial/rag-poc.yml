@@ -1,0 +1,7 @@
+id: rag-poc
+title: GROWIの情報探索を目的としたRAGシステムのPoC
+slug: growi-rag-poc
+summary: Vercelが公開するチャットアプリケーションのテンプレート「vercel/chatbot」をフォークし、GROWIを対象にデータ探索できるシステムを開発しました。ローカルで動作するCodex CLIとClaude CLIを活用し、GROWIに蓄積された情報を探索する仕組みを実装。既存のOSSを基盤に、生成AIを用いた情報探索の技術検証を行いました。
+role: [PoC開発, 技術検証]
+tech:
+  tools: [vercel/chatbot, Codex CLI, Claude CLI, GROWI]
