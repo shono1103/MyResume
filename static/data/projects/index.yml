@@ -1,5 +1,3 @@
 projects:
   - file: /data/projects/my-resume.yml
-  - file: /data/projects/family-kaigi-room.yml
-  - file: /data/projects/jp_archer_log_app.yml
-  - file: /data/projects/pomodoro-cli.yml
+  - file: /data/projects/raprid.yml
