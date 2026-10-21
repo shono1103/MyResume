@@ -134,13 +134,19 @@ function TagList({items, compact = false}: {items: string[]; compact?: boolean})
 
 export default function ExperienceProjectCard({project, expanded, onToggle}: Props) {
   const results = project.result ?? [];
-  const summary = results[0]?.trim() || project.summary?.trim() || 'No summary available.';
+  const summary = project.summary?.trim();
   const member = project.member?.trim() ?? '';
   const roles = project.role ?? [];
   const os = project.tech?.os ?? [];
   const languages = project.tech?.lang ?? [];
   const infra = project.tech?.infra ?? [];
   const efforts = project.effort ?? [];
+  const additionalTech: Array<[string, string[]]> = [
+    ['Framework', project.tech?.framework ?? []],
+    ['ORM', project.tech?.orm ?? []],
+    ['Database', project.tech?.db ?? []],
+    ['Tools', project.tech?.tools ?? []],
+  ];
 
   return (
     <article className={`${styles.projectCard} ${expanded ? styles.projectCardExpanded : ''}`}>
@@ -177,6 +183,13 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
               <TagList items={languages} compact={!expanded} />
             </div>
 
+            {additionalTech.filter(([, items]) => items.length > 0).map(([label, items]) => (
+              <div className={styles.techRow} key={label}>
+                <span className={styles.techLabel}>{label}</span>
+                <TagList items={items} compact={!expanded} />
+              </div>
+            ))}
+
             <div className={styles.techRow}>
               <span className={styles.techLabel}>Infrastructure</span>
               <TagList items={infra} compact={!expanded} />
@@ -188,18 +201,24 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
       {expanded ? (
         <section className={styles.detailsPanel}>
           <div className={styles.projectDetailKv}>
-            <div className={styles.projectDetailK}>成果（定量/定性）</div>
-            <div className={styles.projectDetailV}>
-              {results.length > 0 ? (
-                <ul className={styles.detailList}>
-                  {results.map((item, index) => (
-                    <li key={`${project.id}-result-${index}`}>{item}</li>
-                  ))}
-                </ul>
-              ) : (
-                summary
-              )}
-            </div>
+            {summary ? (
+              <>
+                <div className={styles.projectDetailK}>業務概要</div>
+                <div className={styles.projectDetailV}>{summary}</div>
+              </>
+            ) : null}
+            {results.length > 0 ? (
+              <>
+                <div className={styles.projectDetailK}>成果（定量/定性）</div>
+                <div className={styles.projectDetailV}>
+                  <ul className={styles.detailList}>
+                    {results.map((item, index) => (
+                      <li key={`${project.id}-result-${index}`}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </>
+            ) : null}
 
             <div className={styles.projectDetailK}>工夫</div>
             <div className={styles.projectDetailV}>

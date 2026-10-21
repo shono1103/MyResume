@@ -97,6 +97,10 @@ function parseExperienceTech(value: unknown, path: string): ExperienceTech {
     os: optionalStringArray(value.os, `${path}.os`),
     lang: optionalStringArray(value.lang, `${path}.lang`),
     infra: optionalStringArray(value.infra, `${path}.infra`),
+    framework: optionalStringArray(value.framework, `${path}.framework`),
+    orm: optionalStringArray(value.orm, `${path}.orm`),
+    db: optionalStringArray(value.db, `${path}.db`),
+    tools: optionalStringArray(value.tools, `${path}.tools`),
   };
 }
 

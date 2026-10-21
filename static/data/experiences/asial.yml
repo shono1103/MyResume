@@ -1,0 +1,8 @@
+abstract_mdFilePath: /data/experiences/abstract.md
+id: asial
+name: アシアル株式会社
+slug: asial
+period: 2026年6月〜現在
+projects:
+  - file: /data/experiences/asial/business-web-app.yml
+  - file: /data/experiences/asial/rag-poc.yml

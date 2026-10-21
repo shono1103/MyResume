@@ -2,6 +2,10 @@ export type ExperienceTech = {
   os: string[];
   lang: string[];
   infra: string[];
+  framework?: string[];
+  orm?: string[];
+  db?: string[];
+  tools?: string[];
 };
 
 export type ExperienceProject = {
