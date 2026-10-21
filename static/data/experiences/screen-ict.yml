@@ -5,7 +5,4 @@ slug: screen-ict
 period: 2024-04 to 2025-12
 projects:
   - file: /data/experiences/screen-ict/custom-feature.yml
-  - file: /data/experiences/screen-ict/docker-build-env.yml
-  - file: /data/experiences/screen-ict/debug-env.yml
-  - file: /data/experiences/screen-ict/gitlab-runner-cicd.yml
-  - file: /data/experiences/screen-ict/gitlab-pages.yml
+  - file: /data/experiences/screen-ict/devops.yml

@@ -17,6 +17,7 @@ export type ExperienceProject = {
   tech: ExperienceTech;
   result: string[];
   summary?: string;
+  activities?: string[];
   effort: string[];
   detail_markdown_path?: string;
 };

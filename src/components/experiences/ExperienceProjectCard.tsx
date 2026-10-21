@@ -141,6 +141,7 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
   const languages = project.tech?.lang ?? [];
   const infra = project.tech?.infra ?? [];
   const efforts = project.effort ?? [];
+  const activities = project.activities ?? [];
   const additionalTech: Array<[string, string[]]> = [
     ['Framework', project.tech?.framework ?? []],
     ['ORM', project.tech?.orm ?? []],
@@ -205,6 +206,18 @@ export default function ExperienceProjectCard({project, expanded, onToggle}: Pro
               <>
                 <div className={styles.projectDetailK}>業務概要</div>
                 <div className={styles.projectDetailV}>{summary}</div>
+              </>
+            ) : null}
+            {activities.length > 0 ? (
+              <>
+                <div className={styles.projectDetailK}>活動内容</div>
+                <div className={styles.projectDetailV}>
+                  <ul className={styles.detailList}>
+                    {activities.map((item, index) => (
+                      <li key={`${project.id}-activity-${index}`}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
               </>
             ) : null}
             {results.length > 0 ? (
