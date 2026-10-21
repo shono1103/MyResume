@@ -116,6 +116,7 @@ export function parseExperienceProject(value: unknown, context: ValidationContex
     member: optionalString(value.member, `${path}.member`),
     slug: optionalString(value.slug, `${path}.slug`),
     summary: optionalString(value.summary, `${path}.summary`),
+    activities: optionalStringArray(value.activities, `${path}.activities`),
     result: optionalStringList(value.result, `${path}.result`),
     role: optionalStringArray(value.role, `${path}.role`),
     tech: parseExperienceTech(value.tech, `${path}.tech`),

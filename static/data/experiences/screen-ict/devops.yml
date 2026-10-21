@@ -1,0 +1,15 @@
+id: devops
+title: DevOps活動
+slug: devops
+summary: 半導体製造装置の制御ソフトウェア開発を支える活動として、開発環境の整備と作業の自動化・標準化に取り組みました。
+member: 各活動1人
+role: [開発環境改善, プロトタイプ開発, インフラ構築, ドキュメント作成]
+tech:
+  os: [Windows, Ubuntu 20.04 LTS, WSL2]
+  lang: [C++, Shell, Python]
+  infra: [GitLab, Docker, Redmine, MkDocs]
+activities:
+  - Dockerによるビルド環境の整備：Dockerの導入を推進し、開発・ビルド環境を統合しました。Docker Desktopを使用しない構成を調査し、新規参入者が環境を構築できるよう導入手順を整備して、チームに展開しました。
+  - 単体プログラムのデバッグ環境開発：既存プログラムの設定読み込み処理を再利用し、単体でソースコードを追跡できるデバッグ環境を構築しました。WindowsからWSL2上のDockerコンテナへのTCP通信や、GDBのレジスタ操作による関数のスタブ化を活用しました。
+  - GitLab RunnerによるCI/CD環境構築：WSL2とDocker上にGitLab CE・GitLab Runnerを構築し、オンプレミスでのCI/CDパイプラインを検証しました。構築手順をドキュメント化し、導入・運用を再現できるようにしました。
+  - GitLab Pagesによるドキュメント公開の自動化：新規参入者向けドキュメントを社内ネットワークに自動公開する環境を構築しました。MkDocsの設定ファイルの自動生成や、ビルド時のPlantUML画像生成を実装し、チーム内でのドキュメント作成・共有を促進しました。

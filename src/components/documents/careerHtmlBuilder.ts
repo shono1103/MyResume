@@ -236,6 +236,7 @@ function createExperienceProjectItem(documentRef: Document, project: ExperienceP
     paragraph.textContent = summary;
     item.append(heading, paragraph);
   }
+  appendListSection(documentRef, item, '活動内容', project.activities ?? []);
   appendListSection(documentRef, item, '成果（定量/定性）', project.result ?? []);
   appendListSection(documentRef, item, '工夫', project.effort ?? []);
 
