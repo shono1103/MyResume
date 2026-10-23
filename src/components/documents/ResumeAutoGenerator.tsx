@@ -13,7 +13,7 @@ const INITIAL_FORM: FormState = {
   postalCode: '',
   address: '',
   phone: '',
-  email: '',
+  email: 'saiki@shonoshono.com',
   motivation: '',
   preference: '',
   photoDataUrl: '',
