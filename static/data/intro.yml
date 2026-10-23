@@ -10,8 +10,8 @@ intro:
   motto: KISS (Keep It Simple Stupid)
   hobby: [linux, コーヒー, 筋トレ, ビール, 日本酒, ワイン]
   skills:
-    work_experience: [C++, Linux, Docker, React, NestJS, Prisma, PostgreSQL, AWS]
-    personal_projects: [python, TypeScript, JavaScript, FastAPI]
+    work_experience: [C++, TypeScript, JavaScript, Linux, Docker, React, NestJS, Prisma, PostgreSQL, AWS]
+    personal_projects: [python, FastAPI]
     learning_in_progress: [commander, proxmox, Next.js]
   
   core_strengths: 
