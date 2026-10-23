@@ -28,6 +28,7 @@ export type FormState = {
   postalCode: string;
   address: string;
   phone: string;
+  email: string;
   motivation: string;
   preference: string;
   photoDataUrl: string;
