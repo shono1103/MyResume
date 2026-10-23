@@ -406,11 +406,15 @@
 
 		/* ====== Print ====== */
 		@media print {
+			.print-guide { display: none; }
 			body {
 				background: #fff;
 			}
 
 			.page {
+				width: auto;
+				min-height: 0;
+				padding: 0;
 				margin: 0;
 			}
 
@@ -418,6 +422,43 @@
 				background: #fff;
 				border-top: none;
 				padding-top: 0;
+			}
+
+			body { font-size: 12px; line-height: 1.5; }
+			section { margin: 16px 0; }
+			.card, .company-group, .job { padding: 10px; }
+			.project-item { padding: 8px; }
+			.kv { font-size: 12px; gap: 4px 10px; }
+			.tag { font-size: 11px; padding: 1px 6px; }
+			.tech-groups { gap: 4px; }
+			.project-item h3:not(.project-title), .job h3 { font-size: 13px; margin: 8px 0 4px; }
+
+			/* Keep headings with their content; allow long companies to span pages. */
+			.section-title, .company-head, .job-head, h2, h3 {
+				break-after: avoid;
+				page-break-after: avoid;
+			}
+
+			.company-group {
+				break-inside: auto;
+			}
+
+			.company-projects {
+				display: block;
+			}
+
+			.project-item + .project-item {
+				margin-top: 10px;
+			}
+
+			#pr, .skill-group {
+				break-inside: avoid;
+				page-break-inside: avoid;
+			}
+
+			p, li {
+				orphans: 3;
+				widows: 3;
 			}
 
 			a {
@@ -437,6 +478,7 @@
 </head>
 
 <body>
+	<aside class="print-guide" style="max-width:210mm;margin:12px auto;padding:12px;background:#fff;">印刷・PDF保存時は、用紙をA4、倍率を100%に設定し、「詳細設定」の「ヘッダーとフッター」をオフにしてください。日時・タイトル・URLの印字を防げます。</aside>
 	<main class="page">
 		<!-- =======================
       Header (任意：氏名・連絡先など)
@@ -488,7 +530,7 @@
 					<div class="card" style="margin:0;">
 						<div style="font-weight:600;">主要スキル</div>
 						<div class="skill-group">
-							<div class="skill-group-title">自信あり</div>
+							<div class="skill-group-title">実務経験</div>
 							<div class="tags">
 								<span class="tag">Python</span>
 								<span class="tag">Linux</span>
@@ -497,7 +539,7 @@
 							</div>
 						</div>
 						<div class="skill-group">
-							<div class="skill-group-title">経験あり</div>
+							<div class="skill-group-title">個人開発</div>
 							<div class="tags">
 								<span class="tag">Node.js</span>
 								<span class="tag">AWS</span>
