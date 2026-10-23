@@ -192,6 +192,8 @@ export default function ResumeAutoGenerator({
           </label>
         </div>
 
+        <p className={styles.hint}>印刷・PDF保存時は、用紙をA4、倍率を100%にし、ブラウザの「ヘッダーとフッター」をオフにしてください。</p>
+
         <div className={styles.actions}>
           <button type="button" className={styles.button} onClick={handleGenerate} disabled={loading}>
             {loading ? '生成中...' : submitLabel}

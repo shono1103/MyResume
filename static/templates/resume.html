@@ -270,11 +270,17 @@
 
 		/* 印刷時の背景 */
 		@media print {
+			.print-guide { display: none; }
+			h2, h3, .section-title { break-after: avoid; page-break-after: avoid; }
+			tr { break-inside: avoid; }
 			body {
 				background: #fff;
 			}
 
 			.sheet {
+				width: auto;
+				min-height: 0;
+				padding: 0;
 				margin: 0;
 			}
 		}
@@ -282,6 +288,7 @@
 </head>
 
 <body>
+	<aside class="print-guide" style="max-width:210mm;margin:12px auto;padding:12px;background:#fff;">印刷・PDF保存時は、用紙をA4、倍率を100%に設定し、「詳細設定」の「ヘッダーとフッター」をオフにしてください。日時・タイトル・URLの印字を防げます。</aside>
 	<main class="sheet">
 		<!-- ===== タイトル ===== -->
 		<div class="titlebar">
