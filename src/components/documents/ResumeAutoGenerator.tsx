@@ -13,6 +13,7 @@ const INITIAL_FORM: FormState = {
   postalCode: '',
   address: '',
   phone: '',
+  email: '',
   motivation: '',
   preference: '',
   photoDataUrl: '',
@@ -116,8 +117,9 @@ export default function ResumeAutoGenerator({
 
     try {
       const loaded = await loadResumeData(baseUrl);
-      const resume = buildResumeHtml(loaded.templates.resume, loaded.data, form);
-      const career = buildCareerHtml(loaded.templates.career, loaded.data, form);
+      const data = {...loaded.data, email: form.email.trim() || loaded.data.email};
+      const resume = buildResumeHtml(loaded.templates.resume, data, form);
+      const career = buildCareerHtml(loaded.templates.career, data, form);
 
       setResumeHtml(resume);
       setCareerHtml(career);
@@ -165,6 +167,18 @@ export default function ResumeAutoGenerator({
           <label className={styles.field}>
             <span className={styles.label}>電話番号</span>
             <input className={styles.input} value={form.phone} onChange={(e) => updateField('phone', e.target.value)} />
+          </label>
+
+          <label className={`${styles.field} ${styles.fieldWide}`}>
+            <span className={styles.label}>メールアドレス（任意）</span>
+            <input
+              className={styles.input}
+              type="email"
+              autoComplete="email"
+              value={form.email}
+              onChange={(e) => updateField('email', e.target.value)}
+            />
+            <span className={styles.hint}>入力すると履歴書・職務経歴書に反映されます。空欄の場合はサイトに登録されたメールアドレスを使用します。</span>
           </label>
 
           <label className={`${styles.field} ${styles.fieldWide}`}>
